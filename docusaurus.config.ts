@@ -12,9 +12,9 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // GitHub Pages deployment config
-  url: 'https://lianjiaTech.github.io',
-  baseUrl: '/bella-openapi/',
-  organizationName: 'LianjiaTech',
+  url: 'https://bella-top.github.io',
+  baseUrl: '/',
+  organizationName: 'bella',
   projectName: 'bella-openapi',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
@@ -43,7 +43,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.ts'),
-          editUrl: 'https://github.com/LianjiaTech/bella-openapi/tree/main/bella-docs',
+          editUrl: 'https://github.com/LianjiaTech/bella-openapi/tree/develop/bella-docs',
           includeCurrentVersion: true,
         },
         blog: false, // 禁用博客
