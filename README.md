@@ -3,48 +3,48 @@ Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平
 
 在此基础上，Bella沉淀了许多可被灵活复用的基础能力，后续我们将逐步将其中与业务无关的所有能力进行开源，这些能力都经过了大规模的生产环境验证，期望能够为全行业的AI普及贡献一点微小的力量。
 
-## Bella-openapi
+## 💎 核心模块
+### Bella-openapi - 全能AI能力网关
+不止于聊天补全，Bella-openapi整合了文本向量化、语音识别、语音合成、文生图、图生图等多元AI能力，并配备完善的计费、限流和资源管理功能。所有能力均经过大规模生产环境检验，稳定可靠。
 
-Bella-openapi是一个提供了丰富的AI调用能力的API网关，可类比openrouter，与之不同的是除了提供聊天补全(chat-completion)能力外，还提供了文本向量化(text-embedding)、语音识别(ASR)、语音合成(TTS)、文生图、图生图等多种AI能力，同时集成了计费、限流和资源管理功能。且集成的所有能力都经过了大规模生产环境的验证。
+[![Static Badge](https://img.shields.io/badge/github-gray?style=flat-square)](https://deepwiki.com/LianjiaTech/bella-openapi)
 
-[repo](https://github.com/LianjiaTech/bella-openapi)
-
-## Bella-knowledge
-Bella-knowledge负责知识的统一存储、管理，主要包含文件、QA对两类知识的统一管理。
+### Bella-knowledge - 智能知识管理中心
+专注于知识的统一存储与管理，优雅处理文件、问答对等多类知识源，为智能应用提供强大的知识支撑。
 
 [repo](https://github.com/LianjiaTech/bella-knowledge)
 
-## Bella-assistants
-Bella-assistants-api是openai assistants-api和responses api的开源实现，主要优点是不局限于openai的生态，可以灵活切换不同厂商的模型。
+### Bella-assistants - 跨平台智能助手引擎
+兼容OpenAI Assistants API和Responses API的开源实现，突破原生生态限制，支持灵活切换各大厂商模型，真正实现"一次开发，处处可用"。
 
 [repo](https://github.com/LianjiaTech/bella-assistant)
 
-## Bella-rag
-Bella-rag负责提供统一的检索问答生成能力，依托于Bella-knowledge的数据源，进行解析、抽取、索引后提供多种检索能力，同时提供多种rag范式
+### Bella-rag - 高效检索增强生成系统
+依托Bella-knowledge数据源，提供统一的检索问答生成能力，支持多种检索方式和RAG实现范式，让AI回答更精准、更可靠。
 
 [repo](https://github.com/LianjiaTech/bella-rag)
 
-## Bella-workflow
-bella的工作流实现，类似DIFY又提供了差异化的能力特性，比如回调模式、比如groovy支持、比如batch支持、三方数据源注册及使用等等，同时拥有更优秀的性能。
+### Bella-workflow - 超越想象的工作流引擎
+类似DIFY但拥有诸多差异化能力，如回调模式、Groovy脚本支持、批处理能力、第三方数据源注册等，同时性能更为卓越。
 
 [repo](https://github.com/LianjiaTech/bella-workflow)
 
-## Bella-job-queue
-bella的批处理能力，本质是一个集中式的队列，各种基础能力都可以接入这个队列以轻松的支持batch模式。
+### Bella-job-queue - 高效批处理解决方案
+集中式队列系统，让各类基础能力轻松支持批处理模式，大幅提升处理效率与资源利用率。
 
 [repo](https://github.com/LianjiaTech/bella-job-queue)
 
-## Bella-realtime
-Bella的实时语音对话能力，超低的延迟和超强的灵活性，可任意替换不同的asr，llm和tts以达到更好的效果，同时还支持multi agent等关键特性。
+### Bella-realtime - 极致实时语音交互
+以超低延迟和极高灵活性著称，支持自由组合不同的ASR、LLM和TTS组件，打造最佳用户体验，并支持多智能体协作等前沿特性。
 
 [repo](https://github.com/LianjiaTech/bella-realtime)
 
-## Bella-general-infer
- Bella的通用推理服务，支持llm，asr，tts，embedding，rerank等多种明星，transforms，vllm，sglang，faster_whisper等多种推理后端。
+### Bella-general-infer - 通用AI推理引擎
+支持LLM、ASR、TTS、Embedding、Rerank等多种模型，兼容Transformers、vLLM、SGLang、Faster-Whisper等主流推理后端，一站式满足各类AI推理需求。
 
 [repo](https://github.com/LianjiaTech/bella-general-infer)
 
-## Bella-whisper
-基于领域数据微调后的whisper模型，拥有更强的简体中文识别能力。
+### Bella-whisper - 中文优化ASR模型
+基于领域数据精心微调的Whisper模型，拥有卓越的简体中文识别能力，为语音应用提供更精准的支持。
 
 [repo](https://github.com/LianjiaTech/bella-whisper)
