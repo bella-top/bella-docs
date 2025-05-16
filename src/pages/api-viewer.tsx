@@ -1,20 +1,84 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Layout from '@theme/Layout';
-import BrowserOnly from '@docusaurus/BrowserOnly';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import { translate } from '@docusaurus/Translate';
+import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import '../css/redoc-overrides.css'; // 引入自定义CSS样式
+import projectsData from '../../config/projects-data.json';
 
 export default function ApiViewerPage() {
   const { i18n } = useDocusaurusContext();
   const currentLocale = i18n.currentLocale;
   
-  // 根据当前语言选择正确的API规范文件
-  // 如果找不到当前语言的API规范，则回退到默认中文版本
-  const specUrl = useBaseUrl(
-    currentLocale === 'en' ? '/openapi/openapi-en.json' : '/openapi/openapi.json'
-  );
+  // 项目卡片样式
+  const cardContainerStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+    gap: '20px',
+    padding: '20px',
+  };
+  
+  const cardStyle = {
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    padding: '20px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column' as const,
+  };
+  
+  const cardTitleStyle = {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+    color: '#1890ff',
+  };
+  
+  const cardDescriptionStyle = {
+    fontSize: '1rem',
+    color: '#666',
+    marginBottom: '20px',
+    flexGrow: 1,
+  };
+  
+  const buttonStyle = {
+    padding: '10px 15px',
+    backgroundColor: '#1890ff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    textAlign: 'center' as const,
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    display: 'inline-block',
+  };
+  
+  const disabledButtonStyle = {
+    padding: '10px 15px',
+    backgroundColor: '#1890ff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'not-allowed',
+    textAlign: 'center' as const,
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    display: 'inline-block',
+    opacity: 0.6,
+  };
+  
+  const statusBadgeStyle = (status) => ({
+    display: 'inline-block',
+    padding: '3px 8px',
+    borderRadius: '12px',
+    fontSize: '0.8rem',
+    fontWeight: 'bold',
+    marginLeft: '10px',
+    backgroundColor: status === 'released' ? '#52c41a' : '#faad14',
+    color: 'white',
+  });
   
   return (
     <Layout
@@ -24,105 +88,45 @@ export default function ApiViewerPage() {
       })}
       description={translate({
         id: 'pages.apiViewer.description',
-        message: 'Bella OpenAPI 完整 API 文档',
-      })}
-      noFooter={true}>
-      <main className="container" style={{padding: 0, maxWidth: '100%', height: 'calc(100vh - 60px)'}}> {/* 调整高度以填充整个视口 */}
-        {/* 加载指示器 */}
-        <div id="redoc-loading" style={{
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          height: '100%', // 改为100%填充容器
-          fontSize: '1.2rem',
-          color: '#666'
-        }}>
-          API 文档加载中...
+        message: 'Bella API 完整文档',
+      })}>
+      <div>
+        <div style={{ padding: '20px', backgroundColor: '#f5f5f5', borderBottom: '1px solid #e0e0e0' }}>
+          <h1 style={{ margin: 0, fontSize: '2rem' }}>API 文档</h1>
+          <p style={{ margin: '10px 0 0 0', color: '#666' }}>选择一个项目查看其 API 文档</p>
         </div>
         
-        {/* 使用 script 标签直接加载 Redoc */}
-        <BrowserOnly>
-          {() => {
-            useEffect(() => {
-              // 使用最直接的方式加载 Redoc
-              const loadRedoc = async () => {
-                try {
-                  // 隐藏加载指示器
-                  const loadingEl = document.getElementById('redoc-loading');
-                  if (loadingEl) {
-                    loadingEl.style.display = 'none';
-                  }
-                  
-                  // 创建 script 标签
-                  const script = document.createElement('script');
-                  script.src = 'https://cdn.jsdelivr.net/npm/redoc@2.0.0/bundles/redoc.standalone.js';
-                  script.async = true;
-                  script.onload = () => {
-                    // 当 Redoc 加载成功后，初始化它
-                    // @ts-ignore
-                    window.Redoc.init(
-                      specUrl,
-                      {
-                        scrollYOffset: 60, // 增大以避免导航栏遮挡
-                        hideHostname: false,
-                        expandResponses: '200,201',
-                        nativeScrollbars: true,
-                        theme: {
-                          colors: {
-                            primary: { main: '#1890ff' },
-                            // 其余主题配置保持不变
-                          },
-                          typography: {
-                            fontSize: '16px',
-                            headings: {
-                              fontFamily: '"Source Sans Pro", sans-serif',
-                            },
-                            fontFamily: 'Montserrat, Helvetica, Arial, sans-serif',
-                          },
-                          sidebar: {
-                            width: '300px',
-                          },
-                        },
-                      },
-                      document.getElementById('redoc-container')
-                    );
-                  };
-                  script.onerror = () => {
-                    console.error('Failed to load Redoc script');
-                    const errorEl = document.getElementById('redoc-loading');
-                    if (errorEl) {
-                      errorEl.textContent = '加载 API 文档组件失败，请刷新页面重试';
-                      errorEl.style.color = 'red';
-                      errorEl.style.display = 'flex';
-                    }
-                  };
-                  document.body.appendChild(script);
-                } catch (error) {
-                  console.error('Error setting up Redoc:', error);
-                  const errorEl = document.getElementById('redoc-loading');
-                  if (errorEl) {
-                    errorEl.textContent = '加载 API 文档组件失败，请刷新页面重试';
-                    errorEl.style.color = 'red';
-                    errorEl.style.display = 'flex';
-                  }
-                }
-              };
-              
-              loadRedoc();
-              
-              // 清理函数
-              return () => {
-                const scriptEl = document.querySelector('script[src="https://cdn.jsdelivr.net/npm/redoc@2.0.0/bundles/redoc.standalone.js"]');
-                if (scriptEl) {
-                  document.body.removeChild(scriptEl);
-                }
-              };
-            }, []);
-            
-            return <div id="redoc-container" style={{ height: '100%' }}></div>; {/* 调整高度以填充整器 */}
-          }}
-        </BrowserOnly>
-      </main>
+        <div style={cardContainerStyle}>
+          {projectsData.projects.map(project => (
+            <div key={project.id} style={cardStyle}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <h2 style={cardTitleStyle}>{project.name}</h2>
+                <span style={statusBadgeStyle(project.status)}>
+                  {project.status === 'released' ? '已发布' : '即将推出'}
+                </span>
+              </div>
+              <p style={cardDescriptionStyle}>
+                {project.description}
+              </p>
+              {project.status === 'released' ? (
+                <Link 
+                  to={`/api-docs/${project.id}`} 
+                  style={buttonStyle}
+                >
+                  查看 API 文档
+                </Link>
+              ) : (
+                <div 
+                  style={disabledButtonStyle}
+                  title="即将推出"
+                >
+                  查看 API 文档
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </Layout>
   );
 }

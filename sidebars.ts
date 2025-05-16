@@ -5,40 +5,63 @@ const sidebars: SidebarsConfig = {
     {
       type: 'doc',
       id: 'intro',
-      label: '介绍（introduction）',
+      label: '介绍（Introduction）',
     },
     {
       type: 'category',
-      label: '配置与部署 (Configuration & Deployment)',
+      label: 'OpenAPI',
+      collapsible: true,
+      collapsed: false,
       items: [
-        'configuration-details', // docs/configuration-details.md
-        'startup-deployment-details', // docs/startup-deployment-details.md
+        {
+          type: 'doc',
+          id: 'bella-openapi/intro',
+          label: '介绍（Introduction）',
+        },
+        {
+          type: 'category',
+          label: '配置与部署 (Configuration & Deployment)',
+          items: [
+            'bella-openapi/configuration-details',
+            'bella-openapi/startup-deployment-details',
+          ],
+        },
+        {
+          type: 'category',
+          label: '核心功能 (Core Features)',
+          items: [
+            'bella-openapi/core/chat-completions',
+            'bella-openapi/core/embeddings',
+            'bella-openapi/core/flash-asr',
+            'bella-openapi/core/tts',
+            'bella-openapi/core/realtime',
+          ],
+        },
+        {
+          type: 'category',
+          label: '技术文档（Tech Documents）',
+          items: [
+            'bella-openapi/tech/system-structure',
+            'bella-openapi/tech/metadata',
+            'bella-openapi/tech/dynamic-route',
+            'bella-openapi/tech/function-call',
+            'bella-openapi/tech/async-performace',
+            'bella-openapi/tech/user-authorization',
+            'bella-openapi/tech/usage-manage'
+          ],
+        },
       ],
     },
-    {
-      type: 'category',
-      label: '核心功能 (Core Features)',
-      items: [
-        'core/chat-completions',
-        'core/embeddings',
-        'core/flash-asr',
-        'core/tts',
-        'core/realtime',
-      ],
-    },
-    {
-      type: 'category',
-      label: '技术文档（Tech Documents）',
-      items: [
-        'tech/system-structure',
-        'tech/metadata',
-        'tech/dynamic-route',
-        'tech/function-call',
-        'tech/async-performace',
-        'tech/user-authorization',
-        'tech/usage-manage'
-      ],
-    },
+    // 可以在这里添加更多项目
+    // {
+    //   type: 'category',
+    //   label: '其他项目名称',
+    //   collapsible: true,
+    //   collapsed: true,
+    //   items: [
+    //     // 项目相关文档
+    //   ],
+    // },
   ],
 };
 

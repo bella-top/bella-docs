@@ -7,8 +7,7 @@ const lightTheme = themes.github;
 const darkTheme = themes.dracula;
 
 const config: Config = {
-  title: 'Bella OpenAPI Documentation',
-  tagline: 'API documentation for Bella OpenAPI',
+  title: 'Bella Documentation',
   favicon: 'img/favicon.ico',
 
   // GitHub Pages deployment config
@@ -43,7 +42,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.ts'),
-          editUrl: 'https://github.com/LianjiaTech/bella-openapi/tree/develop/bella-docs',
           includeCurrentVersion: true,
         },
         blog: false, // 禁用博客
@@ -68,7 +66,7 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
-        // 文档链接
+        // openapi文档链接
         {
           type: 'docSidebar',
           sidebarId: 'documentationSidebar',
