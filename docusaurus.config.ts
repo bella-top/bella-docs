@@ -62,9 +62,9 @@ const config: Config = {
   themeConfig: {
     image: 'img/bella-social-card.jpg',
     navbar: {
-      title: 'Bella OpenAPI',
+      title: 'Bella Opensource',
       logo: {
-        alt: 'Bella OpenAPI Logo',
+        alt: 'Bella Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -128,7 +128,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `版权所有  ${new Date().getFullYear()} LianjiaTech. 基于 Docusaurus 构建。`,
+      copyright: `版权所有 ${new Date().getFullYear()} LianjiaTech. 基于 Docusaurus 构建。`,
     },
     prism: {
       theme: lightTheme,
