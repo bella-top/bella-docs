@@ -13,9 +13,9 @@ const config: Config = {
 
   // GitHub Pages deployment config
   url: 'https://bella-top.github.io',
-  baseUrl: '/',
+  baseUrl: '/bella-docs',
   organizationName: 'bella',
-  projectName: 'bella-openapi',
+  projectName: 'bella-docs',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
