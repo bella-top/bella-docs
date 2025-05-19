@@ -63,6 +63,7 @@
 1. 在 `/docs/` 目录下创建项目文档目录，例如 `/docs/your-project/`
 2. 创建 `intro.md` 作为项目介绍页面
 3. 根据需要添加其他文档页面
+4. 多语言支持，在 `/i18n/en/docusaurus-plugin-content-docs/current` 目录下创建项目文档目录，同步新增的文档
 
 ### 3. 更新侧边栏配置
 
@@ -108,7 +109,7 @@ const sidebars: SidebarsConfig = {
 
 如果项目包含 API 文档：
 
-1. 确保 OpenAPI 规范文件位于正确的目录中（通常是 `/openapi/your-project-api-path/`）
+1. 将中英文版本的OpenAPI 规范的json文件置于正确的目录中（ `/openapi/your-project-api-path/`）
 2. 确保在 `projects-data.json` 中设置了正确的 `apiDocPath` 值
 3. 运行 `npm run generate-api-docs` 命令生成对应的 API 文档页面，直接执行`npm run start`或`npm run build`时也会自动执行该命令。
 
