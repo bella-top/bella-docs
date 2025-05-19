@@ -8,7 +8,7 @@ const darkTheme = themes.dracula;
 
 const config: Config = {
   title: 'Bella Documentation',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // GitHub Pages deployment config
   url: 'https://bella-top.github.io',

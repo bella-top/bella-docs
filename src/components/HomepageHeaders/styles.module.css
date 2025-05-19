@@ -1,0 +1,438 @@
+.heroSection {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.floatingElements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.floatingCube {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  animation: float 6s ease-in-out infinite;
+}
+
+.cube1 {
+  composes: floatingCube;
+  width: 80px;
+  height: 80px;
+  top: 10%;
+  right: 10%;
+  animation-delay: 0s;
+  transform: rotateX(45deg) rotateY(45deg);
+}
+
+.cube2 {
+  composes: floatingCube;
+  width: 60px;
+  height: 60px;
+  top: 20%;
+  left: 15%;
+  animation-delay: 2s;
+  transform: rotateX(30deg) rotateY(60deg);
+}
+
+.cube3 {
+  composes: floatingCube;
+  width: 100px;
+  height: 100px;
+  bottom: 20%;
+  left: 10%;
+  animation-delay: 4s;
+  transform: rotateX(60deg) rotateY(30deg);
+}
+
+.cube4 {
+  composes: floatingCube;
+  width: 50px;
+  height: 50px;
+  bottom: 30%;
+  right: 15%;
+  animation-delay: 1s;
+  transform: rotateX(15deg) rotateY(75deg);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotateX(45deg) rotateY(45deg);
+  }
+  50% {
+    transform: translateY(-20px) rotateX(50deg) rotateY(50deg);
+  }
+}
+
+.aiElements {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  perspective: 1000px;
+}
+
+.aiBoard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotate3d 8s linear infinite;
+}
+
+.aiFace {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.aiFront {
+  composes: aiFace;
+  width: 300px;
+  height: 200px;
+  transform: translateZ(100px);
+}
+
+.aiBack {
+  composes: aiFace;
+  width: 300px;
+  height: 200px;
+  transform: rotateY(180deg) translateZ(100px);
+}
+
+.aiRight {
+  composes: aiFace;
+  width: 200px;
+  height: 200px;
+  transform: rotateY(90deg) translateZ(100px);
+}
+
+.aiLeft {
+  composes: aiFace;
+  width: 200px;
+  height: 200px;
+  transform: rotateY(-90deg) translateZ(100px);
+}
+
+@keyframes rotate3d {
+  0% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(0deg);
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 10;
+  text-align: left;
+  color: white;
+  max-width: 600px;
+  padding: 0 2rem;
+  margin-bottom: 4rem;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.logoText {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+
+.brandName {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(45deg, #ffffff, #e6e9ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 2rem 0;
+  opacity: 0.9;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(45deg, #764ba2, #667eea);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  text-decoration: none;
+}
+
+.techIcons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.techIcon {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.techIconDelay1 {
+  composes: techIcon;
+  animation-delay: 0.5s;
+}
+
+.techIconDelay2 {
+  composes: techIcon;
+  animation-delay: 1s;
+}
+
+.techIconDelay3 {
+  composes: techIcon;
+  animation-delay: 1.5s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* 修复特性网格的位置和样式 */
+.featuresGrid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 90%;
+  max-width: 1000px;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.featureTitle {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.featureDesc {
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式设计优化 */
+@media (max-width: 1024px) {
+  .aiElements {
+    right: 2%;
+    width: 500px;
+    height: 350px;
+  }
+  
+  .aiFace {
+    font-size: 3rem;
+  }
+  
+  .featuresGrid {
+    width: 95%;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    min-height: auto;
+    padding: 2rem 0 3rem;
+  }
+  
+  .heroContent {
+    text-align: center;
+    max-width: 90%;
+    margin-bottom: 3rem;
+  }
+
+  .brandName {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .aiElements {
+    display: none;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    width: 90%;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .featureCard {
+    padding: 1.5rem;
+  }
+  
+  .featureIcon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .featureTitle {
+    font-size: 1.2rem;
+  }
+  
+  .featureDesc {
+    font-size: 0.9rem;
+  }
+  
+  .cube3, .cube4 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroContent {
+    padding: 0 1rem;
+  }
+  
+  .logoSection {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .logo {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .brandName {
+    font-size: 2rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+  
+  .featuresGrid {
+    width: 95%;
+    padding: 0 0.5rem;
+  }
+}

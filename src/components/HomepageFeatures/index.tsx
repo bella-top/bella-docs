@@ -414,28 +414,13 @@ const ArchitectureDiagram: React.FC<{
   );
 };
 
-export default function Home() {
+// 主页特性组件
+export default function HomepageFeatures(): React.ReactElement {
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <section className={styles.architectureSection}>        
-          <ArchitectureDiagram projects={projects} />
-        </section>
-      </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <p> {new Date().getFullYear()} Bella</p>
-          <a 
-            href="https://github.com/bella-top" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className={styles.footerLink}
-          >
-            GitHub
-          </a>
-        </div>
-      </footer>
-    </div>
+    <section className={styles.architectureSection}>
+      <div className="container">
+        <ArchitectureDiagram projects={projects as Project[]} />
+      </div>
+    </section>
   );
 }
