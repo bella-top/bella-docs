@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import styles from './styles.module.css';
 import projectsData from '../../../config/projects-data.json';
+import FeatureCards from './feature-cards';
 
 // 从 JSON 文件中获取项目列表
 const projects = projectsData.projects as [];
@@ -50,22 +51,7 @@ const ArchitectureModule: React.FC<{
   isSelected: boolean;
   width: number;
 }> = ({ project, onClick, isSelected, width }) => {
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   
-  // 处理描述的展开/收起
-  const toggleDescription = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsDescriptionExpanded(!isDescriptionExpanded);
-  };
-  
-  // 处理已发布项目的访问链接点击
-  const handleLinkClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (project.status === 'released' && project.link) {
-      window.location.href = project.link;
-    }
-  };
-
   // 根据项目状态设置不同的样式
   const moduleClasses = [
     styles.architectureModule,
@@ -82,44 +68,10 @@ const ArchitectureModule: React.FC<{
     >
       <div className={styles.moduleHeader}>
         <h3>{project.name}</h3>
-        <div className={`${styles.statusBadge} ${styles[`status-${project.status}`]}`}>
-          {project.status === 'released' ? '已发布' : '待发布'}
-        </div>
-      </div>
-      
-      <div className={styles.moduleBody}>
-        <p className={isDescriptionExpanded ? styles.expandedDescription : styles.description}>
-          {project.description}
-        </p>
-        {project.description.length > 50 && (
-          <button 
-            className={styles.expandButton}
-            onClick={toggleDescription}
-          >
-            {isDescriptionExpanded ? '收起' : '展开'}
-          </button>
-        )}
-      </div>
-      
-      <div className={styles.moduleFooter}>
-        {project.github && (
-          <a 
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.githubLink}
-            onClick={(e) => e.stopPropagation()}
-          >
-            GitHub
-          </a>
-        )}
-        {project.status === 'released' && project.link && (
-          <button 
-            className={styles.visitButton}
-            onClick={handleLinkClick}
-          >
-            访问
-          </button>
+        {project.status === 'released' && (
+          <div className={`${styles.statusBadge} ${styles[`status-${project.status}`]}`}>
+            已发布
+          </div>
         )}
       </div>
     </div>
@@ -131,6 +83,8 @@ const ArchitectureDiagram: React.FC<{
   projects: Project[];
 }> = ({ projects }) => {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const diagramRef = useRef<HTMLDivElement>(null);
   
   // 计算依赖关系
   const dependencyMap = useMemo(() => {
@@ -202,11 +156,11 @@ const ArchitectureDiagram: React.FC<{
     
     // 根据数量动态调整宽度
     if (count === 1) {
-      return 320; // 单个模块较宽
+      return 260; // 增加模块宽度
     } else if (count === 2) {
-      return 280; // 两个模块中等宽度
+      return 220; // 增加模块宽度
     } else {
-      return 240; // 多个模块较窄
+      return 200; // 增加模块宽度
     }
   };
   
@@ -214,7 +168,37 @@ const ArchitectureDiagram: React.FC<{
   const handleModuleClick = (projectId: string) => {
     setSelectedProject(selectedProject === projectId ? null : projectId);
   };
-  
+
+  // 处理点击事件，如果点击的是详情面板外部，则关闭详情面板
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // 如果没有选中项目，不需要处理
+      if (!selectedProject) return;
+      
+      // 如果点击的是详情面板内部，不关闭
+      if (detailsRef.current && detailsRef.current.contains(event.target as Node)) {
+        return;
+      }
+      
+      // 如果点击的是模块，不关闭（因为模块点击会触发 handleModuleClick）
+      const moduleElements = document.querySelectorAll(`.${styles.architectureModule}`);
+      //@ts-ignore
+      for (const moduleElement of moduleElements) {
+        if (moduleElement.contains(event.target as Node)) {
+          return;
+        }
+      }
+      
+      // 其他情况，关闭详情面板
+      setSelectedProject(null);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [selectedProject]);
+
   // 渲染项目详情面板
   const renderProjectDetails = () => {
     if (!selectedProject) return null;
@@ -243,7 +227,23 @@ const ArchitectureDiagram: React.FC<{
       }).filter(item => item.project);
     
     return (
-      <div className={styles.projectDetails}>
+      <div 
+        ref={detailsRef}
+        className={styles.projectDetails} 
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          width: '350px',
+          height: '100vh',
+          backgroundColor: 'white',
+          boxShadow: '-5px 0 15px -3px rgba(0, 0, 0, 0.1)',
+          padding: '1.5rem',
+          overflowY: 'auto',
+          zIndex: 1000,
+          borderLeft: '1px solid #E5E7EB'
+        }}
+      >
         <div className={styles.detailsHeader}>
           <h2>{project.name}</h2>
           <span className={`${styles.detailsStatus} ${styles[project.status]}`}>
@@ -281,7 +281,7 @@ const ArchitectureDiagram: React.FC<{
                   rel="noopener noreferrer"
                   className={styles.visitButton}
                 >
-                  访问项目
+                  快速体验
                 </a>
               )}
               
@@ -357,7 +357,7 @@ const ArchitectureDiagram: React.FC<{
               ))}
             </ul>
           ) : (
-            <p className={styles.noDependencies}>无模块调用此模块</p>
+            <p className={styles.noDependencies}>无</p>
           )}
         </div>
         
@@ -372,7 +372,7 @@ const ArchitectureDiagram: React.FC<{
   };
 
   return (
-    <div className={styles.architectureDiagramContainer}>
+    <div ref={diagramRef}>
       {/* 架构图层级布局 */}
       <div className={styles.architectureLevels}>
         {orderedLayers.map((type) => {
@@ -380,12 +380,12 @@ const ArchitectureDiagram: React.FC<{
           
           return (
             <div key={type} className={styles.architectureLevel}>
-              <div className={styles.levelHeader}>
+              <div className={styles.levelTitleContainer}>
                 <h2 className={`${styles.levelTitle} ${styles[`levelTitle-${type}`]}`}>
                   {typeConfig[type]?.name || type}
                 </h2>
               </div>
-              <div className={styles.levelContent}>
+              <div className={styles.levelModulesContainer}>
                 <div className={styles.levelModules}>
                   {projectsByType[type]?.map(project => (
                     <div 
@@ -418,8 +418,15 @@ const ArchitectureDiagram: React.FC<{
 export default function HomepageFeatures(): React.ReactElement {
   return (
     <section className={styles.architectureSection}>
-      <div className="container">
-        <ArchitectureDiagram projects={projects as Project[]} />
+      <div className="container" style={{ maxWidth: '100%', padding: 0 }}>
+        <FeatureCards />
+        <div className={styles.architectureDiagramContainer}>
+          <div className={styles.architectureTitleContainer}>
+            <h2 className={styles.architectureTitle}>Bella 架构概览</h2>
+            <span className={styles.architectureTip}>点击项目可查看详情</span>
+          </div>
+          <ArchitectureDiagram projects={projects as Project[]} />
+        </div>
       </div>
     </section>
   );

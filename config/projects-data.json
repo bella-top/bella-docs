@@ -8,8 +8,8 @@
       "status": "released",
       "github": "https://github.com/LianjiaTech/bella-openapi",
       "apiDocPath": "bella-openapi",
-      "link": "/bella-docs/docs/bella-openapi/intro",
-      "documentationLink": "/docs/bella-openapi",
+      "link": "https://api.bella.top/",
+      "documentationLink": "/bella-docs/docs/bella-openapi/intro",
       "dependencies": [
         {
           "project": "bella-general-infer",
@@ -24,8 +24,7 @@
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-knowledge",
-      "link": "/docs/bella-knowledge",
-      "documentationLink": "/docs/bella-knowledge/intro",
+      "documentationLink": "/bella-docs/docs/bella-knowledge/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -40,8 +39,7 @@
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-assistant",
-      "link": "/docs/bella-assistants",
-      "documentationLink": "/docs/bella-assistants/intro",
+      "documentationLink": "/bella-docs/docs/bella-assistants/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -60,8 +58,7 @@
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-rag",
-      "link": "/docs/bella-rag",
-      "documentationLink": "/docs/bella-rag/intro",
+      "documentationLink": "/bella-docs/docs/bella-rag/intro",
       "dependencies": [
         {
           "project": "bella-knowledge",
@@ -80,8 +77,7 @@
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-workflow",
-      "link": "/docs/bella-workflow",
-      "documentationLink": "/docs/bella-workflow/intro",
+      "documentationLink": "/bella-docs/docs/bella-workflow/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -100,8 +96,7 @@
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-job-queue",
-      "link": "/docs/bella-job-queue",
-      "documentationLink": "/docs/bella-job-queue/intro"
+      "documentationLink": "/bella-docs/docs/bella-job-queue/intro"
     },
     {
       "id": "bella-realtime",
@@ -110,8 +105,7 @@
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-realtime",
-      "link": "/docs/bella-realtime",
-      "documentationLink": "/docs/bella-realtime/intro",
+      "documentationLink": "/bella-docs/docs/bella-realtime/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -130,8 +124,7 @@
       "type": "infer",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-general-infer",
-      "link": "/docs/bella-general-infer",
-      "documentationLink": "/docs/bella-general-infer/intro"
+      "documentationLink": "/bella-docs/docs/bella-general-infer/intro"
     },
     {
       "id": "bella-whisper",

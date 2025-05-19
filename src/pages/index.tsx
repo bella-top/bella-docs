@@ -9,11 +9,11 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Bella是贝壳找房开源的一站式智能接入、智能体创建及发布平台">
+      description="Bella是一站式智能接入、智能体创建及发布平台">
       <HeroHeader />
-      <main>
+      <div className="main-content">
         <HomepageFeatures />
-      </main>
+      </div>
     </Layout>
   );
 }
