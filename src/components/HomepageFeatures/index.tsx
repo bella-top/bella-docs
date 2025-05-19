@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import projectsData from '../../../config/projects-data.json';
 
 // 从 JSON 文件中获取项目列表
-const projects = projectsData.projects;
+const projects = projectsData.projects as [];
 
 // 定义项目状态和类型
 type ProjectStatus = 'released' | 'upcoming';

@@ -25,7 +25,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-knowledge",
       "link": "/docs/bella-knowledge",
-      "documentationLink": "/docs/bella-knowledge",
+      "documentationLink": "/docs/bella-knowledge/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -41,7 +41,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-assistant",
       "link": "/docs/bella-assistants",
-      "documentationLink": "/docs/bella-assistants",
+      "documentationLink": "/docs/bella-assistants/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -61,7 +61,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-rag",
       "link": "/docs/bella-rag",
-      "documentationLink": "/docs/bella-rag",
+      "documentationLink": "/docs/bella-rag/intro",
       "dependencies": [
         {
           "project": "bella-knowledge",
@@ -81,7 +81,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-workflow",
       "link": "/docs/bella-workflow",
-      "documentationLink": "/docs/bella-workflow",
+      "documentationLink": "/docs/bella-workflow/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -101,7 +101,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-job-queue",
       "link": "/docs/bella-job-queue",
-      "documentationLink": "/docs/bella-job-queue"
+      "documentationLink": "/docs/bella-job-queue/intro"
     },
     {
       "id": "bella-realtime",
@@ -111,7 +111,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-realtime",
       "link": "/docs/bella-realtime",
-      "documentationLink": "/docs/bella-realtime",
+      "documentationLink": "/docs/bella-realtime/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
@@ -131,7 +131,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-general-infer",
       "link": "/docs/bella-general-infer",
-      "documentationLink": "/docs/bella-general-infer"
+      "documentationLink": "/docs/bella-general-infer/intro"
     },
     {
       "id": "bella-whisper",
@@ -141,7 +141,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-whisper",
       "link": "/docs/bella-whisper",
-      "documentationLink": "/docs/bella-whisper"
+      "documentationLink": "/docs/bella-whisper/intro"
     }
   ]
 }
