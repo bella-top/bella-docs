@@ -1,0 +1,295 @@
+/* API 文档页面容器 */
+.apiViewerContainer {
+  padding: 0 1rem;
+  width: 90%;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  max-width: 90%;
+}
+
+/* 标题容器 */
+.titleContainer {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0;
+  margin-right: 8px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #6B7280;
+  font-style: italic;
+  line-height: 1.5rem;
+}
+
+/* 层级布局 */
+.typeLevels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 95%;
+}
+
+.typeLevel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  background-color: #F9FAFB;
+  border-radius: 8px;
+  padding: 8px 0;
+}
+
+/* 层级标题容器 */
+.levelTitleContainer {
+  width: 12%;
+  flex-shrink: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  background-color: transparent;
+}
+
+.levelTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 6px 10px 6px 12px;
+  white-space: nowrap;
+  text-align: left;
+  color: #4B5563;
+  position: relative;
+  border-left: 4px solid transparent;
+}
+
+.levelTitle-gateway {
+  border-left-color: #3B82F6; /* 蓝色 - 网关层 */
+}
+
+.levelTitle-endpoint {
+  border-left-color: #10B981; /* 绿色 - 能力层 */
+}
+
+.levelTitle-infer {
+  border-left-color: #8B5CF6; /* 紫色 - 推理服务层 */
+}
+
+.levelTitle-model {
+  border-left-color: #F59E0B; /* 橙色 - 模型层 */
+}
+
+.levelTitle-application {
+  border-left-color: #EF4444; /* 红色 - 应用层 */
+}
+
+/* 模块容器 */
+.levelProjectsContainer {
+  flex-grow: 1;
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 10px;
+  margin-right: 2%;
+  margin-left: 2%;
+  position: relative;
+}
+
+.levelProjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+/* 项目卡片包装器 */
+.projectCardWrapper {
+  display: flex;
+  width: 320px;
+  margin-bottom: 10px;
+}
+
+/* 项目卡片样式 */
+.projectCard {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid #E5E7EB;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 180px; /* 最小高度而不是固定高度 */
+}
+
+.projectCard:hover {
+  box-shadow: 0 6px 16px rgba(107, 91, 245, 0.15);
+  transform: translateY(-3px);
+}
+
+/* 卡片内容包装器 */
+.cardContentWrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+/* 根据不同层级设置边框颜色 */
+.module-gateway {
+  border-left: 3px solid #3B82F6;
+}
+
+.module-endpoint {
+  border-left: 3px solid #10B981;
+}
+
+.module-infer {
+  border-left: 3px solid #8B5CF6;
+}
+
+.module-model {
+  border-left: 3px solid #F59E0B;
+}
+
+.module-application {
+  border-left: 3px solid #EF4444;
+}
+
+/* 卡片标题容器 */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 状态标签 */
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.released {
+  background-color: #D1FAE5;
+  color: #047857;
+}
+
+.upcoming {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+
+/* 卡片描述 */
+.cardDescription {
+  font-size: 0.85rem;
+  color: #4B5563;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  flex-grow: 1;
+  position: relative;
+}
+
+.cardDescriptionCollapsed {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.cardDescriptionExpanded {
+  max-height: none;
+  overflow: visible;
+}
+
+/* 更多按钮 */
+.moreButton {
+  font-size: 0.8rem;
+  color: #3B82F6;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.moreButton:hover {
+  text-decoration: underline;
+}
+
+.moreButton svg {
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+}
+
+/* 按钮样式 */
+.viewButton {
+  display: inline-block;
+  padding: 0.625rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.activeButton {
+  background-color: #281988;
+  color: white;
+  border: 1px solid #162b73;
+}
+
+.activeButton:hover {
+  background-color: #162b73;
+}
+
+.disabledButton {
+  background-color: #F3F4F6;
+  color: #6B7280;
+  border: 1px solid #E5E7EB;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
