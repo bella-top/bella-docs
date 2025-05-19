@@ -24,7 +24,7 @@ export default function ApiViewerPage() {
       })}
       description={translate({
         id: 'pages.apiViewer.description',
-        message: 'Bella OpenAPI 完整 API 文档',
+        message: 'API 文档',
       })}
       noFooter={true}>
       <main className="container" style={{padding: 0, maxWidth: '100%', height: 'calc(100vh - 60px)'}}> {/* 调整高度以填充整个视口 */}

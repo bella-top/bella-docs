@@ -1,10 +1,10 @@
 {
   "title": {
-    "message": "Bella OpenAPI",
+    "message": "Bella",
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "Bella OpenAPI Logo",
+    "message": "Bella Logo",
     "description": "The alt text of navbar logo"
   },
   "item.label.文档": {
