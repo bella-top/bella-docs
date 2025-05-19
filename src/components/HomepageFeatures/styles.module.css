@@ -784,51 +784,69 @@
     /* 缩小模块框 */
     transform: scale(0.8);
     transform-origin: center;
+    /* 统一模块大小，覆盖动态宽度设置 */
+    width: 200px !important;
+    height: 50px !important;
   }
 
   /* 手机端标题样式调整 */
   .header {
-    padding: 2rem 1rem;
+    padding: 1rem 0.8rem;
+  }
+
+  .logo {
+    transform: scale(0.85);
+    transform-origin: center;
+    margin-bottom: 0.3rem;
   }
 
   .logoIcon {
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
   }
 
   .logoText {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+  }
+  
+  /* 提示文字样式调整，使其分行显示 */
+  .architectureTip {
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 0.2rem;
+    opacity: 0.8;
   }
 
   /* 架构图层级布局调整 */
   .architectureLevels {
     max-width: 100%;
-    gap: 8px;
+    gap: 3px; /* 进一步减小间距 */
   }
 
   /* 修改为水平布局，与截图一致 */
   .architectureLevel {
     flex-direction: row;
-    padding: 8px 0;
+    padding: 3px 0; /* 减小内边距 */
     align-items: center;
+    gap: 0.2rem; /* 进一步减小层级名称与模块之间的间距 */
   }
 
   /* 将标题移到左侧，与截图一致 */
   .levelTitleContainer {
-    width: 60px;
+    width: 50px;
     margin-bottom: 0;
-    margin-right: 0.5rem;
+    margin-right: 0.2rem; /* 减小右侧间距 */
     justify-content: flex-start;
     flex-shrink: 0;
   }
 
   .levelTitle {
     text-align: left;
-    border-left: 4px solid transparent;
+    border-left: 3px solid transparent;
     border-bottom: none;
-    padding: 3px 8px;
-    font-size: 0.8rem;
+    padding: 2px 5px;
+    font-size: 0.75rem;
     white-space: nowrap;
   }
 
@@ -858,14 +876,14 @@
   }
 
   .levelModulesContainer {
-    width: calc(100% - 70px);
+    width: calc(100% - 55px); /* 调整宽度以适应更窄的标题容器 */
     margin: 0;
   }
 
   .levelModules {
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.2rem; /* 进一步减小模块之间的间距 */
   }
 
   /* 项目详情面板调整 */
@@ -896,51 +914,86 @@
   .architectureDiagramContainer {
     width: 95%;
     max-width: 95%;
-    padding: 0.3rem;
+    padding: 0.2rem;
+  }
+  
+  /* 标题进一步缩小 */
+  .logo {
+    transform: scale(0.75);
+    margin-bottom: 0.2rem;
+  }
+  
+  .logoIcon {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+  
+  .logoText {
+    font-size: 1.3rem;
+  }
+  
+  .architectureTip {
+    font-size: 0.75rem;
+    margin-top: 0.1rem;
   }
   
   /* 调整模块大小和间距 */
   .architectureModule {
     min-width: 45%;
     padding: 0.3rem;
-    margin: 0.2rem 0;
+    margin: 0.1rem 0;
     /* 在小屏幕上进一步缩小模块框 */
     transform: scale(0.55);
   }
   
   /* 调整模块内部样式 */
   .architectureModuleContent {
-    padding: 0.5rem;
+    padding: 0.3rem;
   }
   
   .architectureModuleName {
-    font-size: 0.9rem;
-    margin-bottom: 0.2rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.1rem;
   }
   
   .architectureModuleStatus {
-    font-size: 0.7rem;
-    padding: 1px 4px;
+    font-size: 0.65rem;
+    padding: 1px 3px;
   }
   
-  /* 调整层级标题宽度 */
+  /* 调整层级标题宽度和间距 */
   .levelTitleContainer {
-    width: 50px;
+    width: 40px;
+    margin-right: 0.15rem;
   }
   
   .levelTitle {
-    font-size: 0.7rem;
-    padding: 3px 6px;
+    font-size: 0.65rem;
+    padding: 2px 4px;
+  }
+  
+  .levelModulesContainer {
+    width: calc(100% - 45px);
+  }
+  
+  .architectureLevel {
+    padding: 2px 0;
+    gap: 0.15rem;
+  }
+  
+  .levelModules {
+    gap: 0.15rem;
   }
 
   .featureIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+    width: 35px;
+    height: 35px;
+    font-size: 1.1rem;
   }
 
   .featureTitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .detailsButtons {
@@ -950,5 +1003,7 @@
 
   .githubButton, .visitButton, .docsButton {
     margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
   }
 }
