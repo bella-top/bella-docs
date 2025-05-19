@@ -354,135 +354,6 @@
   color: #6B7280;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .featureGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .projectDetails {
-    width: 80%;
-    max-width: none;
-  }
-  
-  .levelTitleContainer {
-    width: 20%;
-  }
-  
-  .architectureModule {
-    min-width: 30%;
-  }
-
-  /* 手机端标题样式调整 */
-  .header {
-    padding: 2rem 1rem;
-  }
-
-  .logoIcon {
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
-  }
-
-  .logoText {
-    font-size: 1.8rem;
-  }
-
-  /* 架构图层级布局调整 */
-  .architectureLevels {
-    max-width: 100%;
-    gap: 8px;
-  }
-
-  .architectureLevel {
-    flex-direction: column;
-    padding: 12px 0;
-  }
-
-  .levelTitleContainer {
-    width: 100%;
-    margin-bottom: 10px;
-    justify-content: center;
-  }
-
-  .levelTitle {
-    text-align: center;
-    border-left: none;
-    border-bottom: 4px solid transparent;
-    padding: 6px 0;
-  }
-
-  .levelTitle-gateway {
-    border-bottom-color: #3B82F6;
-  }
-
-  .levelTitle-endpoint {
-    border-bottom-color: #10B981;
-  }
-
-  .levelTitle-infer {
-    border-bottom-color: #8B5CF6;
-  }
-
-  .levelTitle-model {
-    border-bottom-color: #F59E0B;
-  }
-
-  .levelTitle-application {
-    border-bottom-color: #EF4444;
-  }
-
-  .levelModulesContainer {
-    width: 100%;
-    margin: 0;
-  }
-
-  .levelModules {
-    justify-content: center;
-  }
-
-  /* 项目详情面板调整 */
-  .projectDetails {
-    width: 90%;
-    height: auto;
-    max-height: 80vh;
-    bottom: 0;
-    top: auto;
-    right: 5%;
-    left: 5%;
-    border-left: none;
-    border-top: 1px solid #E5E7EB;
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
-    border-radius: 12px 12px 0 0;
-  }
-}
-
-/* 更小屏幕的适配 */
-@media (max-width: 480px) {
-  .architectureModule {
-    min-width: 45%;
-  }
-
-  .featureIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-
-  .featureTitle {
-    font-size: 1rem;
-  }
-
-  .detailsButtons {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .githubButton, .visitButton, .docsButton {
-    margin-bottom: 0.5rem;
-  }
-}
-
 /* 主体内容区域 */
 .mainContent {
   padding: 0 2rem 2rem;
@@ -884,4 +755,180 @@
 
 .footerLink:hover {
   text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .projectDetails {
+    width: 80%;
+    max-width: none;
+  }
+  
+  /* 架构图容器整体缩小 */
+  .architectureDiagramContainer {
+    width: 90%;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 0.5rem;
+  }
+  
+  /* 调整模块宽度和间距 */
+  .architectureModule {
+    min-width: 30%;
+    margin: 0.3rem 0;
+    padding: 0.5rem;
+  }
+
+  /* 手机端标题样式调整 */
+  .header {
+    padding: 2rem 1rem;
+  }
+
+  .logoIcon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
+  }
+
+  .logoText {
+    font-size: 1.8rem;
+  }
+
+  /* 架构图层级布局调整 */
+  .architectureLevels {
+    max-width: 100%;
+    gap: 8px;
+  }
+
+  /* 修改为水平布局，与截图一致 */
+  .architectureLevel {
+    flex-direction: row;
+    padding: 8px 0;
+    align-items: center;
+  }
+
+  /* 将标题移到左侧，与截图一致 */
+  .levelTitleContainer {
+    width: 60px;
+    margin-bottom: 0;
+    margin-right: 0.5rem;
+    justify-content: flex-start;
+    flex-shrink: 0;
+  }
+
+  .levelTitle {
+    text-align: left;
+    border-left: 4px solid transparent;
+    border-bottom: none;
+    padding: 3px 8px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .levelTitle-gateway {
+    border-left-color: #3B82F6;
+    border-bottom-color: transparent;
+  }
+
+  .levelTitle-endpoint {
+    border-left-color: #10B981;
+    border-bottom-color: transparent;
+  }
+
+  .levelTitle-infer {
+    border-left-color: #8B5CF6;
+    border-bottom-color: transparent;
+  }
+
+  .levelTitle-model {
+    border-left-color: #F59E0B;
+    border-bottom-color: transparent;
+  }
+
+  .levelTitle-application {
+    border-left-color: #EF4444;
+    border-bottom-color: transparent;
+  }
+
+  .levelModulesContainer {
+    width: calc(100% - 70px);
+    margin: 0;
+  }
+
+  .levelModules {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* 项目详情面板调整 */
+  .projectDetails {
+    width: 90%;
+    height: auto;
+    max-height: 80vh;
+    bottom: 0;
+    top: auto;
+    right: 5%;
+    left: 5%;
+    border-left: none;
+    border-top: 1px solid #E5E7EB;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 12px 12px 0 0;
+  }
+  
+  /* 调整容器尺寸 */
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+}
+
+/* 更小屏幕的适配 */
+@media (max-width: 480px) {
+  /* 架构图容器在更小屏幕上进一步缩小 */
+  .architectureDiagramContainer {
+    width: 95%;
+    max-width: 95%;
+    padding: 0.3rem;
+  }
+  
+  /* 调整模块大小和间距 */
+  .architectureModule {
+    min-width: 45%;
+    padding: 0.3rem;
+    margin: 0.2rem 0;
+  }
+  
+  /* 调整层级标题宽度 */
+  .levelTitleContainer {
+    width: 50px;
+  }
+  
+  .levelTitle {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+
+  .featureIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .featureTitle {
+    font-size: 1rem;
+  }
+
+  .detailsButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .githubButton, .visitButton, .docsButton {
+    margin-bottom: 0.5rem;
+  }
 }

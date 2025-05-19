@@ -47,84 +47,10 @@
 
 /* 响应式设计 - 手机端适配 */
 @media screen and (max-width: 768px) {
-  /* 首页内容缩小 */
-  .main-content {
-    width: 100%;
-    overflow-x: hidden;
+  /* Footer 响应式样式 */
+  .footer {
+    text-align: left;
+    padding: 2rem 1rem;
   }
-  
-  /* 调整标题和图标大小 */
-  .header .logoIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-  }
-  
-  .header .logoText {
-    font-size: 1.8rem;
-  }
-  
-  /* 架构图层级从水平布局改为垂直布局 */
-  .architectureLevels {
-    flex-direction: column;
-  }
-  
-  /* 调整模块宽度，确保在小屏幕上不会溢出 */
-  .architectureModule {
-    width: 100% !important;
-    max-width: 100%;
-  }
-  
-  /* 项目详情面板从右侧滑出改为从底部弹出 */
-  .projectDetails {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
-    height: 80vh;
-    width: 100%;
-    transform: translateY(100%);
-    border-radius: 20px 20px 0 0;
-  }
-  
-  .projectDetails.visible {
-    transform: translateY(0);
-  }
-}
 
-/* 更小屏幕的进一步优化 */
-@media screen and (max-width: 480px) {
-  /* 增加模块宽度比例 */
-  .levelModules {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
-  
-  /* 缩小图标和字体大小 */
-  .featureIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-  
-  .featureTitle {
-    font-size: 1rem;
-  }
-  
-  .featureDesc {
-    font-size: 0.8rem;
-  }
-  
-  /* 调整按钮布局为垂直排列 */
-  .projectActions {
-    flex-direction: column;
-  }
-  
-  .projectActions a, 
-  .projectActions button {
-    width: 100%;
-    margin: 5px 0;
-  }
 }
