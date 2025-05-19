@@ -781,6 +781,9 @@
     min-width: 30%;
     margin: 0.3rem 0;
     padding: 0.5rem;
+    /* 缩小模块框 */
+    transform: scale(0.8);
+    transform-origin: center;
   }
 
   /* 手机端标题样式调整 */
@@ -901,6 +904,23 @@
     min-width: 45%;
     padding: 0.3rem;
     margin: 0.2rem 0;
+    /* 在小屏幕上进一步缩小模块框 */
+    transform: scale(0.55);
+  }
+  
+  /* 调整模块内部样式 */
+  .architectureModuleContent {
+    padding: 0.5rem;
+  }
+  
+  .architectureModuleName {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .architectureModuleStatus {
+    font-size: 0.7rem;
+    padding: 1px 4px;
   }
   
   /* 调整层级标题宽度 */

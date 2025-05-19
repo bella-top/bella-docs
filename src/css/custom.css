@@ -49,8 +49,174 @@
 @media screen and (max-width: 768px) {
   /* Footer 响应式样式 */
   .footer {
-    text-align: left;
     padding: 2rem 1rem;
   }
+  
+  .footer__links {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .footer__col {
+    flex-basis: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .footer__title {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .footer__item {
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+  }
+  
+  .footer__logo {
+    max-width: 80%;
+    margin: 0 auto 1rem;
+  }
+  
+  .footer__copyright {
+    font-size: 0.8rem;
+  }
+  
+  /* 侧边栏响应式样式 */
+  .menu {
+    padding: 0.8rem;
+  }
+  
+  .menu__list {
+    margin-bottom: 1rem;
+  }
+  
+  .menu__list-item {
+    margin: 0.3rem 0;
+  }
+  
+  .menu__link {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .menu__link--sublist {
+    font-weight: 600;
+  }
+  
+  .menu__link--sublist-caret:after {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .menu__list-item-collapsible {
+    padding: 0.3rem 0;
+  }
+  
+  .menu__caret {
+    padding: 0 0.5rem;
+  }
+  
+  .menu__list .menu__list {
+    margin-left: 0.8rem;
+    padding-left: 0.5rem;
+  }
+  
+  /* 导航栏响应式样式 */
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar__items {
+    gap: 0.5rem;
+  }
+  
+  .navbar__brand {
+    margin-right: 0.5rem;
+  }
+  
+  .navbar__toggle {
+    margin-right: 0.5rem;
+  }
+  
+  .navbar-sidebar {
+    width: 85%;
+  }
+  
+  .navbar-sidebar__brand {
+    padding: 0.8rem 1rem;
+  }
+  
+  .navbar-sidebar__items {
+    padding: 0.5rem 1rem 1.5rem;
+  }
+  
+  .navbar-sidebar__item {
+    padding: 0.3rem 0;
+  }
+  
+  .navbar-sidebar__back {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
 
+/* 更小屏幕的进一步优化 */
+@media screen and (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 0.8rem;
+  }
+  
+  .footer__links {
+    gap: 1rem;
+  }
+  
+  .footer__title {
+    font-size: 1rem;
+  }
+  
+  .footer__item {
+    font-size: 0.85rem;
+    padding: 0.25rem 0;
+  }
+  
+  .footer__logo {
+    max-width: 70%;
+  }
+  
+  .footer__copyright {
+    font-size: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  /* 更小屏幕侧边栏进一步优化 */
+  .menu {
+    padding: 0.6rem;
+  }
+  
+  .menu__link {
+    font-size: 0.9rem;
+    padding: 0.35rem 0.5rem;
+  }
+  
+  .menu__list .menu__list {
+    margin-left: 0.6rem;
+    padding-left: 0.4rem;
+  }
+  
+  /* 更小屏幕导航栏进一步优化 */
+  .navbar {
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .navbar-sidebar {
+    width: 90%;
+  }
+  
+  .navbar-sidebar__brand {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .navbar-sidebar__items {
+    padding: 0.4rem 0.8rem 1.2rem;
+  }
 }
