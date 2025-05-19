@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import styles from './styles.module.css';
 import projectsData from '../../../config/projects-data.json';
 import FeatureCards from './feature-cards';
+import { translate } from '@docusaurus/Translate';
 
 // 从 JSON 文件中获取项目列表
 const projects = projectsData.projects as [];
@@ -37,11 +38,46 @@ const getProjectDependencies = (project: Project): Dependency[] => {
 
 // 项目类型的显示名称和顺序
 const typeConfig = {
-  gateway: { name: '网关层', order: 1 },
-  endpoint: { name: '能力层', order: 2 },
-  infer: { name: '推理服务层', order: 3 },
-  model: { name: '模型层', order: 4 },
-  application: { name: '应用层', order: 5 }
+  gateway: { 
+    name: translate({
+      id: 'architecture.layer.gateway',
+      message: '网关层',
+      description: 'Gateway layer name in architecture diagram'
+    }), 
+    order: 1 
+  },
+  endpoint: { 
+    name: translate({
+      id: 'architecture.layer.endpoint',
+      message: '能力层',
+      description: 'Endpoint layer name in architecture diagram'
+    }), 
+    order: 2 
+  },
+  infer: { 
+    name: translate({
+      id: 'architecture.layer.infer',
+      message: '推理服务层',
+      description: 'Inference layer name in architecture diagram'
+    }), 
+    order: 3 
+  },
+  model: { 
+    name: translate({
+      id: 'architecture.layer.model',
+      message: '模型层',
+      description: 'Model layer name in architecture diagram'
+    }), 
+    order: 4 
+  },
+  application: { 
+    name: translate({
+      id: 'architecture.layer.application',
+      message: '应用层',
+      description: 'Application layer name in architecture diagram'
+    }), 
+    order: 5 
+  }
 };
 
 // 架构图模块组件
@@ -70,7 +106,11 @@ const ArchitectureModule: React.FC<{
         <h3>{project.name}</h3>
         {project.status === 'released' && (
           <div className={`${styles.statusBadge} ${styles[`status-${project.status}`]}`}>
-            已发布
+            {translate({
+              id: 'project.status.released',
+              message: '已发布',
+              description: 'Released project status'
+            })}
           </div>
         )}
       </div>
@@ -247,12 +287,20 @@ const ArchitectureDiagram: React.FC<{
         <div className={styles.detailsHeader}>
           <h2>{project.name}</h2>
           <span className={`${styles.detailsStatus} ${styles[project.status]}`}>
-            {project.status === 'released' ? '已发布' : '待发布'}
+            {translate({
+              id: 'project.status.' + project.status,
+              message: project.status === 'released' ? '已发布' : '待发布',
+              description: 'Project status'
+            })}
           </span>
         </div>
         
         <div className={styles.detailsTypeSection}>
-          <span className={styles.detailsTypeLabel}>类型:</span>
+          <span className={styles.detailsTypeLabel}>{translate({
+            id: 'project.type.label',
+            message: '类型:',
+            description: 'Project type label'
+          })}</span>
           <span className={`${styles.detailsTypeValue} ${styles[`type-${project.type}`]}`}>
             {typeConfig[project.type]?.name || project.type}
           </span>
@@ -268,7 +316,11 @@ const ArchitectureDiagram: React.FC<{
               rel="noopener noreferrer"
               className={styles.githubButton}
             >
-              GitHub
+              {translate({
+                id: 'project.github.button',
+                message: 'GitHub',
+                description: 'GitHub button'
+              })}
             </a>
           )}
           
@@ -281,7 +333,11 @@ const ArchitectureDiagram: React.FC<{
                   rel="noopener noreferrer"
                   className={styles.visitButton}
                 >
-                  快速体验
+                  {translate({
+                    id: 'project.visit.button',
+                    message: '快速体验',
+                    description: 'Visit button'
+                  })}
                 </a>
               )}
               
@@ -292,7 +348,11 @@ const ArchitectureDiagram: React.FC<{
                   rel="noopener noreferrer"
                   className={styles.docsButton}
                 >
-                  查看文档
+                  {translate({
+                    id: 'project.docs.button',
+                    message: '查看文档',
+                    description: 'Docs button'
+                  })}
                 </a>
               )}
             </>
@@ -300,7 +360,11 @@ const ArchitectureDiagram: React.FC<{
         </div>
         
         <div className={styles.dependencySection}>
-          <h3>调用接口:</h3>
+          <h3>{translate({
+            id: 'project.dependencies.title',
+            message: '调用接口:',
+            description: 'Dependencies title'
+          })}</h3>
           {callingTo.length > 0 ? (
             <ul className={styles.dependencyList}>
               {callingTo.map(({ project, endpoints }) => project && (
@@ -315,7 +379,11 @@ const ArchitectureDiagram: React.FC<{
                       </span>
                     </div>
                     <div className={styles.dependencyEndpoints}>
-                      <strong>接口:</strong>
+                      <strong>{translate({
+                        id: 'project.dependencies.endpoints',
+                        message: '接口:',
+                        description: 'Endpoints label'
+                      })}</strong>
                       <span>
                         {Array.isArray(endpoints) 
                           ? endpoints.join(', ')
@@ -327,10 +395,18 @@ const ArchitectureDiagram: React.FC<{
               ))}
             </ul>
           ) : (
-            <p className={styles.noDependencies}>不调用其他模块</p>
+            <p className={styles.noDependencies}>{translate({
+              id: 'project.dependencies.none',
+              message: '不调用其他模块',
+              description: 'No dependencies'
+            })}</p>
           )}
           
-          <h3>被调用:</h3>
+          <h3>{translate({
+            id: 'project.calledBy.title',
+            message: '被调用:',
+            description: 'Called by title'
+          })}</h3>
           {calledBy.length > 0 ? (
             <ul className={styles.dependencyList}>
               {calledBy.map(({ project, endpoints }) => project && (
@@ -345,7 +421,11 @@ const ArchitectureDiagram: React.FC<{
                       </span>
                     </div>
                     <div className={styles.dependencyEndpoints}>
-                      <strong>接口:</strong>
+                      <strong>{translate({
+                        id: 'project.dependencies.endpoints',
+                        message: '接口:',
+                        description: 'Endpoints label'
+                      })}</strong>
                       <span>
                         {Array.isArray(endpoints) 
                           ? endpoints.join(', ')
@@ -357,7 +437,11 @@ const ArchitectureDiagram: React.FC<{
               ))}
             </ul>
           ) : (
-            <p className={styles.noDependencies}>无</p>
+            <p className={styles.noDependencies}>{translate({
+              id: 'project.calledBy.none',
+              message: '无',
+              description: 'No called by'
+            })}</p>
           )}
         </div>
         
@@ -365,7 +449,11 @@ const ArchitectureDiagram: React.FC<{
           className={styles.closeButton}
           onClick={() => setSelectedProject(null)}
         >
-          关闭
+          {translate({
+            id: 'project.details.close',
+            message: '关闭',
+            description: 'Close button'
+          })}
         </button>
       </div>
     );
@@ -422,8 +510,16 @@ export default function HomepageFeatures(): React.ReactElement {
         <FeatureCards />
         <div className={styles.architectureDiagramContainer}>
           <div className={styles.architectureTitleContainer}>
-            <h2 className={styles.architectureTitle}>Bella 架构概览</h2>
-            <span className={styles.architectureTip}>点击项目可查看详情</span>
+            <h2 className={styles.architectureTitle}>{translate({
+              id: 'homepage.architecture.title',
+              message: 'Bella 架构概览',
+              description: 'Architecture overview title'
+            })}</h2>
+            <span className={styles.architectureTip}>{translate({
+              id: 'homepage.architecture.tip',
+              message: '点击项目可查看详情',
+              description: 'Tip for clicking on projects'
+            })}</span>
           </div>
           <ArchitectureDiagram projects={projects as Project[]} />
         </div>

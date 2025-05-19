@@ -4,16 +4,17 @@
       "id": "bella-openapi",
       "name": "Bella-openapi",
       "description": "不止于聊天补全，Bella-openapi整合了文本向量化、语音识别、语音合成、文生图、图生图等多元AI能力，并配备完善的计费、限流和资源管理功能。所有能力均经过大规模生产环境检验，稳定可靠。",
+      "en_description": "Beyond chat completion, Bella-openapi integrates multiple AI capabilities including text vectorization, speech recognition, speech synthesis, text-to-image, and image-to-image generation, equipped with comprehensive billing, rate limiting, and resource management features. All capabilities have been thoroughly tested in large-scale production environments, ensuring stability and reliability.",
       "type": "gateway",
       "status": "released",
       "github": "https://github.com/LianjiaTech/bella-openapi",
       "apiDocPath": "bella-openapi",
       "link": "https://api.bella.top/",
-      "documentationLink": "/bella-docs/docs/bella-openapi/intro",
+      "documentationLink": "/docs/bella-openapi/intro",
       "dependencies": [
         {
           "project": "bella-general-infer",
-          "endpoints": "推理服务"
+          "endpoints": "infer-service"
         }
       ]
     },
@@ -21,14 +22,15 @@
       "id": "bella-knowledge",
       "name": "Bella-knowledge",
       "description": "专注于知识的统一存储与管理，优雅处理文件、问答对等多类知识源，为智能应用提供强大的知识支撑。",
+      "en_description": "Focused on unified storage and management of knowledge, elegantly handling multiple knowledge sources such as files and Q&A pairs, providing powerful knowledge support for intelligent applications.",
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-knowledge",
-      "documentationLink": "/bella-docs/docs/bella-knowledge/intro",
+      "documentationLink": "/docs/bella-knowledge/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
-          "endpoints": ["权限认证", "计费"]
+          "endpoints": ["authorization", "billing"]
         }
       ]
     },
@@ -36,18 +38,19 @@
       "id": "bella-assistants",
       "name": "Bella-assistants",
       "description": "兼容OpenAI Assistants API和Responses API的开源实现，突破原生生态限制，支持灵活切换各大厂商模型，真正实现一次开发，处处可用。",
+      "en_description": "An open-source implementation compatible with OpenAI Assistants API and Responses API, breaking through native ecosystem limitations, supporting flexible switching between various vendor models, truly achieving develop once, use everywhere.",
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-assistant",
-      "documentationLink": "/bella-docs/docs/bella-assistants/intro",
+      "documentationLink": "/docs/bella-assistants/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
-          "endpoints": ["权限认证", "AI能力"]
+          "endpoints": ["authorization", "AI Endpoint"]
         },
         {
           "project": "bella-knowledge",
-          "endpoints": ["知识管理"]
+          "endpoints": ["knowledge management"]
         }
       ]
     },
@@ -55,18 +58,19 @@
       "id": "bella-rag",
       "name": "Bella-rag",
       "description": "依托Bella-knowledge数据源，提供统一的检索问答生成能力，支持多种检索方式和RAG实现范式，让AI回答更精准、更可靠。",
+      "en_description": "Leveraging Bella-knowledge data sources, it provides unified retrieval question-answering generation capabilities, supports various retrieval methods and RAG implementation paradigms, making AI responses more accurate and reliable.",
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-rag",
-      "documentationLink": "/bella-docs/docs/bella-rag/intro",
+      "documentationLink": "/docs/bella-rag/intro",
       "dependencies": [
         {
           "project": "bella-knowledge",
-          "endpoints": ["知识检索"]
+          "endpoints": ["knwledge management"]
         },
         {
           "project": "bella-openapi",
-          "endpoints": ["AI能力"]
+          "endpoints": ["AI Endpoint"]
         }
       ]
     },
@@ -74,18 +78,19 @@
       "id": "bella-workflow",
       "name": "Bella-workflow",
       "description": "类似DIFY但拥有诸多差异化能力，如回调模式、Groovy脚本支持、批处理能力、第三方数据源注册等，同时性能更为卓越。",
+      "en_description": "Similar to DIFY but with many differentiated capabilities, such as callback mode, Groovy script support, batch processing capabilities, third-party data source registration, while delivering superior performance.",
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-workflow",
-      "documentationLink": "/bella-docs/docs/bella-workflow/intro",
+      "documentationLink": "/docs/bella-workflow/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
-          "endpoints": ["AI能力", "权限认证", "计费"]
+          "endpoints": ["AI Endpoint", "authorization", "billing"]
         },
         {
           "project": "bella-job-queue",
-          "endpoints": ["批处理"]
+          "endpoints": ["batch"]
         }
       ]
     },
@@ -93,27 +98,29 @@
       "id": "bella-job-queue",
       "name": "Bella-job-queue",
       "description": "集中式队列系统，让各类基础能力轻松支持批处理模式，大幅提升处理效率与资源利用率。",
+      "en_description": "A centralized queue system that enables various basic capabilities to easily support batch processing mode, significantly improving processing efficiency and resource utilization.",
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-job-queue",
-      "documentationLink": "/bella-docs/docs/bella-job-queue/intro"
+      "documentationLink": "/docs/bella-job-queue/intro"
     },
     {
       "id": "bella-realtime",
       "name": "Bella-realtime",
       "description": "以超低延迟和极高灵活性著称，支持自由组合不同的ASR、LLM和TTS组件，打造最佳用户体验，并支持多智能体协作等前沿特性。",
+      "en_description": "Known for ultra-low latency and high flexibility, it supports free combination of different ASR, LLM, and TTS components to create the best user experience, while supporting cutting-edge features like multi-agent collaboration.",
       "type": "endpoint",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-realtime",
-      "documentationLink": "/bella-docs/docs/bella-realtime/intro",
+      "documentationLink": "/docs/bella-realtime/intro",
       "dependencies": [
         {
           "project": "bella-openapi",
-          "endpoints": ["语音合成", "LLM"]
+          "endpoints": ["TTS", "LLM"]
         },
         {
           "project": "bella-whisper",
-          "endpoints": ["语音识别"]
+          "endpoints": ["ASR"]
         }
       ]
     },
@@ -121,20 +128,21 @@
       "id": "bella-general-infer",
       "name": "Bella-general-infer",
       "description": "支持LLM、ASR、TTS、Embedding、Rerank等多种模型，兼容Transformers、vLLM、SGLang、Faster-Whisper等主流推理后端，一站式满足各类AI推理需求。",
+      "en_description": "Supports multiple models including LLM, ASR, TTS, Embedding, Rerank, compatible with mainstream inference backends such as Transformers, vLLM, SGLang, Faster-Whisper, providing one-stop solution for various AI inference needs.",
       "type": "infer",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-general-infer",
-      "documentationLink": "/bella-docs/docs/bella-general-infer/intro"
+      "documentationLink": "/docs/bella-general-infer/intro"
     },
     {
       "id": "bella-whisper",
       "name": "Bella-whisper",
       "description": "基于领域数据精心微调的Whisper模型，拥有卓越的简体中文识别能力，为语音应用提供更精准的支持。",
+      "en_description": "A Whisper model carefully fine-tuned with domain data, possessing excellent Simplified Chinese recognition capabilities, providing more accurate support for voice applications.",
       "type": "model",
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-whisper",
-      "link": "/docs/bella-whisper",
-      "documentationLink": "/docs/bella-whisper/intro"
+      "documentationLink": "/bella-whisper/intro"
     }
   ]
 }

@@ -3,6 +3,10 @@
     "message": "Next",
     "description": "The label for version current"
   },
+  "sidebar.documentationSidebar.category.OpenAPI": {
+    "message": "OpenAPI",
+    "description": "The label for category OpenAPI in sidebar documentationSidebar"
+  },
   "sidebar.documentationSidebar.category.配置与部署 (Configuration & Deployment)": {
     "message": "配置与部署 (Configuration & Deployment)",
     "description": "The label for category 配置与部署 (Configuration & Deployment) in sidebar documentationSidebar"
@@ -15,8 +19,8 @@
     "message": "技术文档（Tech Documents）",
     "description": "The label for category 技术文档（Tech Documents） in sidebar documentationSidebar"
   },
-  "sidebar.documentationSidebar.doc.介绍（introduction）": {
-    "message": "介绍（introduction）",
-    "description": "The label for the doc item 介绍（introduction） in sidebar documentationSidebar, linking to the doc intro"
+  "sidebar.documentationSidebar.doc.介绍（Introduction）": {
+    "message": "介绍（Introduction）",
+    "description": "The label for the doc item 介绍（Introduction） in sidebar documentationSidebar, linking to the doc bella-openapi/intro"
   }
 }

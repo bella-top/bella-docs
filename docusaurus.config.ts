@@ -12,7 +12,7 @@ const config: Config = {
 
   // GitHub Pages deployment config
   url: 'https://bella-top.github.io',
-  baseUrl: '/bella-docs',
+  baseUrl: '/',
   organizationName: 'bella',
   projectName: 'bella-docs',
   deploymentBranch: 'gh-pages',

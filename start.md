@@ -38,17 +38,18 @@
     {
       "id": "your-project-id",
       "name": "项目名称",
-      "description": "项目详细描述",
+      "description": "项目详细描述", //复制readme
+      "en_description": "英文版的详细描述", //复制英文的readme
       "type": "gateway",  // 项目类型：gateway（网关层）、endpoint（能力层）、infer（推理服务层）、model（模型层）或 application（应用层）
       "status": "released",  // 将状态设置为 "released" 表示已发布
       "github": "https://github.com/YourOrg/your-project",
       "apiDocPath": "your-project-api-path",  // API 文档路径
       "link": "https://your-project-url/",  // 项目的线上体验链接
-      "documentationLink": "/bella-docs/docs/your-project/intro",  // 文档链接
+      "documentationLink": "/docs/your-project/intro",  // 文档链接
       "dependencies": [  // 项目依赖关系
         {
           "project": "dependent-project-id",
-          "endpoints": ["接口1", "接口2"]  // 可以是字符串或字符串数组
+          "endpoints": ["authoriztion", "AI Endpoint"]  // 可以是字符串或字符串数组
         }
       ]
     }
@@ -60,8 +61,12 @@
 
 如果这是一个新项目，需要创建相应的文档文件：
 
+1. 补充中英文README.md， 同步到 `/docs/intro.md` 以及多语言目录下的 `/i18n/en/docusaurus-plugin-content-docs/current/intro.md`
 1. 在 `/docs/` 目录下创建项目文档目录，例如 `/docs/your-project/`
-2. 创建 `intro.md` 作为项目介绍页面
+2. 创建 `intro.md` 作为项目介绍页面，并补充 `/docs/intro.md` 以及多语言目录下的 `/i18n/en/docusaurus-plugin-content-docs/current/intro.md`中对应的项目链接，例如：
+```
+### [Bella-openapi - 全能AI能力网关](./bella-openapi/intro.md)
+```
 3. 根据需要添加其他文档页面
 4. 多语言支持，在 `/i18n/en/docusaurus-plugin-content-docs/current` 目录下创建项目文档目录，同步新增的文档
 

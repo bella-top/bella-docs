@@ -327,5 +327,117 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "homepage.hero.title": {
+    "message": "AI Open Platform",
+    "description": "The title in the hero section of the homepage"
+  },
+  "homepage.hero.intro": {
+    "message": "Bella is an all-in-one intelligent access, AI agent creation and publishing platform within Beike, providing highly flexible services through zero-code solutions, API integration, fine-tuning capabilities, and plugin-based extensions",
+    "description": "The introduction text in the hero section"
+  },
+  "homepage.hero.cta": {
+    "message": "View Documentation",
+    "description": "Call to action button text"
+  },
+  "homepage.features.multiAI.title": {
+    "message": "Multiple AI Capabilities",
+    "description": "Multi-AI capabilities feature title"
+  },
+  "homepage.features.multiAI.description": {
+    "message": "Classic text, voice, image and other AI capabilities",
+    "description": "Multi-AI capabilities feature description"
+  },
+  "homepage.features.stable.title": {
+    "message": "Production-Grade Stability",
+    "description": "Production-grade stability feature title"
+  },
+  "homepage.features.stable.description": {
+    "message": "Verified in large-scale production environments",
+    "description": "Production-grade stability feature description"
+  },
+  "homepage.features.flexible.title": {
+    "message": "Flexible Extension",
+    "description": "Flexible extension feature title"
+  },
+  "homepage.features.flexible.description": {
+    "message": "Supports plugin-based capability extensions and API integration",
+    "description": "Flexible extension feature description"
+  },
+  "homepage.architecture.title": {
+    "message": "Bella Architecture Overview",
+    "description": "Architecture overview title"
+  },
+  "homepage.architecture.tip": {
+    "message": "Click on a project to view details",
+    "description": "Tip for clicking on projects"
+  },
+  "architecture.layer.gateway": {
+    "message": "Gateway Layer",
+    "description": "Gateway layer name in architecture diagram"
+  },
+  "architecture.layer.endpoint": {
+    "message": "Capability Layer",
+    "description": "Endpoint layer name in architecture diagram"
+  },
+  "architecture.layer.infer": {
+    "message": "Inference Service Layer",
+    "description": "Inference layer name in architecture diagram"
+  },
+  "architecture.layer.model": {
+    "message": "Model Layer",
+    "description": "Model layer name in architecture diagram"
+  },
+  "architecture.layer.application": {
+    "message": "Application Layer",
+    "description": "Application layer name in architecture diagram"
+  },
+  "project.status.released": {
+    "message": "Released",
+    "description": "Released project status"
+  },
+  "project.status.upcoming": {
+    "message": "Upcoming",
+    "description": "Upcoming project status"
+  },
+  "project.type.label": {
+    "message": "Type:",
+    "description": "Project type label"
+  },
+  "project.github.button": {
+    "message": "GitHub",
+    "description": "GitHub button"
+  },
+  "project.visit.button": {
+    "message": "Quick Experience",
+    "description": "Visit button"
+  },
+  "project.docs.button": {
+    "message": "View Documentation",
+    "description": "Docs button"
+  },
+  "project.dependencies.title": {
+    "message": "Calling Interfaces:",
+    "description": "Dependencies title"
+  },
+  "project.dependencies.endpoints": {
+    "message": "Endpoints:",
+    "description": "Endpoints label"
+  },
+  "project.dependencies.none": {
+    "message": "Does not call other modules",
+    "description": "No dependencies"
+  },
+  "project.calledBy.title": {
+    "message": "Called By:",
+    "description": "Called by title"
+  },
+  "project.calledBy.none": {
+    "message": "None",
+    "description": "No called by"
+  },
+  "project.details.close": {
+    "message": "Close",
+    "description": "Close button"
   }
 }
