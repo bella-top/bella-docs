@@ -1,0 +1,17 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="miniGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main container -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#miniGradient)"/>
+  
+  <!-- Letter B -->
+  <path d="M18 18 L18 46 L35 46 Q42 46 42 39.5 Q42 33 37 33 Q42 33 42 26.5 Q42 18 35 18 Z
+           M24 24 L35 24 Q36 24 36 26 Q36 28 35 28 L24 28 Z
+           M24 33 L35 33 Q37 33 37 35.5 Q37 38 35 38 L24 38 Z" 
+        fill="white" stroke="none"/>
+</svg>
