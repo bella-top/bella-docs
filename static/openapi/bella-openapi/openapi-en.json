@@ -19,7 +19,7 @@
     "/v1/meta/channel/private": {
       "put": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "updatePrivateChannel",
         "requestBody": {
@@ -47,7 +47,7 @@
       },
       "post": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "createPrivateChannel",
         "requestBody": {
@@ -77,7 +77,7 @@
     "/console/model": {
       "put": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "updateModel",
         "requestBody": {
@@ -105,7 +105,7 @@
       },
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "createModel",
         "requestBody": {
@@ -135,7 +135,7 @@
     "/console/endpoint": {
       "put": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "updateEndpoint",
         "requestBody": {
@@ -163,7 +163,7 @@
       },
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "createEndpoint",
         "requestBody": {
@@ -193,7 +193,7 @@
     "/console/channel": {
       "put": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "updateChannel",
         "requestBody": {
@@ -221,7 +221,7 @@
       },
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "createChannel",
         "requestBody": {
@@ -251,7 +251,7 @@
     "/v1/space/role/create": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "createRole",
         "requestBody": {
@@ -281,7 +281,7 @@
     "/v1/space/owner/change": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "changeSpaceOwner",
         "requestBody": {
@@ -311,7 +311,7 @@
     "/v1/space/name/update": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "updateSpaceName",
         "requestBody": {
@@ -341,7 +341,7 @@
     "/v1/space/member/update": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "updateMember",
         "requestBody": {
@@ -371,7 +371,7 @@
     "/v1/space/member/remove": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "removeMember",
         "requestBody": {
@@ -401,7 +401,7 @@
     "/v1/space/member/exit": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "exitSpace",
         "requestBody": {
@@ -431,7 +431,7 @@
     "/v1/space/member/create": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "createMember",
         "requestBody": {
@@ -461,7 +461,7 @@
     "/v1/space/create": {
       "post": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "createSpace",
         "requestBody": {
@@ -491,7 +491,7 @@
     "/v1/route": {
       "post": {
         "tags": [
-          "路由"
+          "Route"
         ],
         "operationId": "route",
         "requestBody": {
@@ -521,7 +521,7 @@
     "/v1/meta/channel/private/inactivate": {
       "post": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "inactivatePrivateChannel",
         "requestBody": {
@@ -551,7 +551,7 @@
     "/v1/meta/channel/private/activate": {
       "post": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "activatePrivateChannel",
         "requestBody": {
@@ -581,7 +581,7 @@
     "/v1/log": {
       "post": {
         "tags": [
-          "日志"
+          "Logs"
         ],
         "operationId": "record",
         "requestBody": {
@@ -671,7 +671,7 @@
     "/v1/audio/transcriptions/file": {
       "post": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "transcribeAudio",
         "requestBody": {
@@ -701,7 +701,7 @@
     "/v1/audio/transcriptions/file/result": {
       "post": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "getTranscriptionResult",
         "requestBody": {
@@ -731,7 +731,7 @@
     "/v1/audio/speech": {
       "post": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "speech",
         "requestBody": {
@@ -754,7 +754,7 @@
     "/v1/audio/asr/flash": {
       "post": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "flashAsr",
         "parameters": [
@@ -813,7 +813,7 @@
     "/v1/apikey/create": {
       "post": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "createApikey",
         "requestBody": {
@@ -843,7 +843,7 @@
     "/console/userInfo/manager": {
       "post": {
         "tags": [
-          "用户信息管理"
+          "UserInfo Management"
         ],
         "operationId": "addManager",
         "requestBody": {
@@ -923,7 +923,7 @@
     "/console/model/publish": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "publishModel",
         "requestBody": {
@@ -953,7 +953,7 @@
     "/console/model/publish/cancel": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "cancelPublishModel",
         "requestBody": {
@@ -983,7 +983,7 @@
     "/console/model/link": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "linkModel",
         "requestBody": {
@@ -1013,7 +1013,7 @@
     "/console/model/inactivate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "inactivateModel",
         "requestBody": {
@@ -1043,7 +1043,7 @@
     "/console/model/authorize": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "authorizeModel",
         "requestBody": {
@@ -1073,7 +1073,7 @@
     "/console/model/activate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "activateModel",
         "requestBody": {
@@ -1103,7 +1103,7 @@
     "/console/endpoint/inactivate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "inactivateEndpoint",
         "requestBody": {
@@ -1133,7 +1133,7 @@
     "/console/endpoint/category": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "addCategoryWithEndpoint",
         "requestBody": {
@@ -1161,7 +1161,7 @@
       },
       "delete": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "removeCategoryWithEndpoint",
         "requestBody": {
@@ -1191,7 +1191,7 @@
     "/console/endpoint/category/replace": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "replaceCategoryWithEndpoint",
         "requestBody": {
@@ -1221,7 +1221,7 @@
     "/console/endpoint/activate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "activateEndpoint",
         "requestBody": {
@@ -1251,7 +1251,7 @@
     "/console/channel/inactivate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "inactivateChannel",
         "requestBody": {
@@ -1281,7 +1281,7 @@
     "/console/channel/activate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "activateChannel",
         "requestBody": {
@@ -1311,7 +1311,7 @@
     "/console/category": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "createCategory",
         "requestBody": {
@@ -1341,7 +1341,7 @@
     "/console/category/inactivate/": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "inactivateCategory",
         "requestBody": {
@@ -1371,7 +1371,7 @@
     "/console/category/activate": {
       "post": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "activateCategory",
         "requestBody": {
@@ -1401,7 +1401,7 @@
     "/console/apikey/role/update": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "updateRole",
         "requestBody": {
@@ -1431,7 +1431,7 @@
     "/console/apikey/reset": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "reset",
         "requestBody": {
@@ -1461,7 +1461,7 @@
     "/console/apikey/rename": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "rename",
         "requestBody": {
@@ -1491,7 +1491,7 @@
     "/console/apikey/quota/update": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "updateQuota",
         "requestBody": {
@@ -1521,7 +1521,7 @@
     "/console/apikey/inactivate": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "inactivate",
         "requestBody": {
@@ -1551,7 +1551,7 @@
     "/console/apikey/certify": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "certify",
         "requestBody": {
@@ -1581,7 +1581,7 @@
     "/console/apikey/bindService": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "bindService",
         "requestBody": {
@@ -1611,7 +1611,7 @@
     "/console/apikey/apply": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "apply",
         "requestBody": {
@@ -1641,7 +1641,7 @@
     "/console/apikey/activate": {
       "post": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "activate",
         "requestBody": {
@@ -1671,7 +1671,7 @@
     "/v1/space/role/list": {
       "get": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "listRole",
         "parameters": [
@@ -1704,7 +1704,7 @@
     "/v1/space/member/role": {
       "get": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "getMemberRole",
         "parameters": [
@@ -1742,7 +1742,7 @@
     "/v1/space/member/list": {
       "get": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "listMember",
         "parameters": [
@@ -1775,7 +1775,7 @@
     "/v1/space/list": {
       "get": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "listSpace",
         "parameters": [
@@ -1811,7 +1811,7 @@
     "/v1/space/get": {
       "get": {
         "tags": [
-          "空间管理"
+          "Space Management"
         ],
         "operationId": "getSpace",
         "parameters": [
@@ -1841,7 +1841,7 @@
     "/v1/metrics": {
       "get": {
         "tags": [
-          "metrics查询"
+          "Fetch metrics"
         ],
         "operationId": "query",
         "parameters": [
@@ -1891,7 +1891,7 @@
     "/v1/meta/supplier/list": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listSuppliers",
         "responses": {
@@ -1914,7 +1914,7 @@
     "/v1/meta/schema/priceInfo": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "getPriceInfoSchema",
         "parameters": [
@@ -1952,7 +1952,7 @@
     "/v1/meta/schema/modelProperty": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "getModelPropertySchema",
         "parameters": [
@@ -1986,7 +1986,7 @@
     "/v1/meta/schema/modelFeature": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "getModelFeatureSchema",
         "parameters": [
@@ -2020,7 +2020,7 @@
     "/v1/meta/schema/channelInfo": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "getChannelInfoSchema",
         "parameters": [
@@ -2066,7 +2066,7 @@
     "/v1/meta/protocol/list": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listProtocols",
         "parameters": [
@@ -2107,7 +2107,7 @@
     "/v1/meta/property/voice": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "fetchVoiceProperty",
         "parameters": [
@@ -2137,7 +2137,7 @@
     "/v1/meta/model/page": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "pageModel",
         "parameters": [
@@ -2167,7 +2167,7 @@
     "/v1/meta/model/list": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listModel",
         "parameters": [
@@ -2200,7 +2200,7 @@
     "/v1/meta/model/list/for-selection": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listModelForSelection",
         "parameters": [
@@ -2233,7 +2233,7 @@
     "/v1/meta/model/info/{name}": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "getModel",
         "parameters": [
@@ -2263,7 +2263,7 @@
     "/v1/meta/endpoint/page": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "pageEndpoint",
         "parameters": [
@@ -2293,7 +2293,7 @@
     "/v1/meta/endpoint/list": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listEndpoint",
         "parameters": [
@@ -2326,7 +2326,7 @@
     "/v1/meta/endpoint/info/{code}": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "getEndpoint",
         "parameters": [
@@ -2356,7 +2356,7 @@
     "/v1/meta/endpoint/details": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listEndpointDetails",
         "parameters": [
@@ -2386,7 +2386,7 @@
     "/v1/meta/channel/page": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "pageChannel",
         "parameters": [
@@ -2416,7 +2416,7 @@
     "/v1/meta/channel/list": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listChannel",
         "parameters": [
@@ -2449,7 +2449,7 @@
     "/v1/meta/category/tree": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listTree",
         "parameters": [
@@ -2479,7 +2479,7 @@
     "/v1/meta/category/tree/all": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listAllTree",
         "responses": {
@@ -2502,7 +2502,7 @@
     "/v1/meta/category/page": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "pageCategory",
         "parameters": [
@@ -2532,7 +2532,7 @@
     "/v1/meta/category/list": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "listCategory",
         "parameters": [
@@ -2565,7 +2565,7 @@
     "/v1/apikey/whoami": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "whoami",
         "responses": {
@@ -2585,7 +2585,7 @@
     "/v1/apikey/permission/check": {
       "get": {
         "tags": [
-          "信息查询"
+          "Fetch Info"
         ],
         "operationId": "permissionCheck",
         "parameters": [
@@ -2615,7 +2615,7 @@
     "/console/userInfo": {
       "get": {
         "tags": [
-          "用户信息管理"
+          "UserInfo Management"
         ],
         "operationId": "whoami_1",
         "responses": {
@@ -2658,7 +2658,7 @@
     "/console/model/list": {
       "get": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "listModels",
         "parameters": [
@@ -2691,7 +2691,7 @@
     "/console/model/details": {
       "get": {
         "tags": [
-          "元数据管理"
+          "Meta Management"
         ],
         "operationId": "getModelDetails",
         "parameters": [
@@ -2721,7 +2721,7 @@
     "/console/apikey/page": {
       "get": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "pageApikey",
         "parameters": [
@@ -2751,7 +2751,7 @@
     "/console/apikey/fetchBySha": {
       "get": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "fetchBySha",
         "parameters": [
@@ -2789,7 +2789,7 @@
     "/console/apikey/fetchByCode": {
       "get": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "fetchByCode",
         "parameters": [
@@ -2827,7 +2827,7 @@
     "/console/apikey/cost/{akCode}": {
       "get": {
         "tags": [
-          "API Key管理"
+          "API Key Management"
         ],
         "operationId": "listApiKeyBillings",
         "parameters": [
@@ -2860,7 +2860,7 @@
     "/v1/audio/realtime": {
       "get": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream",
         "parameters": [
@@ -2881,7 +2881,7 @@
       },
       "put": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_3",
         "parameters": [
@@ -2902,7 +2902,7 @@
       },
       "post": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_2",
         "parameters": [
@@ -2923,7 +2923,7 @@
       },
       "delete": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_5",
         "parameters": [
@@ -2944,7 +2944,7 @@
       },
       "options": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_6",
         "parameters": [
@@ -2965,7 +2965,7 @@
       },
       "head": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_1",
         "parameters": [
@@ -2986,7 +2986,7 @@
       },
       "patch": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_4",
         "parameters": [
@@ -3009,7 +3009,7 @@
     "/v1/audio/asr/stream": {
       "get": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_7",
         "parameters": [
@@ -3030,7 +3030,7 @@
       },
       "put": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_10",
         "parameters": [
@@ -3051,7 +3051,7 @@
       },
       "post": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_9",
         "parameters": [
@@ -3072,7 +3072,7 @@
       },
       "delete": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_12",
         "parameters": [
@@ -3093,7 +3093,7 @@
       },
       "options": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_13",
         "parameters": [
@@ -3114,7 +3114,7 @@
       },
       "head": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_8",
         "parameters": [
@@ -3135,7 +3135,7 @@
       },
       "patch": {
         "tags": [
-          "audio能力点"
+          "Audio Endpoint"
         ],
         "operationId": "asrStream_11",
         "parameters": [

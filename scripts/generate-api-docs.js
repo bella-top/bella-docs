@@ -43,10 +43,30 @@ export default function ${componentName}() {
       : '/openapi/${projectPath}/' + 'openapi.json' 
   );
   
+  // 翻译项目名称的API文档标题
+  const pageTitle = translate(
+    {
+      id: 'project.api.pageTitle',
+      message: '{projectName} API 文档',
+      description: 'API documentation page title with project name'
+    },
+    { projectName: '${project.name}' }
+  );
+  
+  // 翻译项目名称的API文档描述
+  const pageDescription = translate(
+    {
+      id: 'project.api.pageDescription',
+      message: '{projectName} API 文档',
+      description: 'API documentation page description with project name'
+    },
+    { projectName: '${project.name}' }
+  );
+  
   return (
     <Layout
-      title="${project.name} API 文档"
-      description="${project.description || project.name + ' API 文档'}"
+      title={pageTitle}
+      description={pageDescription}
       noFooter={true}>
       <main className="container" style={{padding: 0, maxWidth: '100%', height: 'calc(100vh - 60px)'}}>
         {/* 加载指示器 */}
@@ -58,7 +78,11 @@ export default function ${componentName}() {
           fontSize: '1.2rem',
           color: '#666'
         }}>
-          API 文档加载中...
+          {translate({
+            id: 'project.api.loading',
+            message: 'API 文档加载中...',
+            description: 'API documentation loading message'
+          })}
         </div>
         
         {/* 使用 script 标签直接加载 Redoc */}
@@ -80,7 +104,11 @@ export default function ${componentName}() {
                     
                     const backButton = document.createElement('a');
                     backButton.href = '/api-viewer';
-                    backButton.textContent = '← 返回项目列表';
+                    backButton.textContent = translate({
+                      id: 'project.api.backToList',
+                      message: '← 返回项目列表',
+                      description: 'Back to project list button'
+                    });
                     backButton.style.display = 'inline-flex';
                     backButton.style.alignItems = 'center';
                     backButton.style.padding = '10px 15px';
@@ -93,7 +121,14 @@ export default function ${componentName}() {
                     backButton.style.margin = '10px';
                     
                     const title = document.createElement('h1');
-                    title.textContent = '${project.name} API 文档';
+                    title.textContent = translate(
+                      {
+                        id: 'project.api.pageTitle',
+                        message: '{projectName} API 文档',
+                        description: 'API documentation page title with project name'
+                      },
+                      { projectName: '${project.name}' }
+                    );
                     title.style.margin = '0 0 0 20px';
                     title.style.fontSize = '1.5rem';
                     
@@ -153,7 +188,11 @@ export default function ${componentName}() {
                   console.error('Error initializing Redoc:', error);
                   const loadingElement = document.getElementById('redoc-loading');
                   if (loadingElement) {
-                    loadingElement.textContent = '加载 API 文档失败，请刷新页面重试';
+                    loadingElement.textContent = translate({
+                      id: 'project.api.loadingError',
+                      message: '加载 API 文档失败，请刷新页面重试',
+                      description: 'API documentation loading error message'
+                    });
                     loadingElement.style.color = 'red';
                   }
                 }
@@ -202,15 +241,13 @@ function generateApiDocs() {
     fs.mkdirSync(pagesDir, { recursive: true });
   }
   
-  // 为每个项目生成 API 文档页面
+  // 为每个有 API 文档的项目创建页面
   config.projects.forEach(project => {
-    if(project.apiDocPath) {
-        const outputPath = path.join(pagesDir, `${project.id}.tsx`);
-        createApiDocPage(project, outputPath);
+    if (project.apiDocPath && project.status === 'released') {
+      const outputPath = path.join(pagesDir, `${project.id}.tsx`);
+      createApiDocPage(project, outputPath);
     }
   });
-  
-  console.log('API doc pages generation completed');
 }
 
 // 执行主函数

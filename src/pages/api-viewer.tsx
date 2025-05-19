@@ -8,11 +8,46 @@ import styles from './api-viewer.module.css';
 
 // 项目类型的显示名称和顺序
 const typeConfig = {
-  gateway: { name: '网关层', order: 1 },
-  endpoint: { name: '能力层', order: 2 },
-  infer: { name: '推理服务层', order: 3 },
-  model: { name: '模型层', order: 4 },
-  application: { name: '应用层', order: 5 }
+  gateway: { 
+    name: translate({
+      id: 'architecture.layer.gateway',
+      message: '网关层',
+      description: 'Gateway layer name in architecture diagram'
+    }), 
+    order: 1 
+  },
+  endpoint: { 
+    name: translate({
+      id: 'architecture.layer.endpoint',
+      message: '能力层',
+      description: 'Endpoint layer name in architecture diagram'
+    }), 
+    order: 2 
+  },
+  infer: { 
+    name: translate({
+      id: 'architecture.layer.infer',
+      message: '推理服务层',
+      description: 'Inference layer name in architecture diagram'
+    }), 
+    order: 3 
+  },
+  model: { 
+    name: translate({
+      id: 'architecture.layer.model',
+      message: '模型层',
+      description: 'Model layer name in architecture diagram'
+    }), 
+    order: 4 
+  },
+  application: { 
+    name: translate({
+      id: 'architecture.layer.application',
+      message: '应用层',
+      description: 'Application layer name in architecture diagram'
+    }), 
+    order: 5 
+  }
 };
 
 // 项目卡片组件
@@ -26,7 +61,18 @@ function ProjectCard({ project }) {
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>{project.name}</h3>
         <span className={`${styles.statusBadge} ${styles[project.status]}`}>
-          {project.status === 'released' ? '已发布' : '即将推出'}
+          {project.status === 'released' ? 
+            translate({
+              id: 'project.status.released',
+              message: '已发布',
+              description: 'Released project status'
+            }) : 
+            translate({
+              id: 'project.status.upcoming',
+              message: '即将推出',
+              description: 'Upcoming project status'
+            })
+          }
         </span>
       </div>
       <div className={styles.cardContentWrapper}>
@@ -38,9 +84,31 @@ function ProjectCard({ project }) {
             className={styles.moreButton} 
             onClick={() => setIsExpanded(!isExpanded)}
             type="button"
-            aria-label={isExpanded ? '收起详情' : '查看更多详情'}
+            aria-label={isExpanded ? 
+              translate({
+                id: 'project.description.collapse',
+                message: '收起详情',
+                description: 'Collapse description button aria label'
+              }) : 
+              translate({
+                id: 'project.description.expand',
+                message: '查看更多详情',
+                description: 'Expand description button aria label'
+              })
+            }
           >
-            {isExpanded ? '收起' : '更多'} 
+            {isExpanded ? 
+              translate({
+                id: 'project.description.collapse.button',
+                message: '收起',
+                description: 'Collapse button text'
+              }) : 
+              translate({
+                id: 'project.description.expand.button',
+                message: '更多',
+                description: 'Expand button text'
+              })
+            } 
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 20 20" 
@@ -57,14 +125,26 @@ function ProjectCard({ project }) {
           to={`/api-docs/${project.id}`} 
           className={`${styles.viewButton} ${styles.activeButton}`}
         >
-          查看 API 文档
+          {translate({
+            id: 'project.api.view',
+            message: '查看 API 文档',
+            description: 'View API documentation button'
+          })}
         </Link>
       ) : (
         <div 
           className={`${styles.viewButton} ${styles.disabledButton}`}
-          title="即将推出"
+          title={translate({
+            id: 'project.api.upcoming',
+            message: '即将推出',
+            description: 'Upcoming API documentation tooltip'
+          })}
         >
-          查看 API 文档
+          {translate({
+            id: 'project.api.view',
+            message: '查看 API 文档',
+            description: 'View API documentation button'
+          })}
         </div>
       )}
     </div>
@@ -86,7 +166,14 @@ export default function ApiViewerPage() {
     
     projectsData.projects.forEach(project => {
       if (project.type && groupedProjects[project.type]) {
-        groupedProjects[project.type].push(project);
+        // 根据当前语言选择正确的描述字段
+        const localizedProject = {
+          ...project,
+          description: currentLocale === 'en' && project.en_description 
+            ? project.en_description 
+            : project.description
+        };
+        groupedProjects[project.type].push(localizedProject);
       }
     });
     
@@ -98,7 +185,7 @@ export default function ApiViewerPage() {
     });
     
     return groupedProjects;
-  }, []);
+  }, [currentLocale]);
   
   // 按照类型顺序排列的层级
   const orderedLayers = useMemo(() => {
@@ -120,7 +207,13 @@ export default function ApiViewerPage() {
       })}>
       <div className={styles.apiViewerContainer}>
         <div className={styles.titleContainer}>
-          <h1 className={styles.title}>API 文档</h1>
+          <h1 className={styles.title}>
+            {translate({
+              id: 'pages.apiViewer.heading',
+              message: 'API 文档',
+              description: 'API documentation page heading'
+            })}
+          </h1>
         </div>
         
         <div className={styles.typeLevels}>

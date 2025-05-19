@@ -17,10 +17,30 @@ export default function BellaOpenapiApiPage() {
       : '/openapi/bella-openapi/' + 'openapi.json' 
   );
   
+  // 翻译项目名称的API文档标题
+  const pageTitle = translate(
+    {
+      id: 'project.api.pageTitle',
+      message: '{projectName} API 文档',
+      description: 'API documentation page title with project name'
+    },
+    { projectName: 'Bella-openapi' }
+  );
+  
+  // 翻译项目名称的API文档描述
+  const pageDescription = translate(
+    {
+      id: 'project.api.pageDescription',
+      message: '{projectName} API 文档',
+      description: 'API documentation page description with project name'
+    },
+    { projectName: 'Bella-openapi' }
+  );
+  
   return (
     <Layout
-      title="Bella-openapi API 文档"
-      description="不止于聊天补全，Bella-openapi整合了文本向量化、语音识别、语音合成、文生图、图生图等多元AI能力，并配备完善的计费、限流和资源管理功能。所有能力均经过大规模生产环境检验，稳定可靠。"
+      title={pageTitle}
+      description={pageDescription}
       noFooter={true}>
       <main className="container" style={{padding: 0, maxWidth: '100%', height: 'calc(100vh - 60px)'}}>
         {/* 加载指示器 */}
@@ -32,7 +52,11 @@ export default function BellaOpenapiApiPage() {
           fontSize: '1.2rem',
           color: '#666'
         }}>
-          API 文档加载中...
+          {translate({
+            id: 'project.api.loading',
+            message: 'API 文档加载中...',
+            description: 'API documentation loading message'
+          })}
         </div>
         
         {/* 使用 script 标签直接加载 Redoc */}
@@ -54,7 +78,11 @@ export default function BellaOpenapiApiPage() {
                     
                     const backButton = document.createElement('a');
                     backButton.href = '/api-viewer';
-                    backButton.textContent = '← 返回项目列表';
+                    backButton.textContent = translate({
+                      id: 'project.api.backToList',
+                      message: '← 返回项目列表',
+                      description: 'Back to project list button'
+                    });
                     backButton.style.display = 'inline-flex';
                     backButton.style.alignItems = 'center';
                     backButton.style.padding = '10px 15px';
@@ -67,7 +95,14 @@ export default function BellaOpenapiApiPage() {
                     backButton.style.margin = '10px';
                     
                     const title = document.createElement('h1');
-                    title.textContent = 'Bella-openapi API 文档';
+                    title.textContent = translate(
+                      {
+                        id: 'project.api.pageTitle',
+                        message: '{projectName} API 文档',
+                        description: 'API documentation page title with project name'
+                      },
+                      { projectName: 'Bella-openapi' }
+                    );
                     title.style.margin = '0 0 0 20px';
                     title.style.fontSize = '1.5rem';
                     
@@ -127,7 +162,11 @@ export default function BellaOpenapiApiPage() {
                   console.error('Error initializing Redoc:', error);
                   const loadingElement = document.getElementById('redoc-loading');
                   if (loadingElement) {
-                    loadingElement.textContent = '加载 API 文档失败，请刷新页面重试';
+                    loadingElement.textContent = translate({
+                      id: 'project.api.loadingError',
+                      message: '加载 API 文档失败，请刷新页面重试',
+                      description: 'API documentation loading error message'
+                    });
                     loadingElement.style.color = 'red';
                   }
                 }

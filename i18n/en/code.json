@@ -17,6 +17,10 @@
   "pages.apiViewer.description": {
     "message": "Bella OpenAPI 完整 API 文档"
   },
+  "pages.apiViewer.heading": {
+    "message": "API Documentation",
+    "description": "API documentation page heading"
+  },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
     "description": "The title of the fallback page when the page crashed"
@@ -439,5 +443,49 @@
   "project.details.close": {
     "message": "Close",
     "description": "Close button"
+  },
+  "project.description.collapse": {
+    "message": "Collapse details",
+    "description": "Collapse description button aria label"
+  },
+  "project.description.expand": {
+    "message": "View more details",
+    "description": "Expand description button aria label"
+  },
+  "project.description.collapse.button": {
+    "message": "Collapse",
+    "description": "Collapse button text"
+  },
+  "project.description.expand.button": {
+    "message": "More",
+    "description": "Expand button text"
+  },
+  "project.api.view": {
+    "message": "View API Documentation",
+    "description": "View API documentation button"
+  },
+  "project.api.upcoming": {
+    "message": "Coming Soon",
+    "description": "Upcoming API documentation tooltip"
+  },
+  "project.api.pageTitle": {
+    "message": "{projectName} API Documentation",
+    "description": "API documentation page title with project name"
+  },
+  "project.api.pageDescription": {
+    "message": "{projectName} API Documentation",
+    "description": "API documentation page description with project name"
+  },
+  "project.api.loading": {
+    "message": "Loading API documentation...",
+    "description": "API documentation loading message"
+  },
+  "project.api.backToList": {
+    "message": "← Back to project list",
+    "description": "Back to project list button"
+  },
+  "project.api.loadingError": {
+    "message": "Failed to load API documentation. Please refresh the page and try again.",
+    "description": "API documentation loading error message"
   }
 }
