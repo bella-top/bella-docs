@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 import projectsData from '../../../config/projects-data.json';
 import FeatureCards from './feature-cards';
 import { translate } from '@docusaurus/Translate';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 // 从 JSON 文件中获取项目列表
 const projects = projectsData.projects as [];
@@ -21,6 +22,7 @@ interface Project {
   id: string;
   name: string;
   description: string;
+  en_description: string;
   status: ProjectStatus;
   type: ProjectType;
   github?: string;
@@ -246,6 +248,10 @@ const ArchitectureDiagram: React.FC<{
     const project = projects.find(p => p.id === selectedProject);
     if (!project) return null;
     
+    // 获取当前语言
+    const { i18n } = useDocusaurusContext();
+    const currentLocale = i18n.currentLocale;
+    
     // 找出此项目调用的项目
     const callingTo = dependencyMap[project.id]?.dependsOn.map(id => {
       const targetProject = projects.find(p => p.id === id);
@@ -306,7 +312,9 @@ const ArchitectureDiagram: React.FC<{
           </span>
         </div>
         
-        <p className={styles.detailsDescription}>{project.description}</p>
+        <p className={styles.detailsDescription}>
+          {currentLocale === 'en' && project.en_description ? project.en_description : project.description}
+        </p>
         
         <div className={styles.detailsButtons}>
           {project.github && (
@@ -506,23 +514,27 @@ const ArchitectureDiagram: React.FC<{
 export default function HomepageFeatures(): React.ReactElement {
   return (
     <section className={styles.architectureSection}>
-      <div className="container" style={{ maxWidth: '100%', padding: 0 }}>
-        <FeatureCards />
+      <div className={styles.header}>
+        <div className={styles.logo}>
+          <div className={styles.logoIcon}>B</div>
+          <div className={styles.logoText}>{translate({
+                id: 'homepage.architecture.title',
+                message: 'Bella 开源项目架构',
+                description: 'Architecture overview title'
+              })}</div>
+        </div>
+        <span className={styles.architectureTip}>{translate({
+                id: 'homepage.architecture.tip',
+                message: '点击项目可查看详情',
+                description: 'Tip for clicking on projects'
+              })}</span>
+      </div>
+      
+      <div className={styles.container} style={{ maxWidth: '100%', padding: 0 }}>
         <div className={styles.architectureDiagramContainer}>
-          <div className={styles.architectureTitleContainer}>
-            <h2 className={styles.architectureTitle}>{translate({
-              id: 'homepage.architecture.title',
-              message: 'Bella 架构概览',
-              description: 'Architecture overview title'
-            })}</h2>
-            <span className={styles.architectureTip}>{translate({
-              id: 'homepage.architecture.tip',
-              message: '点击项目可查看详情',
-              description: 'Tip for clicking on projects'
-            })}</span>
-          </div>
           <ArchitectureDiagram projects={projects as Project[]} />
         </div>
+        <FeatureCards />
       </div>
     </section>
   );

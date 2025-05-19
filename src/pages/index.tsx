@@ -2,7 +2,6 @@ import type {ReactNode} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import HeroHeader from '@site/src/components/HomepageHeaders/hero-header';
 
 export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
@@ -10,7 +9,6 @@ export default function Home(): ReactNode {
     <Layout
       title={`${siteConfig.title}`}
       description="Bella是一站式智能接入、智能体创建及发布平台">
-      <HeroHeader />
       <div className="main-content">
         <HomepageFeatures />
       </div>

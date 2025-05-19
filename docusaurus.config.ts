@@ -1,10 +1,6 @@
 import type { Config } from '@docusaurus/types';
 import type { Options as ClassicPresetOptions } from '@docusaurus/preset-classic';
 import type { ThemeConfig } from '@docusaurus/preset-classic';
-import { themes } from 'prism-react-renderer';
-
-const lightTheme = themes.github;
-const darkTheme = themes.dracula;
 
 const config: Config = {
   title: 'Bella Documentation',
@@ -59,6 +55,11 @@ const config: Config = {
   // 导航栏和页脚设置
   themeConfig: {
     image: 'img/bella-social-card.jpg',
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     navbar: {
       title: 'Bella Opensource',
       logo: {
@@ -129,8 +130,6 @@ const config: Config = {
       copyright: `版权所有 ${new Date().getFullYear()} LianjiaTech. 基于 Docusaurus 构建。`,
     },
     prism: {
-      theme: lightTheme,
-      darkTheme: darkTheme,
       additionalLanguages: ['bash', 'json', 'yaml', 'java', 'csharp', 'python'],
     },
   } as ThemeConfig,
