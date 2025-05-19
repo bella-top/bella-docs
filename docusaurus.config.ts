@@ -11,7 +11,7 @@ const config: Config = {
   favicon: 'img/favicon.svg',
 
   // GitHub Pages deployment config
-  url: 'https://bella-top.github.io',
+  url: 'https://doc.bella.top',
   baseUrl: '/',
   organizationName: 'bella',
   projectName: 'bella-docs',

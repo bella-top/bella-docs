@@ -254,8 +254,8 @@
   border-left: 3px solid #10B981;
 }
 
-.module-infer, .module-inference {
-  border-left: 3px solid #8B5CF6;
+.module-infer {
+  border-left: 3px solid #8B5CF6; 
 }
 
 .module-model {
