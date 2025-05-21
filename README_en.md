@@ -13,7 +13,7 @@ Beyond chat completion, Bella-openapi integrates multiple AI capabilities includ
 ### Bella-knowledge - Intelligent Knowledge Management Center <a href="https://github.com/LianjiaTech/bella-knowledge"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 Focused on unified storage and management of knowledge, elegantly handling multiple knowledge sources such as files and Q&A pairs, providing powerful knowledge support for intelligent applications.
 
-### Bella-assistants - Cross-platform Intelligent Assistant Engine <a href="https://github.com/LianjiaTech/bella-assistant"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
+### Bella-assistants - Cross-platform Intelligent Assistant Engine <a href="https://github.com/LianjiaTech/bella-assistants"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 An open-source implementation compatible with OpenAI Assistants API and Responses API, breaking through native ecosystem limitations, supporting flexible switching between various vendor models, truly achieving "develop once, use everywhere."
 
 ### Bella-rag - Efficient Retrieval-Augmented Generation System <a href="https://github.com/LianjiaTech/bella-rag"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>

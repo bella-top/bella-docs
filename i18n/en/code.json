@@ -369,7 +369,7 @@
     "description": "Flexible extension feature description"
   },
   "homepage.architecture.title": {
-    "message": "Bella OpenSource Project Architecture",
+    "message": "Bella OpenSource Project List",
     "description": "Architecture overview title"
   },
   "homepage.architecture.tip": {
@@ -498,6 +498,10 @@
   },
   "project.GitHub.Stared.Failed": {
     "message": "Failed to star, please refresh and retry.",
+    "description": "Github Star Failed"
+  },
+  "project.api.unavaliable": {
+    "message": "No API Docs",
     "description": "Github Star Failed"
   }
 }

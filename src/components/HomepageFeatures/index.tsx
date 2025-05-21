@@ -105,7 +105,18 @@ const ArchitectureModule: React.FC<{
       style={{ width: `${width}px` }}
     >
       <div className={styles.moduleHeader}>
-        <h3>{project.name}</h3>
+        <h3>
+          {project.github && (
+            <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ marginRight: '8px' }}>
+              <img 
+                style={{ width: '16px', height: 'auto', verticalAlign: 'middle' }} 
+                src="./img/github/github-mark.svg" 
+                alt="GitHub" 
+              />
+            </a>
+          )}
+          {project.name}
+        </h3>
         {project.status === 'released' && (
           <div className={`${styles.statusBadge} ${styles[`status-${project.status}`]}`}>
             {translate({
@@ -519,15 +530,15 @@ export default function HomepageFeatures(): React.ReactElement {
           <div className={styles.logoIcon}>B</div>
           <div className={styles.logoText}>{translate({
                 id: 'homepage.architecture.title',
-                message: 'Bella 开源项目架构',
+                message: 'Bella 开源项目清单',
                 description: 'Architecture overview title'
               })}</div>
         </div>
-        <span className={styles.architectureTip}>{translate({
+        <p className={styles.architectureTip}>{translate({
                 id: 'homepage.architecture.tip',
                 message: '点击项目可查看详情',
                 description: 'Tip for clicking on projects'
-              })}</span>
+              })}</p>
       </div>
       
       <div className={styles.container} style={{ maxWidth: '100%', padding: 0 }}>

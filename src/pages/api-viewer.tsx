@@ -131,6 +131,14 @@ function ProjectCard({ project }) {
             description: 'View API documentation button'
           })}
         </Link>
+      ) : project.status === 'released' ? (
+        <div className={`${styles.viewButton} ${styles.disabledButton}`}>
+          {translate({
+            id: 'project.api.unavaliable',
+            message: '无 API 文档',
+            description: 'API documentation unavailable tooltip'
+          })}
+        </div>
       ) : (
         <div 
           className={`${styles.viewButton} ${styles.disabledButton}`}

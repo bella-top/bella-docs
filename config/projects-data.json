@@ -41,7 +41,7 @@
       "en_description": "An open-source implementation compatible with OpenAI Assistants API and Responses API, breaking through native ecosystem limitations, supporting flexible switching between various vendor models, truly achieving develop once, use everywhere.",
       "type": "endpoint",
       "status": "upcoming",
-      "github": "https://github.com/LianjiaTech/bella-assistant",
+      "github": "https://github.com/LianjiaTech/bella-assistants",
       "documentationLink": "/docs/bella-assistants/intro",
       "dependencies": [
         {

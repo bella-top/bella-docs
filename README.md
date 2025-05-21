@@ -13,7 +13,7 @@ Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平
 ### Bella-knowledge - 智能知识管理中心 <a href="https://github.com/LianjiaTech/bella-knowledge"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 专注于知识的统一存储与管理，优雅处理文件、问答对等多类知识源，为智能应用提供强大的知识支撑。
 
-### Bella-assistants - 跨平台智能助手引擎 <a href="https://github.com/LianjiaTech/bella-assistant"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
+### Bella-assistants - 跨平台智能助手引擎 <a href="https://github.com/LianjiaTech/bella-assistants"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 兼容OpenAI Assistants API和Responses API的开源实现，突破原生生态限制，支持灵活切换各大厂商模型，真正实现"一次开发，处处可用"。
 
 ### Bella-rag - 高效检索增强生成系统 <a href="https://github.com/LianjiaTech/bella-rag"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
