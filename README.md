@@ -1,6 +1,6 @@
 # Bella - Be Everyone's Large Language model Assistant
 
-中文 | [English](./README_EN.md)
+中文 | [English](./README_en.md)
 
 Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平台，通过提供0代码解决方案、API集成、微调能力及插件式能力拓展等多层次、灵活性极高的服务，显著降低了AI应用的开发门槛，促进了AI技术的普及，加快了公司智能化升级的步伐，为推进贝壳AI普惠做出了重要贡献。
 
