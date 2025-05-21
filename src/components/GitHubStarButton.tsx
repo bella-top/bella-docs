@@ -3,9 +3,9 @@ import styles from './GitHubStarButton.module.css';
 import { translate } from '@docusaurus/Translate';
 
 // 配置信息
-const GITHUB_CLIENT_ID = 'Ov23libkfFAeZk8u5wFL'; // 您的GitHub OAuth应用Client ID
-const TARGET_REPO = 'LianjiaTech/bella-openapi'; // 您的目标仓库
-const GATEKEEPER_URL = 'https://api.bella.top/gatekeeper'; // http://gatekeeper.yourdomain.com
+const GITHUB_CLIENT_ID = 'Ov23ligjnQmgMuuvXcT6';
+const TARGET_REPO = 'LianjiaTech/bella-openapi';
+const GATEKEEPER_URL = 'https://api.bella.top/gatekeeper'; //oauth代理服务
 interface TokenResponse {
   token: string;
 }
