@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 10px;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.starButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #24292e;
+}
+
+.starButton:hover {
+  background-color: #e5e7eb;
+}
+
+.starButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.starred {
+  background-color: #fef3c7;
+  border-color: #fbbf24;
+  color: #92400e;
+}
+
+.starred:hover {
+  background-color: #fde68a;
+}
+
+.icon {
+  fill: currentColor;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.logoutButton:hover {
+  color: #1f2937;
+}
+
+/* 为小屏幕设备调整样式 */
+@media (max-width: 768px) {
+  .container {
+    margin: 0 5px;
+  }
+  
+  .starButton {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}

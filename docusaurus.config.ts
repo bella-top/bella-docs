@@ -51,6 +51,10 @@ const config: Config = {
   plugins: [
   ],
 
+  // 客户端模块 - 添加GitHub点赞按钮
+  clientModules: [
+    require.resolve('./src/clientModules/GitHubStarButtonInjector.js'),
+  ],
 
   // 导航栏和页脚设置
   themeConfig: {
@@ -78,6 +82,12 @@ const config: Config = {
           label: 'API',
           position: 'left',
           to: '/api-viewer',
+        },
+        // GitHub点赞按钮
+        {
+          type: 'html',
+          position: 'right',
+          value: '<div id="github-star-button"></div>',
         },
         // 多语言切换下拉菜单
         {

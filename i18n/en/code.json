@@ -487,5 +487,17 @@
   "project.api.loadingError": {
     "message": "Failed to load API documentation. Please refresh the page and try again.",
     "description": "API documentation loading error message"
+  },
+  "project.GitHub.Stared": {
+    "message": "Stared",
+    "description": "Github Stared"
+  },
+  "project.GitHub.Star": {
+    "message": "Star",
+    "description": "Github Star"
+  },
+  "project.GitHub.Stared.Failed": {
+    "message": "Failed to star, please refresh and retry.",
+    "description": "Github Star Failed"
   }
 }
