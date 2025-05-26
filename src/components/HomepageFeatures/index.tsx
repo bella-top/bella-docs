@@ -29,6 +29,8 @@ interface Project {
   link?: string;
   apiDocPath?: string;
   documentationLink?: string;
+  deepwiki?: string;
+  en_deepwiki?: string;
   dependency?: Dependency[];
   dependencies?: Dependency[];
 }
@@ -339,6 +341,21 @@ const ArchitectureDiagram: React.FC<{
                 id: 'project.github.button',
                 message: 'GitHub',
                 description: 'GitHub button'
+              })}
+            </a>
+          )}
+          
+          {((currentLocale === 'en' && project.en_deepwiki) || (currentLocale !== 'en' && project.deepwiki)) && (
+            <a 
+              href={currentLocale === 'en' ? project.en_deepwiki : project.deepwiki}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.deepwikiButton}
+            >
+              {translate({
+                id: 'project.deepwiki.button',
+                message: 'DeepWiki',
+                description: 'DeepWiki button'
               })}
             </a>
           )}

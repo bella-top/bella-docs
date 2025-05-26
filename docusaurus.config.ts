@@ -83,6 +83,11 @@ const config: Config = {
           position: 'left',
           to: '/api-viewer',
         },
+        {
+          label: 'DeepWiki',
+          position: 'left',
+          href: 'https://wiki.bella.top/wiki/projects',
+        },
         // GitHub点赞按钮
         {
           type: 'html',

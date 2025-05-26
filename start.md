@@ -57,6 +57,8 @@
       "apiDocPath": "your-project-api-path",  // OpenAPI Json文件的存放路径，统一存放在 /static/openapi目录下，此处不需要填写目录前缀，例如Openapi Json文件位于 /static/openapi/bella-openapi目录下，此处应填bella-openapi，如不提供API Doc页面则不需要填写
       "link": "https://your-project-url/",  // 项目的线上体验链接，如不存在则不需要填写
       "documentationLink": "/docs/your-project/intro",  // 文档链接，统一为 /docs/{your-project}/intro
+      "deepwiki": "https://wiki.bella.top/{owner}/{repo-name}?type=github&language=zh",  // 项目的wiki链接，如不存在则不需要填写
+      "en_deepwiki": "https://wiki.bella.top/{owner}/{repo-name}?type=github&language=en",  // 项目的英文wiki链接，如不存在则不需要填写
       "dependencies": [  // 与其他项目的依赖关系
         {
           "project": "dependent-project-id",
@@ -116,7 +118,14 @@ const sidebars: SidebarsConfig = {
 2. 确保在 `projects-data.json` 中设置了正确的 `apiDocPath` 值
 3. 运行 `npm run generate-api-docs` 命令生成对应的 API 文档页面，直接执行`npm run start`或`npm run build`时也会自动执行该命令。
 
-### 5. 架构图显示效果
+### 5. 生成DeepWiki
+如果需要生成DeepWiki：
+- 使用 https://wiki.bella.top 进行生成
+- 生成后的文档链接为：https://wiki.bella.top/{owner}/{repo-name}?type=github&language={zh|en}
+- 使用时，需获联系 <a href="https://github.com/szl97">@saizhuolin</a> 获取授权码
+- 注意：生成时wiki pages时，不可关闭浏览器页面，否则会生成失败
+
+### 6. 架构图显示效果
 
 项目架构图会根据 `projects-data.json` 中的配置自动渲染。已发布的项目会有以下特殊显示：
 
@@ -124,7 +133,7 @@ const sidebars: SidebarsConfig = {
 2. 显示"已发布"标签
 3. 在项目详情面板中显示"快速体验"和"查看文档"按钮，"快速体验"配置link属性时会显示
 
-### 6. 注意事项
+### 7. 注意事项
 
 1. 项目 ID 应该使用连字符命名（如 `bella-openapi`）
 2. 确保所有必填字段都已正确填写

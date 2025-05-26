@@ -608,7 +608,7 @@
   margin-bottom: 1.5rem;
 }
 
-.githubButton, .visitButton, .docsButton {
+.githubButton, .visitButton, .docsButton, .deepwikiButton {
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -647,6 +647,16 @@
 
 .docsButton:hover {
   background-color: #2563eb;
+}
+
+.deepwikiButton {
+  background-color: #8b5cf6;
+  color: white;
+  border: 1px solid #8b5cf6;
+}
+
+.deepwikiButton:hover {
+  background-color: #7c3aed;
 }
 
 .dependencySection {
@@ -1000,7 +1010,7 @@
     align-items: stretch;
   }
 
-  .githubButton, .visitButton, .docsButton {
+  .githubButton, .visitButton, .docsButton, .deepwikiButton {
     margin-bottom: 0.5rem;
     font-size: 0.85rem;
     padding: 0.4rem 0.6rem;

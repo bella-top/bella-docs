@@ -11,6 +11,8 @@
       "apiDocPath": "bella-openapi",
       "link": "https://api.bella.top/",
       "documentationLink": "/docs/bella-openapi/intro",
+      "deepwiki": "https://wiki.bella.top/LianjiaTech/bella-openapi?type=github&language=zh",
+      "en_deepwiki": "https://wiki.bella.top/LianjiaTech/bella-openapi?type=github&language=en",
       "dependencies": [
         {
           "project": "bella-general-infer",
