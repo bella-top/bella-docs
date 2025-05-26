@@ -35,6 +35,7 @@ const sidebars: SidebarsConfig = {
             'bella-openapi/core/flash-asr',
             'bella-openapi/core/tts',
             'bella-openapi/core/realtime',
+            'bella-openapi/core/advanced-features',
           ],
         },
         {
