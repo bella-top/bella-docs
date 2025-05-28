@@ -22,5 +22,9 @@
   "sidebar.documentationSidebar.doc.介绍（Introduction）": {
     "message": "介绍（Introduction）",
     "description": "The label for the doc item 介绍（Introduction） in sidebar documentationSidebar, linking to the doc bella-openapi/intro"
+  },
+  "sidebar.documentationSidebar.category.使用文档 (Usage Documents)": {
+    "message": "使用文档 (Usage Documents)",
+    "description": "The label for category 使用文档 (Usage Documents) in sidebar documentationSidebar"
   }
 }

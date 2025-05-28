@@ -18,5 +18,9 @@
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
+  },
+  "item.label.DeepWiki": {
+    "message": "DeepWiki",
+    "description": "Navbar item with label DeepWiki"
   }
 }

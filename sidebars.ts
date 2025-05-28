@@ -28,7 +28,7 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'category',
-          label: '核心功能 (Core Features)',
+          label: '使用文档 (Usage Documents)',
           items: [
             'bella-openapi/core/chat-completions',
             'bella-openapi/core/embeddings',

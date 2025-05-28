@@ -92,7 +92,7 @@ const sidebars: SidebarsConfig = {
         // 添加更多文档页面，example
         {
           type: 'category',
-          label: '核心功能 (Core Features)',
+          label: '使用文档 (Usage Documents)',
           items: [
             'your-project/core/feature1',
             'your-project/core/feature2',

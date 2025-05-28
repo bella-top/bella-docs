@@ -502,6 +502,10 @@
   },
   "project.api.unavaliable": {
     "message": "No API Docs",
-    "description": "Github Star Failed"
+    "description": "API documentation unavailable tooltip"
+  },
+  "project.deepwiki.button": {
+    "message": "DeepWiki",
+    "description": "DeepWiki button"
   }
 }
