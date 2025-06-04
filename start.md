@@ -114,9 +114,10 @@ const sidebars: SidebarsConfig = {
 
 如果项目包含 API 文档：
 
-1. 将中英文版本的OpenAPI 规范的json文件置于正确的目录中（ `/openapi/your-project-api-path/`）
+1. 将中英文版本的OpenAPI v3.0 规范的json文件置于正确的目录中（ `/openapi/your-project-api-path/`）
 2. 确保在 `projects-data.json` 中设置了正确的 `apiDocPath` 值
 3. 运行 `npm run generate-api-docs` 命令生成对应的 API 文档页面，直接执行`npm run start`或`npm run build`时也会自动执行该命令。
+4. 提供了为OpenAPI v3.0的接口和字段信息生成description的工具：[bella-api-doc-gen](https://github.com/szl97/bella-api-doc-gen)，调用域名为 `wiki.bella.top`，鉴权规则同bella-openapi。
 
 ### 5. 生成DeepWiki
 如果需要生成DeepWiki：
