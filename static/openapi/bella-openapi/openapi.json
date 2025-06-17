@@ -21,7 +21,7 @@
             "description": "日志记录成功"
           }
         },
-        "description": "记录API端点处理数据日志，用于记录API调用的详细信息和性能指标",
+        "description": "记录端点处理日志数据，用于记录API调用的详细信息和统计数据",
         "operationId": "record",
         "requestBody": {
           "content": {
@@ -32,7 +32,7 @@
             }
           },
           "required": true,
-          "description": "包含API端点处理过程中的详细数据信息"
+          "description": "端点处理数据，包含API调用的完整信息"
         }
       }
     },
@@ -50,10 +50,10 @@
                 }
               }
             },
-            "description": "路由成功，返回匹配的通道详细信息"
+            "description": "路由成功，返回选中的渠道详细信息"
           }
         },
-        "description": "根据API密钥、端点和模型信息进行路由选择，返回匹配的通道信息",
+        "description": "根据API密钥、端点和模型信息进行路由选择，返回最适合的渠道信息",
         "operationId": "route",
         "requestBody": {
           "content": {
@@ -96,7 +96,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "要查询指标的API端点路径"
+            "description": "要查询指标的API端点地址"
           },
           {
             "in": "query",
@@ -106,7 +106,7 @@
               "default": "model"
             },
             "required": false,
-            "description": "渠道类型，用于筛选特定类型的渠道，默认为模型类型"
+            "description": "通道类型，用于指定查询范围是按模型还是按端点进行"
           },
           {
             "in": "query",
@@ -115,11 +115,43 @@
               "type": "string"
             },
             "required": false,
-            "description": "模型名称，用于筛选特定模型的渠道指标"
+            "description": "指定要查询指标的模型名称，当channelType为model时使用"
           }
         ],
-        "description": "查询指定端点的渠道指标数据，包括错误率、完成数、请求过多等统计信息",
+        "description": "查询指定端点和模型的性能指标数据，包括错误率、完成数、请求过多等统计信息",
         "operationId": "query"
+      }
+    },
+    "/v1/messages": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功响应，返回AI模型生成的消息内容或流式响应对象"
+          }
+        },
+        "description": "发送消息到AI模型，支持流式和非流式响应。通过路由系统将请求转发到对应的AI服务提供商",
+        "operationId": "message",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "消息请求体，包含模型名称、对话消息列表和各种生成参数"
+        }
       }
     },
     "/v1/space/get": {
@@ -136,7 +168,7 @@
                 }
               }
             },
-            "description": "成功返回空间信息"
+            "description": "成功返回空间详细信息"
           }
         },
         "parameters": [
@@ -147,10 +179,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "空间编码"
+            "description": "空间编码，用于标识特定的空间"
           }
         ],
-        "description": "根据空间编码获取单个空间信息",
+        "description": "根据空间编码获取单个空间的详细信息",
         "operationId": "getSpace"
       }
     },
@@ -171,7 +203,7 @@
             "description": "更新成功"
           }
         },
-        "description": "更新模型信息，包括端点、属性、特性等配置",
+        "description": "更新模型信息，包括端点、文档地址、属性和特性等配置",
         "operationId": "updateModel",
         "requestBody": {
           "content": {
@@ -201,7 +233,7 @@
             "description": "创建成功"
           }
         },
-        "description": "创建新的模型，包括模型名称、端点、属性等信息",
+        "description": "创建新的模型，设置模型基本信息、关联端点和配置属性",
         "operationId": "createModel",
         "requestBody": {
           "content": {
@@ -230,10 +262,10 @@
                 }
               }
             },
-            "description": "向量嵌入创建成功"
+            "description": "成功返回嵌入向量结果"
           }
         },
-        "description": "创建文本向量嵌入，将输入的文本转换为高维向量表示，用于语义搜索、相似度计算等应用",
+        "description": "生成文本嵌入向量，将输入的文本转换为高维向量表示，用于语义搜索、相似度计算等任务",
         "operationId": "embedding",
         "requestBody": {
           "content": {
@@ -244,7 +276,7 @@
             }
           },
           "required": true,
-          "description": "向量嵌入请求参数"
+          "description": "嵌入向量生成请求参数"
         }
       }
     },
@@ -265,7 +297,7 @@
                 }
               }
             },
-            "description": "成功返回空间列表"
+            "description": "成功返回空间信息列表"
           }
         },
         "parameters": [
@@ -279,7 +311,7 @@
               }
             },
             "required": true,
-            "description": "空间编码列表"
+            "description": "空间编码列表，支持批量查询多个空间"
           }
         ],
         "description": "根据空间编码列表批量获取空间信息",
@@ -351,10 +383,10 @@
         ],
         "responses": {
           "200": {
-            "description": "成功返回音频数据流"
+            "description": "成功返回音频流数据"
           }
         },
-        "description": "文本转语音服务，将输入文本转换为音频流或音频文件",
+        "description": "文本转语音服务，将输入的文本转换为音频流输出",
         "operationId": "speech",
         "requestBody": {
           "content": {
@@ -365,7 +397,7 @@
             }
           },
           "required": true,
-          "description": "文本转语音请求参数"
+          "description": "文本转语音请求参数，包含文本内容、语音模型、音色等配置"
         }
       }
     },
@@ -415,10 +447,10 @@
                 }
               }
             },
-            "description": "成功创建分类目录"
+            "description": "创建成功，返回新创建的类目信息"
           }
         },
-        "description": "创建新的分类目录",
+        "description": "创建新的类目，支持创建父子层级关系的类目结构",
         "operationId": "createCategory",
         "requestBody": {
           "content": {
@@ -429,7 +461,7 @@
             }
           },
           "required": true,
-          "description": "创建分类目录的请求参数"
+          "description": "类目创建请求参数"
         }
       }
     },
@@ -447,10 +479,10 @@
                 }
               }
             },
-            "description": "更新成功"
+            "description": "更新操作执行结果"
           }
         },
-        "description": "更新端点信息，包括端点名称、维护者、文档地址、成本脚本等配置",
+        "description": "更新端点信息，包括端点名称、维护者信息、文档地址和计费脚本等",
         "operationId": "updateEndpoint",
         "requestBody": {
           "content": {
@@ -477,10 +509,10 @@
                 }
               }
             },
-            "description": "创建成功，返回端点数据库对象"
+            "description": "创建成功返回端点数据库对象"
           }
         },
-        "description": "创建新的端点，包括端点基本信息、维护者信息和成本脚本配置",
+        "description": "创建新的端点，设置端点基本信息和计费规则",
         "operationId": "createEndpoint",
         "requestBody": {
           "content": {
@@ -509,10 +541,10 @@
                 }
               }
             },
-            "description": "成功返回当前用户信息"
+            "description": "返回当前用户的操作者信息"
           }
         },
-        "description": "获取当前登录用户的身份信息",
+        "description": "获取当前登录用户的详细信息",
         "operationId": "whoami_1"
       }
     },
@@ -530,11 +562,11 @@
                 }
               }
             },
-            "description": "创建成功，返回新生成的API密钥字符串"
+            "description": "创建成功后返回新生成的API密钥字符串"
           }
         },
-        "description": "创建子API密钥，用于生成具有指定权限和配额限制的新API密钥",
-        "operationId": "createApikey",
+        "description": "创建子API密钥，基于父API密钥创建具有受限权限的子密钥",
+        "operationId": "createSubApikey",
         "requestBody": {
           "content": {
             "application/json": {
@@ -544,7 +576,39 @@
             }
           },
           "required": true,
-          "description": "API密钥创建请求参数"
+          "description": "创建子API密钥的操作参数"
+        }
+      }
+    },
+    "/v1/apikey/update": {
+      "post": {
+        "tags": [
+          "信息查询"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "description": "更新操作执行结果，返回true表示更新成功"
+          }
+        },
+        "description": "更新子API密钥信息，包括名称、安全等级、配额、权限等属性",
+        "operationId": "updateSubApikey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubApikeyUpdateOp"
+              }
+            }
+          },
+          "required": true,
+          "description": "子API密钥更新操作参数"
         }
       }
     },
@@ -562,10 +626,10 @@
                 }
               }
             },
-            "description": "成功返回当前API密钥信息"
+            "description": "返回当前API密钥的完整信息对象"
           }
         },
-        "description": "获取当前API密钥的详细信息，包括权限、配额等",
+        "description": "获取当前API密钥的详细信息，包括权限、配额、所有者等完整信息",
         "operationId": "whoami"
       }
     },
@@ -576,7 +640,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "成功建立WebSocket连接"
           }
         },
         "parameters": [
@@ -587,10 +651,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "建立实时语音识别WebSocket连接",
         "operationId": "asrStream"
       },
       "put": {
@@ -599,7 +663,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -610,10 +674,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_3"
       },
       "head": {
@@ -622,7 +686,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -633,10 +697,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_1"
       },
       "post": {
@@ -645,7 +709,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -656,10 +720,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_2"
       },
       "patch": {
@@ -668,7 +732,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -679,10 +743,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_4"
       },
       "delete": {
@@ -691,7 +755,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -702,10 +766,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_5"
       },
       "options": {
@@ -714,7 +778,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -725,10 +789,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的实时语音识别模型名称"
           }
         ],
-        "description": "实时语音识别WebSocket连接入口",
+        "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_6"
       }
     },
@@ -749,7 +813,7 @@
             "description": "关联成功"
           }
         },
-        "description": "建立模型之间的关联关系",
+        "description": "关联模型，建立模型之间的链接关系",
         "operationId": "linkModel",
         "requestBody": {
           "content": {
@@ -795,7 +859,7 @@
             "description": "模型查询条件"
           }
         ],
-        "description": "根据条件查询模型列表",
+        "description": "根据条件查询模型列表，支持多种筛选条件",
         "operationId": "listModels"
       }
     },
@@ -836,7 +900,7 @@
               "default": 16000
             },
             "required": false,
-            "description": "音频采样率，单位为Hz"
+            "description": "音频采样率，单位Hz，常用值为16000、8000等"
           },
           {
             "in": "header",
@@ -847,7 +911,7 @@
               "default": 3000
             },
             "required": false,
-            "description": "句子间最大静音时长，单位为毫秒"
+            "description": "句子间最大静音时长，单位毫秒，用于分句判断"
           },
           {
             "in": "header",
@@ -880,7 +944,7 @@
                 }
               }
             },
-            "description": "查询成功，返回模型列表"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -890,11 +954,9 @@
             "schema": {
               "$ref": "#/components/schemas/ModelCondition"
             },
-            "required": true,
-            "description": "模型查询条件"
+            "required": true
           }
         ],
-        "description": "查询模型列表，支持权限过滤",
         "operationId": "listModel"
       }
     },
@@ -912,7 +974,7 @@
                 }
               }
             },
-            "description": "查询成功，返回分页模型数据"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -922,11 +984,9 @@
             "schema": {
               "$ref": "#/components/schemas/ModelCondition"
             },
-            "required": true,
-            "description": "模型查询条件"
+            "required": true
           }
         ],
-        "description": "分页查询模型信息，支持权限过滤",
         "operationId": "pageModel"
       }
     },
@@ -958,10 +1018,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "成员唯一标识"
+            "description": "成员用户ID"
           }
         ],
-        "description": "查询指定成员的角色列表",
+        "description": "查询成员在所有空间中的角色列表",
         "operationId": "listRole"
       }
     },
@@ -990,7 +1050,7 @@
               "$ref": "#/components/schemas/ApikeyCondition"
             },
             "required": true,
-            "description": "API Key查询条件"
+            "description": "分页查询条件"
           }
         ],
         "description": "分页查询API Key列表",
@@ -1004,7 +1064,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "成功建立WebSocket连接"
           }
         },
         "parameters": [
@@ -1015,10 +1075,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "建立流式语音识别WebSocket连接",
         "operationId": "asrStream_7"
       },
       "put": {
@@ -1027,7 +1087,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -1038,10 +1098,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "流式语音识别WebSocket连接处理",
         "operationId": "asrStream_10"
       },
       "head": {
@@ -1050,7 +1110,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -1061,10 +1121,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "流式语音识别WebSocket连接处理",
         "operationId": "asrStream_8"
       },
       "post": {
@@ -1073,7 +1133,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -1084,10 +1144,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "流式语音识别WebSocket连接处理",
         "operationId": "asrStream_9"
       },
       "patch": {
@@ -1096,7 +1156,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -1107,10 +1167,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "流式语音识别WebSocket连接处理",
         "operationId": "asrStream_11"
       },
       "delete": {
@@ -1119,7 +1179,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -1130,10 +1190,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "流式语音识别WebSocket连接处理",
         "operationId": "asrStream_12"
       },
       "options": {
@@ -1142,7 +1202,7 @@
         ],
         "responses": {
           "200": {
-            "description": "WebSocket连接建立成功"
+            "description": "处理成功"
           }
         },
         "parameters": [
@@ -1153,10 +1213,10 @@
               "type": "string"
             },
             "required": false,
-            "description": "使用的语音识别模型名称"
+            "description": "使用的流式语音识别模型名称"
           }
         ],
-        "description": "实时语音识别流式处理WebSocket连接入口",
+        "description": "流式语音识别WebSocket连接处理",
         "operationId": "asrStream_13"
       }
     },
@@ -1174,10 +1234,10 @@
                 }
               }
             },
-            "description": "请求成功，返回聊天完成响应"
+            "description": "聊天完成响应成功"
           }
         },
-        "description": "创建聊天完成请求，支持同步和流式响应模式",
+        "description": "创建聊天完成请求，支持单模型和多模型处理，可返回流式或非流式响应",
         "operationId": "completion",
         "requestBody": {
           "content": {
@@ -1188,7 +1248,7 @@
             }
           },
           "required": true,
-          "description": "聊天完成请求参数"
+          "description": "聊天完成请求体，包含模型配置和对话消息"
         }
       }
     },
@@ -1206,7 +1266,7 @@
                 }
               }
             },
-            "description": "API Key申请成功，返回生成的密钥"
+            "description": "申请成功，返回新创建的API Key"
           }
         },
         "description": "申请创建新的API Key",
@@ -1238,7 +1298,7 @@
                 }
               }
             },
-            "description": "API Key重置成功，返回新的密钥"
+            "description": "重置成功，返回新的API Key"
           }
         },
         "description": "重置API Key，生成新的密钥",
@@ -1252,7 +1312,7 @@
             }
           },
           "required": true,
-          "description": "API Key重置操作参数"
+          "description": "重置操作参数"
         }
       }
     },
@@ -1273,7 +1333,7 @@
                 }
               }
             },
-            "description": "查询成功，返回通道列表"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -1283,11 +1343,9 @@
             "schema": {
               "$ref": "#/components/schemas/ChannelCondition"
             },
-            "required": true,
-            "description": "通道查询条件"
+            "required": true
           }
         ],
-        "description": "查询通道列表",
         "operationId": "listChannel"
       }
     },
@@ -1305,7 +1363,7 @@
                 }
               }
             },
-            "description": "查询成功，返回分页通道数据"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -1315,11 +1373,9 @@
             "schema": {
               "$ref": "#/components/schemas/ChannelCondition"
             },
-            "required": true,
-            "description": "通道查询条件"
+            "required": true
           }
         ],
-        "description": "分页查询通道信息",
         "operationId": "pageChannel"
       }
     },
@@ -1383,7 +1439,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "空间编码"
+            "description": "空间编码，用于标识特定的空间"
           }
         ],
         "description": "获取指定空间的成员列表",
@@ -1415,7 +1471,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "成员唯一标识"
+            "description": "成员用户ID"
           },
           {
             "in": "query",
@@ -1427,7 +1483,7 @@
             "description": "空间编码"
           }
         ],
-        "description": "获取指定成员在指定空间中的角色信息",
+        "description": "获取成员在指定空间中的角色信息",
         "operationId": "getMemberRole"
       }
     },
@@ -1509,7 +1565,7 @@
                 }
               }
             },
-            "description": "API Key名称修改成功"
+            "description": "重命名操作成功返回"
           }
         },
         "description": "修改API Key的名称",
@@ -1523,7 +1579,7 @@
             }
           },
           "required": true,
-          "description": "API Key重命名操作参数"
+          "description": "重命名操作参数"
         }
       }
     },
@@ -1555,7 +1611,7 @@
             "description": "模型名称"
           }
         ],
-        "description": "获取指定模型的详细信息，包括模型基本信息和关联的通道信息",
+        "description": "获取模型详细信息，包括模型基本信息和关联的渠道信息",
         "operationId": "getModelDetails"
       }
     },
@@ -1576,7 +1632,7 @@
             "description": "发布成功"
           }
         },
-        "description": "发布模型，将模型设置为公开可见状态",
+        "description": "发布模型，将模型可见性设置为公开状态",
         "operationId": "publishModel",
         "requestBody": {
           "content": {
@@ -1587,7 +1643,7 @@
             }
           },
           "required": true,
-          "description": "模型发布操作参数"
+          "description": "模型可见性操作参数"
         }
       }
     },
@@ -1619,10 +1675,10 @@
               "$ref": "#/components/schemas/CategoryCondition"
             },
             "required": true,
-            "description": "分类查询条件，用于过滤分类列表"
+            "description": "分类查询条件，用于筛选分类数据"
           }
         ],
-        "description": "根据条件查询分类列表，返回符合条件的所有分类信息",
+        "description": "根据条件查询分类列表，返回符合条件的所有分类",
         "operationId": "listCategory"
       }
     },
@@ -1640,7 +1696,7 @@
                 }
               }
             },
-            "description": "成功返回分页分类数据"
+            "description": "成功返回分页的分类数据"
           }
         },
         "parameters": [
@@ -1651,10 +1707,10 @@
               "$ref": "#/components/schemas/CategoryCondition"
             },
             "required": true,
-            "description": "分类分页查询条件，包含分页参数和过滤条件"
+            "description": "分类查询条件，包含分页参数和筛选条件"
           }
         ],
-        "description": "分页查询分类信息，支持多种条件过滤",
+        "description": "分页查询分类信息，支持多种条件筛选",
         "operationId": "pageCategory"
       }
     },
@@ -1683,10 +1739,10 @@
               "$ref": "#/components/schemas/CategoryTreeCondition"
             },
             "required": true,
-            "description": "分类树查询条件，包含分类代码、是否包含端点和状态过滤"
+            "description": "分类树查询条件，包含分类代码、是否包含端点等参数"
           }
         ],
-        "description": "根据指定条件获取分类树结构，支持包含或不包含端点信息",
+        "description": "根据条件查询分类树结构，返回指定分类及其子分类的树形结构",
         "operationId": "listTree"
       }
     },
@@ -1707,7 +1763,7 @@
                 }
               }
             },
-            "description": "查询成功，返回端点列表"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -1717,11 +1773,9 @@
             "schema": {
               "$ref": "#/components/schemas/EndpointCondition"
             },
-            "required": true,
-            "description": "端点查询条件"
+            "required": true
           }
         ],
-        "description": "查询端点列表",
         "operationId": "listEndpoint"
       }
     },
@@ -1739,7 +1793,7 @@
                 }
               }
             },
-            "description": "查询成功，返回分页端点数据"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -1749,11 +1803,9 @@
             "schema": {
               "$ref": "#/components/schemas/EndpointCondition"
             },
-            "required": true,
-            "description": "端点查询条件"
+            "required": true
           }
         ],
-        "description": "分页查询端点信息",
         "operationId": "pageEndpoint"
       }
     },
@@ -1774,7 +1826,7 @@
                 }
               }
             },
-            "description": "协议名称和描述的映射"
+            "description": "获取成功"
           }
         },
         "parameters": [
@@ -1794,10 +1846,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "实体编码标识"
+            "description": "实体编码"
           }
         ],
-        "description": "获取实体支持的协议列表",
+        "description": "获取支持的协议列表",
         "operationId": "listProtocols"
       }
     },
@@ -1818,7 +1870,7 @@
                 }
               }
             },
-            "description": "供应商名称列表"
+            "description": "获取成功"
           }
         },
         "description": "获取供应商列表",
@@ -1842,7 +1894,7 @@
             "description": "空间拥有者变更成功"
           }
         },
-        "description": "变更空间的拥有者",
+        "description": "变更空间拥有者",
         "operationId": "changeSpaceOwner",
         "requestBody": {
           "content": {
@@ -1871,10 +1923,10 @@
                 }
               }
             },
-            "description": "API Key认证成功"
+            "description": "认证操作成功返回"
           }
         },
-        "description": "对API Key进行认证验证",
+        "description": "对API Key进行安全认证，设置认证码和安全等级",
         "operationId": "certify",
         "requestBody": {
           "content": {
@@ -1885,7 +1937,7 @@
             }
           },
           "required": true,
-          "description": "API Key认证操作参数"
+          "description": "安全认证操作参数"
         }
       }
     },
@@ -1906,7 +1958,7 @@
             "description": "激活成功"
           }
         },
-        "description": "激活模型，将模型状态设置为可用状态",
+        "description": "激活模型，将模型状态设置为激活状态",
         "operationId": "activateModel",
         "requestBody": {
           "content": {
@@ -1917,7 +1969,7 @@
             }
           },
           "required": true,
-          "description": "模型激活操作参数"
+          "description": "模型状态操作参数"
         }
       }
     },
@@ -1935,7 +1987,7 @@
                 }
               }
             },
-            "description": "语音属性配置信息"
+            "description": "获取成功"
           }
         },
         "parameters": [
@@ -1949,7 +2001,7 @@
             "description": "通道查询条件"
           }
         ],
-        "description": "获取语音属性配置信息",
+        "description": "获取语音属性配置",
         "operationId": "fetchVoiceProperty"
       }
     },
@@ -1967,10 +2019,10 @@
                 }
               }
             },
-            "description": "成员创建成功"
+            "description": "成员添加成功"
           }
         },
-        "description": "向空间添加新成员",
+        "description": "向空间添加成员",
         "operationId": "createMember",
         "requestBody": {
           "content": {
@@ -2063,10 +2115,10 @@
                 }
               }
             },
-            "description": "API Key激活成功"
+            "description": "激活操作成功返回"
           }
         },
-        "description": "激活API Key，将其状态设置为活跃",
+        "description": "激活API Key，使其可以正常使用",
         "operationId": "activate",
         "requestBody": {
           "content": {
@@ -2077,7 +2129,7 @@
             }
           },
           "required": true,
-          "description": "API Key激活操作参数"
+          "description": "激活操作参数"
         }
       }
     },
@@ -2098,7 +2150,7 @@
             "description": "授权设置成功"
           }
         },
-        "description": "设置模型的授权信息，管理模型的访问权限",
+        "description": "设置模型授权，管理模型的访问权限和授权用户",
         "operationId": "authorizeModel",
         "requestBody": {
           "content": {
@@ -2127,7 +2179,7 @@
                 }
               }
             },
-            "description": "更新操作执行结果"
+            "description": "更新成功"
           }
         },
         "description": "更新私有通道配置信息",
@@ -2157,7 +2209,7 @@
                 }
               }
             },
-            "description": "创建成功返回的通道信息"
+            "description": "创建成功"
           }
         },
         "description": "创建私有通道",
@@ -2233,7 +2285,7 @@
             }
           },
           "required": true,
-          "description": "模型停用操作参数"
+          "description": "模型状态操作参数"
         }
       }
     },
@@ -2251,10 +2303,10 @@
                 }
               }
             },
-            "description": "成功添加管理员，返回用户数据库信息"
+            "description": "成功添加管理员权限后返回的用户数据库记录"
           }
         },
-        "description": "添加管理员用户，支持通过用户ID、来源和来源ID、或来源和邮箱来添加管理员权限",
+        "description": "添加管理员权限，通过用户ID、来源和来源ID或邮箱来授予用户管理员角色",
         "operationId": "addManager",
         "requestBody": {
           "content": {
@@ -2265,7 +2317,7 @@
             }
           },
           "required": true,
-          "description": "操作员信息，包含用户标识和来源信息"
+          "description": "操作用户信息，用于标识需要添加管理员权限的用户"
         }
       }
     },
@@ -2283,7 +2335,7 @@
                 }
               }
             },
-            "description": "查询成功，返回端点详细信息"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -2293,11 +2345,9 @@
             "schema": {
               "$ref": "#/components/schemas/EndpointDetailsCondition"
             },
-            "required": true,
-            "description": "端点详情查询条件"
+            "required": true
           }
         ],
-        "description": "查询端点详细信息，包含模型和特性信息",
         "operationId": "listEndpointDetails"
       }
     },
@@ -2315,7 +2365,7 @@
                 }
               }
             },
-            "description": "价格信息的JSON Schema结构"
+            "description": "获取成功"
           }
         },
         "parameters": [
@@ -2335,7 +2385,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "实体编码标识"
+            "description": "实体编码"
           }
         ],
         "description": "获取价格信息的JSON Schema定义",
@@ -2376,10 +2426,10 @@
               "type": "boolean"
             },
             "required": false,
-            "description": "是否只查询激活状态的API Key"
+            "description": "是否只返回激活状态的API Key"
           }
         ],
-        "description": "通过SHA值查询API Key信息",
+        "description": "根据SHA值查询API Key信息",
         "operationId": "fetchBySha"
       }
     },
@@ -2397,10 +2447,10 @@
                 }
               }
             },
-            "description": "API Key停用成功"
+            "description": "停用操作成功返回"
           }
         },
-        "description": "停用API Key，将其状态设置为非活跃",
+        "description": "停用API Key，使其无法使用",
         "operationId": "inactivate",
         "requestBody": {
           "content": {
@@ -2411,7 +2461,7 @@
             }
           },
           "required": true,
-          "description": "API Key停用操作参数"
+          "description": "停用操作参数"
         }
       }
     },
@@ -2429,10 +2479,10 @@
                 }
               }
             },
-            "description": "成功激活分类目录"
+            "description": "激活操作执行结果"
           }
         },
-        "description": "激活指定的分类目录",
+        "description": "激活指定的类目，将类目状态设置为活跃状态",
         "operationId": "activateCategory",
         "requestBody": {
           "content": {
@@ -2443,7 +2493,7 @@
             }
           },
           "required": true,
-          "description": "激活分类目录的请求参数"
+          "description": "类目状态操作请求参数"
         }
       }
     },
@@ -2461,10 +2511,10 @@
                 }
               }
             },
-            "description": "激活成功"
+            "description": "激活操作执行结果"
           }
         },
-        "description": "激活端点，将端点状态设置为活跃状态",
+        "description": "激活端点，将端点状态设置为活跃可用状态",
         "operationId": "activateEndpoint",
         "requestBody": {
           "content": {
@@ -2475,7 +2525,7 @@
             }
           },
           "required": true,
-          "description": "端点状态操作参数"
+          "description": "端点激活操作参数"
         }
       }
     },
@@ -2493,10 +2543,10 @@
                 }
               }
             },
-            "description": "添加分类关联成功"
+            "description": "添加分类操作执行结果"
           }
         },
-        "description": "为端点添加分类关联，建立端点与分类的关系",
+        "description": "为端点添加分类标签，建立端点与分类的关联关系",
         "operationId": "addCategoryWithEndpoint",
         "requestBody": {
           "content": {
@@ -2523,10 +2573,10 @@
                 }
               }
             },
-            "description": "移除分类关联成功"
+            "description": "移除分类操作执行结果"
           }
         },
-        "description": "移除端点的分类关联，解除端点与指定分类的关系",
+        "description": "移除端点的分类标签，删除端点与指定分类的关联关系",
         "operationId": "removeCategoryWithEndpoint",
         "requestBody": {
           "content": {
@@ -2537,7 +2587,7 @@
             }
           },
           "required": true,
-          "description": "端点分类关联操作参数"
+          "description": "端点分类移除操作参数"
         }
       }
     },
@@ -2558,7 +2608,7 @@
             "description": "脚本重载成功，返回脚本的SHA值"
           }
         },
-        "description": "重新加载指定的Lua脚本文件到Redis缓存中",
+        "description": "重新加载指定的Lua脚本文件到Redis中，支持指定默认脚本作为备选",
         "operationId": "reloadLuaScript",
         "requestBody": {
           "content": {
@@ -2569,7 +2619,7 @@
             }
           },
           "required": true,
-          "description": "脚本重载请求信息，包含脚本名称和默认脚本名称"
+          "description": "脚本重载请求信息"
         }
       }
     },
@@ -2590,10 +2640,10 @@
                 }
               }
             },
-            "description": "成功返回所有分类树结构列表"
+            "description": "成功返回所有分类树列表"
           }
         },
-        "description": "获取所有顶级分类的完整树结构列表，包含所有子分类和端点信息",
+        "description": "获取所有顶级分类的完整树形结构，包含所有子分类和端点信息",
         "operationId": "listAllTree"
       }
     },
@@ -2611,7 +2661,7 @@
                 }
               }
             },
-            "description": "查询成功，返回模型详细信息"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -2621,11 +2671,9 @@
             "schema": {
               "type": "string"
             },
-            "required": true,
-            "description": "模型名称"
+            "required": true
           }
         ],
-        "description": "根据模型名称获取模型详细信息",
         "operationId": "getModel"
       }
     },
@@ -2643,10 +2691,10 @@
                 }
               }
             },
-            "description": "服务绑定成功"
+            "description": "服务绑定操作成功返回"
           }
         },
-        "description": "将API Key绑定到指定的服务",
+        "description": "绑定API Key到指定的服务",
         "operationId": "bindService",
         "requestBody": {
           "content": {
@@ -2695,10 +2743,10 @@
               "type": "boolean"
             },
             "required": false,
-            "description": "是否只查询激活状态的API Key"
+            "description": "是否只返回激活状态的API Key"
           }
         ],
-        "description": "通过编码查询API Key信息",
+        "description": "根据编码查询API Key信息",
         "operationId": "fetchByCode"
       }
     },
@@ -2716,7 +2764,7 @@
                 }
               }
             },
-            "description": "角色权限更新成功"
+            "description": "更新操作成功返回"
           }
         },
         "description": "更新API Key的角色权限配置",
@@ -2778,7 +2826,7 @@
                 }
               }
             },
-            "description": "权限检查结果，true表示有权限，false表示无权限"
+            "description": "权限检查结果，返回true表示有权限访问，false表示无权限"
           }
         },
         "parameters": [
@@ -2810,7 +2858,7 @@
                 }
               }
             },
-            "description": "通道信息的JSON Schema结构"
+            "description": "获取成功"
           }
         },
         "parameters": [
@@ -2830,7 +2878,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "实体编码标识"
+            "description": "实体编码"
           },
           {
             "in": "query",
@@ -2839,7 +2887,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "通信协议类型"
+            "description": "通信协议"
           }
         ],
         "description": "获取通道信息的JSON Schema定义",
@@ -2860,7 +2908,7 @@
                 }
               }
             },
-            "description": "配额更新成功"
+            "description": "配额更新操作成功返回"
           }
         },
         "description": "更新API Key的月度配额限制",
@@ -2892,7 +2940,7 @@
                 }
               }
             },
-            "description": "停用成功"
+            "description": "停用操作执行结果"
           }
         },
         "description": "停用端点，将端点状态设置为非活跃状态",
@@ -2924,7 +2972,7 @@
                 }
               }
             },
-            "description": "模型特性的JSON Schema结构"
+            "description": "获取成功"
           }
         },
         "parameters": [
@@ -2963,7 +3011,7 @@
                 }
               }
             },
-            "description": "成功返回API Key的月度费用记录列表"
+            "description": "成功返回API Key的月度费用账单列表"
           }
         },
         "parameters": [
@@ -2974,10 +3022,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "API Key的编码"
+            "description": "API Key编码"
           }
         ],
-        "description": "查询指定API Key的月度费用账单记录",
+        "description": "查询指定API Key的月度费用账单列表",
         "operationId": "listApiKeyBillings"
       }
     },
@@ -2995,10 +3043,10 @@
                 }
               }
             },
-            "description": "成功停用分类目录"
+            "description": "停用操作执行结果"
           }
         },
-        "description": "停用指定的分类目录",
+        "description": "停用指定的类目，将类目状态设置为非活跃状态",
         "operationId": "inactivateCategory",
         "requestBody": {
           "content": {
@@ -3009,7 +3057,7 @@
             }
           },
           "required": true,
-          "description": "停用分类目录的请求参数"
+          "description": "类目状态操作请求参数"
         }
       }
     },
@@ -3030,7 +3078,7 @@
             "description": "取消发布成功"
           }
         },
-        "description": "取消发布模型，将模型设置为私有状态",
+        "description": "取消发布模型，将模型可见性设置为私有状态",
         "operationId": "cancelPublishModel",
         "requestBody": {
           "content": {
@@ -3041,7 +3089,7 @@
             }
           },
           "required": true,
-          "description": "取消发布操作参数"
+          "description": "模型可见性操作参数"
         }
       }
     },
@@ -3062,7 +3110,7 @@
             "description": "转录任务提交成功，返回任务ID"
           }
         },
-        "description": "提交音频文件转录任务，返回任务ID用于后续查询结果",
+        "description": "提交音频文件转录任务，支持异步处理音频文件转换为文本",
         "operationId": "transcribeAudio",
         "requestBody": {
           "content": {
@@ -3073,7 +3121,7 @@
             }
           },
           "required": true,
-          "description": "音频转录请求参数"
+          "description": "音频转录请求参数，包含音频文件URL、模型、回调地址等信息"
         }
       }
     },
@@ -3091,7 +3139,7 @@
                 }
               }
             },
-            "description": "查询成功，返回端点详细信息"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -3101,11 +3149,9 @@
             "schema": {
               "type": "string"
             },
-            "required": true,
-            "description": "端点编码"
+            "required": true
           }
         ],
-        "description": "根据端点编码获取端点详细信息",
         "operationId": "getEndpoint"
       }
     },
@@ -3123,7 +3169,7 @@
                 }
               }
             },
-            "description": "模型属性的JSON Schema结构"
+            "description": "获取成功"
           }
         },
         "parameters": [
@@ -3162,10 +3208,10 @@
                 }
               }
             },
-            "description": "成功返回模型映射表"
+            "description": "成功返回模型映射关系"
           }
         },
-        "description": "获取所有模型的映射信息，用于检查和调试模型缓存状态",
+        "description": "获取所有模型的映射关系，返回模型名称与模型详细信息的键值对",
         "operationId": "listMap"
       }
     },
@@ -3197,10 +3243,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "API Key的编码"
+            "description": "API Key编码"
           }
         ],
-        "description": "获取指定API Key的余额信息",
+        "description": "查询指定API Key的余额信息，包括当月费用、配额和剩余额度",
         "operationId": "getApiKeyBalance"
       }
     },
@@ -3221,7 +3267,7 @@
             "description": "刷新操作成功完成"
           }
         },
-        "description": "刷新模型映射缓存，清除并重新加载所有模型数据到缓存中",
+        "description": "刷新模型映射缓存，重新加载所有模型数据到缓存中",
         "operationId": "refresh"
       }
     },
@@ -3239,7 +3285,7 @@
                 }
               }
             },
-            "description": "激活操作执行结果"
+            "description": "激活成功"
           }
         },
         "description": "激活私有通道",
@@ -3274,7 +3320,7 @@
                 }
               }
             },
-            "description": "查询成功，返回用于选择的模型列表"
+            "description": "OK"
           }
         },
         "parameters": [
@@ -3284,11 +3330,9 @@
             "schema": {
               "$ref": "#/components/schemas/ModelCondition"
             },
-            "required": true,
-            "description": "模型查询条件"
+            "required": true
           }
         ],
-        "description": "查询用于选择的模型列表",
         "operationId": "listModelForSelection"
       }
     },
@@ -3306,10 +3350,10 @@
                 }
               }
             },
-            "description": "替换分类关联成功"
+            "description": "替换分类操作执行结果"
           }
         },
-        "description": "替换端点的分类关联，先删除原有关联再添加新的分类关联",
+        "description": "替换端点的分类标签，用新的分类集合完全替换原有分类关联",
         "operationId": "replaceCategoryWithEndpoint",
         "requestBody": {
           "content": {
@@ -3320,7 +3364,7 @@
             }
           },
           "required": true,
-          "description": "端点分类关联操作参数"
+          "description": "端点分类替换操作参数"
         }
       }
     },
@@ -3338,7 +3382,7 @@
                 }
               }
             },
-            "description": "停用操作执行结果"
+            "description": "停用成功"
           }
         },
         "description": "停用私有通道",
@@ -3373,7 +3417,7 @@
             "description": "成功返回转录结果数据"
           }
         },
-        "description": "根据任务ID获取音频转录结果",
+        "description": "查询音频转录任务结果，根据任务ID获取转录完成的文本内容",
         "operationId": "getTranscriptionResult",
         "requestBody": {
           "content": {
@@ -3384,7 +3428,7 @@
             }
           },
           "required": true,
-          "description": "查询转录结果的请求参数"
+          "description": "查询转录结果的请求参数，包含任务ID列表"
         }
       }
     }
@@ -3392,7 +3436,7 @@
   "openapi": "3.0.1",
   "servers": [
     {
-      "url": "https://bella-openapi.ke.com:80",
+      "url": "https://open-chatgpt.ke.com:80",
       "description": "Generated server url"
     }
   ],
@@ -3406,11 +3450,14 @@
       "Tool": {
         "type": "object",
         "properties": {
-          "type": {
+          "name": {
             "type": "string"
           },
-          "function": {
-            "$ref": "#/components/schemas/Function"
+          "description": {
+            "type": "string"
+          },
+          "input_schema": {
+            "$ref": "#/components/schemas/InputSchema"
           }
         }
       },
@@ -3419,100 +3466,81 @@
         "properties": {
           "cuid": {
             "type": "integer",
-            "format": "int64",
-            "description": "创建者ID"
+            "format": "int64"
           },
           "muid": {
             "type": "integer",
-            "format": "int64",
-            "description": "修改者ID"
+            "format": "int64"
           },
           "ctime": {
             "type": "string",
-            "format": "date-time",
-            "description": "创建时间"
+            "format": "date-time"
           },
           "mtime": {
             "type": "string",
-            "format": "date-time",
-            "description": "修改时间"
+            "format": "date-time"
           },
           "cuName": {
-            "type": "string",
-            "description": "创建者姓名"
+            "type": "string"
           },
           "muName": {
-            "type": "string",
-            "description": "修改者姓名"
+            "type": "string"
           },
           "status": {
-            "type": "string",
-            "description": "状态"
+            "type": "string"
           },
           "features": {
-            "type": "string",
-            "description": "模型特性"
+            "type": "string"
           },
           "linkedTo": {
-            "type": "string",
-            "description": "关联信息"
+            "type": "string"
           },
           "modelName": {
-            "type": "string",
-            "description": "模型名称"
+            "type": "string"
           },
           "ownerCode": {
-            "type": "string",
-            "description": "所有者编码"
+            "type": "string"
           },
           "ownerName": {
-            "type": "string",
-            "description": "所有者名称"
+            "type": "string"
           },
           "ownerType": {
-            "type": "string",
-            "description": "所有者类型"
+            "type": "string"
           },
           "properties": {
-            "type": "string",
-            "description": "模型属性配置"
+            "type": "string"
           },
           "visibility": {
-            "type": "string",
-            "description": "可见性"
+            "type": "string"
           },
           "documentUrl": {
-            "type": "string",
-            "description": "文档链接"
+            "type": "string"
           },
           "priceDetails": {
-            "$ref": "#/components/schemas/PriceDetails",
-            "description": "价格详情"
+            "$ref": "#/components/schemas/PriceDetails"
           },
           "terminalModel": {
-            "type": "string",
-            "description": "终端模型名称"
+            "type": "string"
           }
-        },
-        "description": "模型信息"
+        }
       },
       "Space": {
         "type": "object",
         "properties": {
           "ownerUid": {
             "type": "string",
-            "description": "空间拥有者用户ID"
+            "description": "空间所有者的用户唯一标识"
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间编码"
+            "description": "空间编码，唯一标识一个空间"
           },
           "spaceName": {
             "type": "string",
-            "description": "空间名称"
+            "description": "空间名称，显示给用户的空间标题"
           }
         },
-        "description": "空间信息实体"
+        "description": "空间实体，表示一个工作空间或团队空间"
       },
       "CodeOp": {
         "type": "object",
@@ -3556,27 +3584,27 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "基于编码的操作参数"
+        "description": "API Key编码操作参数"
       },
       "Member": {
         "type": "object",
         "properties": {
           "memberUid": {
             "type": "string",
-            "description": "成员用户ID"
+            "description": "成员的用户唯一标识"
           },
           "memberName": {
             "type": "string",
-            "description": "成员姓名"
+            "description": "成员的显示名称或用户名"
           }
         },
-        "description": "空间成员信息实体"
+        "description": "空间成员实体，表示空间中的一个成员用户"
       },
       "NameOp": {
         "type": "object",
@@ -3587,7 +3615,7 @@
           },
           "name": {
             "type": "string",
-            "description": "新的名称"
+            "description": "新的API Key名称"
           },
           "email": {
             "type": "string",
@@ -3624,13 +3652,13 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "名称修改操作参数"
+        "description": "API Key名称操作参数"
       },
       "RoleOp": {
         "type": "object",
@@ -3685,13 +3713,13 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "角色权限操作参数"
+        "description": "API Key角色权限操作参数"
       },
       "UserDB": {
         "type": "object",
@@ -3699,7 +3727,7 @@
           "id": {
             "type": "integer",
             "format": "int64",
-            "description": "用户唯一标识ID"
+            "description": "用户数据库主键ID"
           },
           "ctime": {
             "type": "string",
@@ -3725,18 +3753,18 @@
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "用户姓名"
           },
           "managerAk": {
             "type": "string",
-            "description": "管理员访问密钥，用于API访问权限控制"
+            "description": "管理员访问密钥，用于API访问认证"
           },
           "optionalInfo": {
             "type": "string",
-            "description": "用户可选信息的JSON字符串格式存储"
+            "description": "序列化后的可选扩展信息JSON字符串"
           }
         },
-        "description": "用户数据库实体，存储用户的完整信息"
+        "description": "用户数据库实体，存储用户的完整信息记录"
       },
       "ApplyOp": {
         "type": "object",
@@ -3804,7 +3832,7 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -3916,6 +3944,12 @@
           },
           "reasoning_content": {
             "type": "string"
+          },
+          "redacted_reasoning_content": {
+            "type": "string"
+          },
+          "reasoning_content_signature": {
+            "type": "string"
           }
         }
       },
@@ -3925,78 +3959,78 @@
           "id": {
             "type": "integer",
             "format": "int64",
-            "description": "模型的唯一标识ID"
+            "description": "模型唯一标识ID"
           },
           "cuid": {
             "type": "integer",
             "format": "int64",
-            "description": "创建用户的ID"
+            "description": "创建用户ID"
           },
           "muid": {
             "type": "integer",
             "format": "int64",
-            "description": "最后修改用户的ID"
+            "description": "修改用户ID"
           },
           "ctime": {
             "type": "string",
             "format": "date-time",
-            "description": "记录创建时间"
+            "description": "创建时间"
           },
           "mtime": {
             "type": "string",
             "format": "date-time",
-            "description": "记录最后修改时间"
+            "description": "修改时间"
           },
           "cuName": {
             "type": "string",
-            "description": "创建用户的名称"
+            "description": "创建用户名称"
           },
           "muName": {
             "type": "string",
-            "description": "最后修改用户的名称"
+            "description": "修改用户名称"
           },
           "status": {
             "type": "string",
-            "description": "模型当前状态，如启用、禁用等"
+            "description": "模型状态"
           },
           "features": {
             "type": "string",
-            "description": "模型支持的功能特性，以JSON字符串形式存储"
+            "description": "模型特性配置，JSON格式字符串"
           },
           "linkedTo": {
             "type": "string",
-            "description": "模型关联的其他资源或服务"
+            "description": "模型关联的终端模型名称"
           },
           "modelName": {
             "type": "string",
-            "description": "模型名称，用于标识和调用模型"
+            "description": "模型名称"
           },
           "ownerCode": {
             "type": "string",
-            "description": "模型所有者的编码标识"
+            "description": "所有者编码"
           },
           "ownerName": {
             "type": "string",
-            "description": "模型所有者的名称"
+            "description": "所有者名称"
           },
           "ownerType": {
             "type": "string",
-            "description": "模型所有者类型，如用户、组织等"
+            "description": "所有者类型"
           },
           "properties": {
             "type": "string",
-            "description": "模型的属性配置信息，以JSON字符串形式存储"
+            "description": "模型属性配置，JSON格式字符串"
           },
           "visibility": {
             "type": "string",
-            "description": "模型的可见性设置，控制模型的访问权限"
+            "description": "模型可见性设置"
           },
           "documentUrl": {
             "type": "string",
-            "description": "模型文档的URL地址"
+            "description": "模型文档链接地址"
           }
         },
-        "description": "模型数据库实体，存储AI模型的完整信息和元数据"
+        "description": "AI模型数据库实体，包含模型的完整配置信息"
       },
       "ModelOp": {
         "type": "object",
@@ -4016,7 +4050,7 @@
           },
           "features": {
             "type": "string",
-            "description": "模型特性配置信息"
+            "description": "模型特性配置，JSON格式字符串"
           },
           "sourceId": {
             "type": "string",
@@ -4035,7 +4069,7 @@
             "items": {
               "type": "string"
             },
-            "description": "模型支持的端点列表",
+            "description": "模型关联的端点列表",
             "uniqueItems": true
           },
           "managerAk": {
@@ -4048,15 +4082,15 @@
           },
           "ownerCode": {
             "type": "string",
-            "description": "所有者编码"
+            "description": "模型所有者编码"
           },
           "ownerName": {
             "type": "string",
-            "description": "所有者名称"
+            "description": "模型所有者名称"
           },
           "ownerType": {
             "type": "string",
-            "description": "所有者类型"
+            "description": "模型所有者类型"
           },
           "spaceCode": {
             "type": "string",
@@ -4064,15 +4098,15 @@
           },
           "properties": {
             "type": "string",
-            "description": "模型属性配置信息"
+            "description": "模型属性配置，JSON格式字符串"
           },
           "documentUrl": {
             "type": "string",
-            "description": "模型文档URL"
+            "description": "模型文档地址"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -4126,16 +4160,120 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "配额更新操作参数"
+        "description": "API Key配额更新操作参数"
       },
       "ApikeyDB": {
         "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "主键ID"
+          },
+          "code": {
+            "type": "string",
+            "description": "API Key编码"
+          },
+          "cuid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建用户ID"
+          },
+          "muid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "修改用户ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "API Key名称"
+          },
+          "akSha": {
+            "type": "string",
+            "description": "API Key的SHA哈希值"
+          },
+          "ctime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "mtime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "修改时间"
+          },
+          "cuName": {
+            "type": "string",
+            "description": "创建用户名称"
+          },
+          "muName": {
+            "type": "string",
+            "description": "修改用户名称"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注信息"
+          },
+          "status": {
+            "type": "string",
+            "description": "API Key状态"
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "角色编码"
+          },
+          "akDisplay": {
+            "type": "string",
+            "description": "API Key的显示格式（脱敏）"
+          },
+          "ownerCode": {
+            "type": "string",
+            "description": "拥有者编码"
+          },
+          "ownerName": {
+            "type": "string",
+            "description": "拥有者名称"
+          },
+          "ownerType": {
+            "type": "string",
+            "description": "拥有者类型"
+          },
+          "serviceId": {
+            "type": "string",
+            "description": "绑定的服务ID"
+          },
+          "monthQuota": {
+            "type": "number",
+            "description": "月度配额限制"
+          },
+          "parentCode": {
+            "type": "string",
+            "description": "父级API Key编码"
+          },
+          "certifyCode": {
+            "type": "string",
+            "description": "安全认证码"
+          },
+          "safetyLevel": {
+            "type": "string",
+            "format": "byte",
+            "description": "安全等级"
+          },
+          "outEntityCode": {
+            "type": "string",
+            "description": "外部实体编码"
+          },
+          "safetySceneCode": {
+            "type": "string",
+            "description": "安全场景编码"
+          }
+        },
         "description": "API Key数据库实体"
       },
       "Endpoint": {
@@ -4202,6 +4340,14 @@
           }
         }
       },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
       "Operator": {
         "type": "object",
         "properties": {
@@ -4228,25 +4374,25 @@
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "用户姓名"
           },
           "managerAk": {
             "type": "string",
-            "description": "管理员访问密钥，用于API访问权限控制"
+            "description": "管理员访问密钥，用于API访问认证"
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间代码，用于标识用户所属的工作空间"
+            "description": "空间编码，用于标识用户所属的工作空间"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "用户可选的扩展信息，以键值对形式存储",
+            "description": "可选的扩展信息，存储额外的用户属性数据",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "操作员信息，包含用户身份和权限相关数据"
+        "description": "操作者信息，包含用户身份标识和权限相关数据"
       },
       "RolePath": {
         "type": "object",
@@ -4344,17 +4490,17 @@
           },
           "certifyCode": {
             "type": "string",
-            "description": "认证码"
+            "description": "安全认证码"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "认证操作参数"
+        "description": "API Key安全认证操作参数"
       },
       "ChannelDB": {
         "type": "object",
@@ -4362,21 +4508,21 @@
           "id": {
             "type": "integer",
             "format": "int64",
-            "description": "主键ID"
+            "description": "通道唯一标识ID"
           },
           "url": {
             "type": "string",
-            "description": "访问地址"
+            "description": "服务URL地址"
           },
           "cuid": {
             "type": "integer",
             "format": "int64",
-            "description": "创建者ID"
+            "description": "创建用户ID"
           },
           "muid": {
             "type": "integer",
             "format": "int64",
-            "description": "修改者ID"
+            "description": "修改用户ID"
           },
           "ctime": {
             "type": "string",
@@ -4390,27 +4536,27 @@
           },
           "cuName": {
             "type": "string",
-            "description": "创建者姓名"
+            "description": "创建用户名称"
           },
           "muName": {
             "type": "string",
-            "description": "修改者姓名"
+            "description": "修改用户名称"
           },
           "status": {
             "type": "string",
-            "description": "状态"
+            "description": "通道状态（active/inactive）"
           },
           "priority": {
             "type": "string",
-            "description": "优先级"
+            "description": "通道优先级"
           },
           "protocol": {
             "type": "string",
-            "description": "协议类型"
+            "description": "通信协议"
           },
           "supplier": {
             "type": "string",
-            "description": "供应商"
+            "description": "供应商名称"
           },
           "ownerCode": {
             "type": "string",
@@ -4426,7 +4572,7 @@
           },
           "priceInfo": {
             "type": "string",
-            "description": "价格信息"
+            "description": "价格信息的JSON字符串"
           },
           "entityCode": {
             "type": "string",
@@ -4434,28 +4580,28 @@
           },
           "entityType": {
             "type": "string",
-            "description": "实体类型"
+            "description": "实体类型（endpoint或model）"
           },
           "visibility": {
             "type": "string",
-            "description": "可见性"
+            "description": "可见性（public/private）"
           },
           "channelCode": {
             "type": "string",
-            "description": "通道编码"
+            "description": "通道编码，系统自动生成"
           },
           "channelInfo": {
             "type": "string",
-            "description": "通道配置信息"
+            "description": "通道配置信息的JSON字符串"
           },
           "trialEnabled": {
             "type": "string",
             "format": "byte",
-            "description": "是否启用试用"
+            "description": "是否启用试用（0-否，1-是）"
           },
           "dataDestination": {
             "type": "string",
-            "description": "数据目标位置"
+            "description": "数据流向"
           }
         },
         "description": "通道数据库实体"
@@ -4506,13 +4652,13 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选信息",
+            "description": "可选附加信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "服务绑定操作参数"
+        "description": "API Key服务绑定操作参数"
       },
       "ApikeyInfo": {
         "type": "object",
@@ -4544,7 +4690,7 @@
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "关联的用户ID"
+            "description": "用户ID"
           },
           "roleCode": {
             "type": "string",
@@ -4556,7 +4702,7 @@
           },
           "akDisplay": {
             "type": "string",
-            "description": "API Key的显示值"
+            "description": "API Key显示名称"
           },
           "ownerCode": {
             "type": "string",
@@ -4572,7 +4718,7 @@
           },
           "serviceId": {
             "type": "string",
-            "description": "关联的服务ID"
+            "description": "服务ID"
           },
           "monthQuota": {
             "type": "number",
@@ -4600,7 +4746,7 @@
             "description": "安全场景编码"
           }
         },
-        "description": "API Key详细信息对象"
+        "description": "API Key信息对象"
       },
       "CategoryDB": {
         "type": "object",
@@ -4608,27 +4754,27 @@
           "id": {
             "type": "integer",
             "format": "int64",
-            "description": "分类目录唯一标识ID"
+            "description": "类目的唯一标识ID，数据库主键"
           },
           "cuid": {
             "type": "integer",
             "format": "int64",
-            "description": "创建用户ID"
+            "description": "创建用户ID，记录创建该类目的用户标识"
           },
           "muid": {
             "type": "integer",
             "format": "int64",
-            "description": "修改用户ID"
+            "description": "修改用户ID，记录最后修改该类目的用户标识"
           },
           "ctime": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "创建时间，记录类目的创建时间戳"
           },
           "mtime": {
             "type": "string",
             "format": "date-time",
-            "description": "修改时间"
+            "description": "修改时间，记录类目的最后修改时间戳"
           },
           "cuName": {
             "type": "string",
@@ -4640,22 +4786,22 @@
           },
           "status": {
             "type": "string",
-            "description": "分类目录状态"
+            "description": "类目状态，标识类目是否处于活跃状态"
           },
           "parentCode": {
             "type": "string",
-            "description": "父级分类目录编码"
+            "description": "父类目编码，用于构建类目层级关系"
           },
           "categoryCode": {
             "type": "string",
-            "description": "分类目录编码"
+            "description": "类目编码，系统生成的唯一标识码"
           },
           "categoryName": {
             "type": "string",
-            "description": "分类目录名称"
+            "description": "类目名称"
           }
         },
-        "description": "分类目录数据库实体对象"
+        "description": "类目数据库实体对象，包含类目的完整信息和审计字段"
       },
       "EndpointDB": {
         "type": "object",
@@ -4663,7 +4809,7 @@
           "id": {
             "type": "integer",
             "format": "int64",
-            "description": "端点唯一标识ID"
+            "description": "端点ID，主键"
           },
           "cuid": {
             "type": "integer",
@@ -4695,45 +4841,45 @@
           },
           "status": {
             "type": "string",
-            "description": "端点状态，如活跃、停用等"
+            "description": "端点状态"
           },
           "endpoint": {
             "type": "string",
-            "description": "端点标识符"
+            "description": "端点地址"
           },
           "costScript": {
             "type": "string",
-            "description": "成本计算脚本，用于计算端点使用成本"
+            "description": "计费脚本"
           },
           "documentUrl": {
             "type": "string",
-            "description": "文档URL，指向端点的详细文档地址"
+            "description": "文档地址"
           },
           "endpointCode": {
             "type": "string",
-            "description": "端点代码，系统生成的唯一代码"
+            "description": "端点编码，系统自动生成"
           },
           "endpointName": {
             "type": "string",
-            "description": "端点名称，用于显示的友好名称"
+            "description": "端点名称"
           },
           "maintainerCode": {
             "type": "string",
-            "description": "维护者代码，标识端点维护者"
+            "description": "维护者编码"
           },
           "maintainerName": {
             "type": "string",
             "description": "维护者名称"
           }
         },
-        "description": "端点数据库实体，包含端点的完整信息"
+        "description": "端点数据库实体，包含端点的完整信息和系统字段"
       },
       "EndpointOp": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "description": "用户邮箱地址"
+            "description": "操作用户邮箱地址"
           },
           "source": {
             "type": "string",
@@ -4742,11 +4888,11 @@
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "用户ID，标识操作用户"
+            "description": "操作用户ID"
           },
           "endpoint": {
             "type": "string",
-            "description": "端点标识符"
+            "description": "端点地址"
           },
           "sourceId": {
             "type": "string",
@@ -4754,11 +4900,11 @@
           },
           "tenantId": {
             "type": "string",
-            "description": "租户ID，用于多租户隔离"
+            "description": "租户标识"
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "操作用户名称"
           },
           "managerAk": {
             "type": "string",
@@ -4766,38 +4912,38 @@
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间代码，标识所属空间"
+            "description": "空间编码"
           },
           "testUsage": {
             "type": "object",
-            "description": "测试使用情况，记录测试环境的使用数据"
+            "description": "测试用量数据"
           },
           "costScript": {
             "type": "string",
-            "description": "成本计算脚本，用于计算端点使用成本"
+            "description": "计费脚本"
           },
           "documentUrl": {
             "type": "string",
-            "description": "文档URL，指向端点的详细文档地址"
+            "description": "文档地址"
           },
           "endpointName": {
             "type": "string",
-            "description": "端点名称，用于显示的友好名称"
+            "description": "端点名称"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选的附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           },
           "testPriceInfo": {
             "type": "string",
-            "description": "测试价格信息，用于测试环境的价格配置"
+            "description": "测试价格信息"
           },
           "maintainerCode": {
             "type": "string",
-            "description": "维护者代码，标识端点维护者"
+            "description": "维护者编码"
           },
           "maintainerName": {
             "type": "string",
@@ -4822,32 +4968,43 @@
             "items": {
               "$ref": "#/components/schemas/TypeSchema"
             },
-            "description": "参数类型定义列表",
+            "description": "参数定义列表",
             "uniqueItems": true
           }
         },
-        "description": "JSON Schema结构定义"
+        "description": "JSON Schema定义"
       },
       "ScriptInfo": {
         "type": "object",
         "properties": {
           "scriptName": {
             "type": "string",
-            "description": "要重载的Lua脚本文件名称"
+            "description": "要重载的脚本名称"
           },
           "defaultName": {
             "type": "string",
-            "description": "默认脚本文件名称，当指定脚本不存在时使用"
+            "description": "默认脚本名称，当主脚本不存在时使用"
           }
         },
         "description": "Lua脚本信息，用于脚本重载操作"
+      },
+      "ToolChoice": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
       },
       "TtsRequest": {
         "type": "object",
         "properties": {
           "user": {
             "type": "string",
-            "description": "用户标识符"
+            "description": "用户标识"
           },
           "input": {
             "type": "string",
@@ -4855,12 +5012,12 @@
           },
           "model": {
             "type": "string",
-            "description": "使用的TTS模型名称"
+            "description": "使用的语音合成模型名称"
           },
           "speed": {
             "type": "number",
             "format": "double",
-            "description": "语音播放速度，范围通常为0.25-4.0"
+            "description": "语音播放速度，1.0为正常速度"
           },
           "voice": {
             "type": "string",
@@ -4868,24 +5025,41 @@
           },
           "stream": {
             "type": "boolean",
-            "description": "是否使用流式输出，true为流式，false为一次性输出"
+            "description": "是否使用流式输出"
           },
           "sample_rate": {
             "type": "integer",
             "format": "int32",
-            "description": "音频采样率，单位为Hz"
+            "description": "音频采样率，单位Hz"
           },
           "response_format": {
             "type": "string",
-            "description": "音频输出格式，如mp3、wav、opus等"
+            "description": "音频输出格式，如mp3、wav等"
           }
         },
-        "description": "文本转语音请求参数"
+        "description": "文本转语音请求参数，包含文本内容和语音生成配置"
       },
       "TypeSchema": {
         "type": "object",
         "properties": {
-
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "child": {
+            "$ref": "#/components/schemas/JsonSchema"
+          },
+          "valueType": {
+            "type": "string"
+          },
+          "selections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "description": "类型Schema定义"
       },
@@ -4902,7 +5076,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -4911,7 +5085,7 @@
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -4927,21 +5101,21 @@
           },
           "memberUid": {
             "type": "string",
-            "description": "要退出空间的成员唯一标识"
+            "description": "要退出空间的成员用户ID"
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间编码"
+            "description": "要退出的空间编码"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "成员退出空间的操作参数"
+        "description": "退出空间的操作参数"
       },
       "FlashResult": {
         "type": "object",
@@ -4955,6 +5129,26 @@
             "items": {
               "$ref": "#/components/schemas/Sentence"
             }
+          }
+        }
+      },
+      "InputSchema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "properties": {
+            "type": "object"
+          },
+          "additionalProperties": {
+            "type": "boolean"
           }
         }
       },
@@ -4976,7 +5170,7 @@
           },
           "linkedTo": {
             "type": "string",
-            "description": "要关联的目标模型名称"
+            "description": "目标关联模型名称"
           },
           "sourceId": {
             "type": "string",
@@ -5004,13 +5198,13 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "模型关联操作参数，用于建立模型之间的关联关系"
+        "description": "模型关联操作参数，用于建立模型间的链接关系"
       },
       "PageModelDB": {
         "type": "object",
@@ -5019,64 +5213,58 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ModelDB"
-            },
-            "description": "模型数据列表"
+            }
           },
           "page": {
             "type": "integer",
-            "format": "int32",
-            "description": "当前页码"
+            "format": "int32"
           },
           "limit": {
             "type": "integer",
-            "format": "int32",
-            "description": "每页限制条数"
+            "format": "int32"
           },
           "total": {
             "type": "integer",
-            "format": "int32",
-            "description": "总记录数"
+            "format": "int32"
           },
           "has_more": {
-            "type": "boolean",
-            "description": "是否有更多数据"
+            "type": "boolean"
           }
-        },
-        "description": "模型分页查询结果"
+        }
       },
       "RouteResult": {
         "type": "object",
         "properties": {
           "url": {
             "type": "string",
-            "description": "目标服务URL地址"
+            "description": "目标服务的完整URL地址"
           },
           "protocol": {
             "type": "string",
-            "description": "通信协议，如HTTP、WebSocket等"
+            "description": "通信协议类型，如HTTP、WebSocket等"
           },
           "priceInfo": {
             "type": "string",
-            "description": "价格信息，通道的计费相关配置"
+            "description": "定价信息的JSON字符串，包含该渠道的计费规则"
           },
           "entityCode": {
             "type": "string",
-            "description": "实体编码，具体的实体标识符"
+            "description": "实体编码，对应模型名称或端点标识"
           },
           "entityType": {
             "type": "string",
-            "description": "实体类型，标识通道关联的实体类别"
+            "description": "实体类型，如MODEL或ENDPOINT"
           },
           "channelCode": {
             "type": "string",
-            "description": "通道编码，唯一标识选中的通道"
+            "description": "渠道编码，唯一标识选中的渠道"
           },
           "channelInfo": {
             "type": "object",
-            "description": "通道配置信息，包含通道的详细参数设置"
+            "description": "渠道配置信息的JSON对象，包含协议相关的详细配置"
           }
         },
-        "description": "路由结果信息，包含匹配通道的详细配置和价格信息"
+        "description": "路由结果对象，包含选中渠道的完整信息"
       },
       "CreateRoleOp": {
         "type": "object",
@@ -5098,7 +5286,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -5107,7 +5295,7 @@
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -5129,13 +5317,13 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "创建角色的操作参数"
+        "description": "创建空间角色的操作参数"
       },
       "FunctionCall": {
         "type": "object",
@@ -5145,6 +5333,17 @@
           },
           "arguments": {
             "type": "string"
+          }
+        }
+      },
+      "InputMessage": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "content": {
+            "type": "object"
           }
         }
       },
@@ -5168,7 +5367,7 @@
           },
           "model": {
             "$ref": "#/components/schemas/Model",
-            "description": "模型信息"
+            "description": "模型基本信息"
           },
           "mtime": {
             "type": "string",
@@ -5188,10 +5387,10 @@
             "items": {
               "$ref": "#/components/schemas/Channel"
             },
-            "description": "关联的通道列表"
+            "description": "模型关联的渠道列表"
           }
         },
-        "description": "模型详细信息，包含模型基本信息和关联的通道信息"
+        "description": "模型详细信息，包含模型基本信息和关联渠道"
       },
       "OpenapiError": {
         "type": "object",
@@ -5235,7 +5434,7 @@
           "limit": {
             "type": "integer",
             "format": "int32",
-            "description": "每页限制数量"
+            "description": "每页限制条数"
           },
           "total": {
             "type": "integer",
@@ -5244,7 +5443,7 @@
           },
           "has_more": {
             "type": "boolean",
-            "description": "是否还有更多数据"
+            "description": "是否有更多数据"
           }
         },
         "description": "API Key分页查询结果"
@@ -5271,18 +5470,18 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称，指定要使用的AI模型"
+            "description": "指定的AI模型名称，用于模型路由选择"
           },
           "apikey": {
             "type": "string",
-            "description": "API密钥，用于身份验证和权限校验"
+            "description": "用户的API密钥，用于身份验证和权限校验"
           },
           "endpoint": {
             "type": "string",
-            "description": "请求的端点路径，如/v1/chat/completions"
+            "description": "目标端点路径，如/v1/messages、/v1/embeddings等"
           }
         },
-        "description": "路由请求参数，用于查找匹配的服务通道"
+        "description": "路由请求对象，用于指定路由选择的条件"
       },
       "CreateSpaceOp": {
         "type": "object",
@@ -5298,7 +5497,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -5309,11 +5508,11 @@
             "type": "string",
             "maxLength": 64,
             "minLength": 0,
-            "description": "空间拥有者唯一标识"
+            "description": "空间拥有者用户ID"
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -5337,7 +5536,7 @@
             "type": "string",
             "maxLength": 64,
             "minLength": 0,
-            "description": "空间编码，如为空则自动生成"
+            "description": "空间编码，不填则自动生成"
           },
           "spaceName": {
             "type": "string",
@@ -5347,7 +5546,7 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -5395,7 +5594,7 @@
           },
           "modelName": {
             "type": "string",
-            "description": "模型名称"
+            "description": "目标模型名称"
           },
           "spaceCode": {
             "type": "string",
@@ -5403,7 +5602,7 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -5418,30 +5617,24 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChannelDB"
-            },
-            "description": "通道数据列表"
+            }
           },
           "page": {
             "type": "integer",
-            "format": "int32",
-            "description": "当前页码"
+            "format": "int32"
           },
           "limit": {
             "type": "integer",
-            "format": "int32",
-            "description": "每页限制条数"
+            "format": "int32"
           },
           "total": {
             "type": "integer",
-            "format": "int32",
-            "description": "总记录数"
+            "format": "int32"
           },
           "has_more": {
-            "type": "boolean",
-            "description": "是否有更多数据"
+            "type": "boolean"
           }
-        },
-        "description": "通道分页查询结果"
+        }
       },
       "RoleWithSpace": {
         "type": "object",
@@ -5459,7 +5652,7 @@
             "description": "空间名称"
           }
         },
-        "description": "角色与空间关联信息"
+        "description": "角色与空间信息的组合对象"
       },
       "StreamOptions": {
         "type": "object",
@@ -5469,12 +5662,20 @@
           }
         }
       },
+      "ToolChoiceAny": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolChoice"
+          }
+        ]
+      },
       "ApikeyCreateOp": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "新API密钥的名称"
+            "description": "API密钥的显示名称"
           },
           "email": {
             "type": "string",
@@ -5485,7 +5686,7 @@
             "items": {
               "type": "string"
             },
-            "description": "允许访问的路径列表，用于自定义权限配置"
+            "description": "允许访问的API路径列表"
           },
           "remark": {
             "type": "string",
@@ -5493,20 +5694,20 @@
           },
           "source": {
             "type": "string",
-            "description": "来源标识"
+            "description": "来源系统标识"
           },
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "操作用户ID"
+            "description": "关联的用户ID"
           },
           "roleCode": {
             "type": "string",
-            "description": "角色代码，定义API密钥的权限角色"
+            "description": "角色编码，定义API密钥的权限角色"
           },
           "sourceId": {
             "type": "string",
-            "description": "来源ID"
+            "description": "来源系统中的ID"
           },
           "tenantId": {
             "type": "string",
@@ -5514,7 +5715,7 @@
           },
           "userName": {
             "type": "string",
-            "description": "操作用户名称"
+            "description": "用户名称"
           },
           "managerAk": {
             "type": "string",
@@ -5522,34 +5723,34 @@
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间代码"
+            "description": "空间编码"
           },
           "monthQuota": {
             "type": "number",
-            "description": "月度配额限制，不能超过父级API密钥的配额"
+            "description": "月度使用配额限制"
           },
           "parentCode": {
             "type": "string",
-            "description": "父级API密钥代码"
+            "description": "父API密钥编码，用于创建子密钥"
           },
           "safetyLevel": {
             "type": "string",
             "format": "byte",
-            "description": "安全等级，不能超过父级API密钥的安全等级"
+            "description": "安全等级，数值越高安全等级越高"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选的附加信息",
+            "description": "可选的扩展信息对象",
             "additionalProperties": {
               "type": "object"
             }
           },
           "outEntityCode": {
             "type": "string",
-            "description": "外部实体代码"
+            "description": "外部实体编码，用于关联外部系统"
           }
         },
-        "description": "创建API密钥的操作参数对象"
+        "description": "创建API密钥操作参数对象"
       },
       "CreateMemberOp": {
         "type": "object",
@@ -5564,7 +5765,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -5586,7 +5787,7 @@
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -5608,13 +5809,104 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
         "description": "创建空间成员的操作参数"
+      },
+      "MessageRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "AI模型名称，用于指定要使用的具体模型"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tool"
+            },
+            "description": "可用工具列表，定义AI可以调用的外部工具和函数"
+          },
+          "top_k": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Top-K采样参数，限制每步生成时考虑的候选token数量"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "Top-P采样参数，基于累积概率进行采样，控制生成内容的多样性"
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "是否启用流式响应模式，true为流式输出，false为一次性返回完整结果"
+          },
+          "system": {
+            "type": "object",
+            "description": "系统级配置参数对象"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InputMessage"
+            },
+            "description": "对话消息列表，包含用户和助手的历史对话内容"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata",
+            "description": "请求元数据信息"
+          },
+          "thinking": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ThinkingConfigDisabled"
+              },
+              {
+                "$ref": "#/components/schemas/ThinkingConfigEnabled"
+              }
+            ],
+            "description": "思考模式配置，可以启用或禁用AI的思考过程输出"
+          },
+          "max_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "生成响应的最大token数量限制"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "生成文本的随机性控制参数，值越高生成内容越随机，通常范围为0-1"
+          },
+          "tool_choice": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ToolChoiceAny"
+              },
+              {
+                "$ref": "#/components/schemas/ToolChoiceAuto"
+              },
+              {
+                "$ref": "#/components/schemas/ToolChoiceNone"
+              },
+              {
+                "$ref": "#/components/schemas/ToolChoiceTool"
+              }
+            ],
+            "description": "工具选择策略，控制AI如何选择和使用可用的工具"
+          },
+          "stop_sequences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "停止序列列表，遇到这些字符串时停止生成"
+          }
+        },
+        "description": "消息请求对象，用于向AI模型发送对话消息和配置生成参数"
       },
       "ModelCondition": {
         "type": "object",
@@ -5631,18 +5923,18 @@
           },
           "status": {
             "type": "string",
-            "description": "模型状态"
+            "description": "状态筛选条件"
           },
           "endpoint": {
             "type": "string",
-            "description": "端点"
+            "description": "端点筛选条件"
           },
           "features": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "特性列表"
+            "description": "特性筛选条件列表"
           },
           "orgCodes": {
             "type": "array",
@@ -5654,35 +5946,35 @@
           },
           "supplier": {
             "type": "string",
-            "description": "供应商"
+            "description": "供应商筛选条件"
           },
           "endpoints": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "端点列表",
+            "description": "端点列表筛选条件",
             "uniqueItems": true
           },
           "modelName": {
             "type": "string",
-            "description": "模型名称"
+            "description": "模型名称筛选条件"
           },
           "ownerName": {
             "type": "string",
-            "description": "所有者名称"
+            "description": "所有者名称筛选条件"
           },
           "modelNames": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "模型名称列表",
+            "description": "模型名称列表筛选条件",
             "uniqueItems": true
           },
           "visibility": {
             "type": "string",
-            "description": "可见性状态"
+            "description": "可见性筛选条件"
           },
           "personalCode": {
             "type": "string",
@@ -5690,7 +5982,7 @@
           },
           "dataDestination": {
             "type": "string",
-            "description": "数据目标"
+            "description": "数据目标筛选条件"
           },
           "includeLinkedTo": {
             "type": "boolean",
@@ -5699,15 +5991,15 @@
           "maxInputTokensLimit": {
             "type": "integer",
             "format": "int32",
-            "description": "最大输入令牌限制"
+            "description": "最大输入令牌数限制"
           },
           "maxOutputTokensLimit": {
             "type": "integer",
             "format": "int32",
-            "description": "最大输出令牌限制"
+            "description": "最大输出令牌数限制"
           }
         },
-        "description": "模型查询条件参数"
+        "description": "模型查询条件，支持多种筛选和分页参数"
       },
       "PageCategoryDB": {
         "type": "object",
@@ -5739,7 +6031,7 @@
             "description": "是否还有更多数据"
           }
         },
-        "description": "分类分页查询结果，包含分页信息和分类数据列表"
+        "description": "分页查询结果，包含分类数据和分页信息"
       },
       "PageEndpointDB": {
         "type": "object",
@@ -5748,30 +6040,24 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EndpointDB"
-            },
-            "description": "端点数据列表"
+            }
           },
           "page": {
             "type": "integer",
-            "format": "int32",
-            "description": "当前页码"
+            "format": "int32"
           },
           "limit": {
             "type": "integer",
-            "format": "int32",
-            "description": "每页限制条数"
+            "format": "int32"
           },
           "total": {
             "type": "integer",
-            "format": "int32",
-            "description": "总记录数"
+            "format": "int32"
           },
           "has_more": {
-            "type": "boolean",
-            "description": "是否有更多数据"
+            "type": "boolean"
           }
-        },
-        "description": "端点分页查询结果"
+        }
       },
       "RemoveMemberOp": {
         "type": "object",
@@ -5786,7 +6072,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -5795,7 +6081,7 @@
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -5811,7 +6097,7 @@
           },
           "memberUid": {
             "type": "string",
-            "description": "要移除的成员唯一标识"
+            "description": "要移除的成员用户ID"
           },
           "spaceCode": {
             "type": "string",
@@ -5819,13 +6105,56 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
         "description": "移除空间成员的操作参数"
+      },
+      "ThinkingConfig": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ToolChoiceAuto": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolChoice"
+          }
+        ]
+      },
+      "ToolChoiceNone": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolChoice"
+          }
+        ]
+      },
+      "ToolChoiceTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolChoice"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "ApikeyCondition": {
         "type": "object",
@@ -5874,7 +6203,7 @@
           },
           "searchParam": {
             "type": "string",
-            "description": "搜索参数，支持名称或服务ID的模糊搜索"
+            "description": "搜索参数，支持按名称或服务ID模糊搜索"
           },
           "includeChild": {
             "type": "boolean",
@@ -5896,20 +6225,20 @@
         "properties": {
           "url": {
             "type": "string",
-            "description": "通道访问URL"
+            "description": "服务URL地址"
           },
           "email": {
             "type": "string",
-            "description": "用户邮箱"
+            "description": "操作用户邮箱"
           },
           "source": {
             "type": "string",
-            "description": "来源标识"
+            "description": "操作来源"
           },
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "用户ID"
+            "description": "操作用户ID"
           },
           "priority": {
             "type": "string",
@@ -5917,7 +6246,7 @@
           },
           "protocol": {
             "type": "string",
-            "description": "通信协议类型"
+            "description": "通信协议"
           },
           "sourceId": {
             "type": "string",
@@ -5933,11 +6262,11 @@
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "操作用户名称"
           },
           "managerAk": {
             "type": "string",
-            "description": "管理员访问密钥"
+            "description": "管理员API密钥"
           },
           "ownerCode": {
             "type": "string",
@@ -5961,7 +6290,7 @@
           },
           "entityCode": {
             "type": "string",
-            "description": "实体编码标识"
+            "description": "实体编码"
           },
           "entityType": {
             "type": "string",
@@ -5969,7 +6298,7 @@
           },
           "visibility": {
             "type": "string",
-            "description": "可见性（private-私有，public-公开）"
+            "description": "可见性（public/private）"
           },
           "channelInfo": {
             "type": "string",
@@ -5985,7 +6314,7 @@
           "trialEnabled": {
             "type": "string",
             "format": "byte",
-            "description": "是否启用试用（0-禁用，1-启用）"
+            "description": "是否启用试用（0-否，1-是）"
           },
           "dataDestination": {
             "type": "string",
@@ -5999,16 +6328,16 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": "用户邮箱"
+            "description": "操作用户邮箱"
           },
           "source": {
             "type": "string",
-            "description": "来源标识"
+            "description": "操作来源"
           },
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "用户ID"
+            "description": "操作用户ID"
           },
           "sourceId": {
             "type": "string",
@@ -6020,11 +6349,11 @@
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "操作用户名称"
           },
           "managerAk": {
             "type": "string",
-            "description": "管理员访问密钥"
+            "description": "管理员API密钥"
           },
           "spaceCode": {
             "type": "string",
@@ -6049,16 +6378,16 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": "用户邮箱"
+            "description": "操作用户邮箱"
           },
           "source": {
             "type": "string",
-            "description": "来源标识"
+            "description": "操作来源"
           },
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "用户ID"
+            "description": "操作用户ID"
           },
           "priority": {
             "type": "string",
@@ -6074,11 +6403,11 @@
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "操作用户名称"
           },
           "managerAk": {
             "type": "string",
-            "description": "管理员访问密钥"
+            "description": "管理员API密钥"
           },
           "priceInfo": {
             "type": "string",
@@ -6106,7 +6435,7 @@
           "trialEnabled": {
             "type": "string",
             "format": "byte",
-            "description": "是否启用试用（0-禁用，1-启用）"
+            "description": "是否启用试用（0-否，1-是）"
           }
         },
         "description": "通道更新操作参数"
@@ -6118,26 +6447,21 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Model"
-            },
-            "description": "可用模型列表"
+            }
           },
           "endpoint": {
-            "type": "string",
-            "description": "端点标识"
+            "type": "string"
           },
           "features": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EnumDto"
-            },
-            "description": "特性列表"
+            }
           },
           "priceDetails": {
-            "$ref": "#/components/schemas/PriceDetails",
-            "description": "价格详情"
+            "$ref": "#/components/schemas/PriceDetails"
           }
-        },
-        "description": "端点详细信息"
+        }
       },
       "ModelAuthorizer": {
         "type": "object",
@@ -6216,28 +6540,28 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": "操作用户邮箱"
+            "description": "操作用户的邮箱地址"
           },
           "source": {
             "type": "string",
-            "description": "请求来源"
+            "description": "操作来源标识"
           },
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "操作用户ID"
+            "description": "操作用户的唯一标识ID"
           },
           "sourceId": {
             "type": "string",
-            "description": "来源ID"
+            "description": "操作来源的具体标识ID"
           },
           "tenantId": {
             "type": "string",
-            "description": "租户ID"
+            "description": "租户标识，用于多租户环境下的数据隔离"
           },
           "userName": {
             "type": "string",
-            "description": "操作用户名称"
+            "description": "操作用户的用户名"
           },
           "managerAk": {
             "type": "string",
@@ -6245,53 +6569,53 @@
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间编码"
+            "description": "空间编码，标识操作所属的空间范围"
           },
           "parentCode": {
             "type": "string",
-            "description": "父级分类目录编码"
+            "description": "父类目编码，用于建立类目的层级关系，为空时表示根级类目"
           },
           "categoryName": {
             "type": "string",
-            "description": "分类目录名称"
+            "description": "类目名称，长度不超过10个字符，必须以文字开头"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的附加信息，用于存储扩展属性",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "创建分类目录操作请求对象"
+        "description": "类目创建操作请求对象，包含创建类目所需的基本信息和操作者信息"
       },
       "CategoryStatusOp": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "description": "操作用户邮箱"
+            "description": "操作用户的邮箱地址"
           },
           "source": {
             "type": "string",
-            "description": "请求来源"
+            "description": "操作来源标识"
           },
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "操作用户ID"
+            "description": "操作用户的唯一标识ID"
           },
           "sourceId": {
             "type": "string",
-            "description": "来源ID"
+            "description": "操作来源的具体标识ID"
           },
           "tenantId": {
             "type": "string",
-            "description": "租户ID"
+            "description": "租户标识，用于多租户环境下的数据隔离"
           },
           "userName": {
             "type": "string",
-            "description": "操作用户名称"
+            "description": "操作用户的用户名"
           },
           "managerAk": {
             "type": "string",
@@ -6299,21 +6623,21 @@
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间编码"
+            "description": "空间编码，标识操作所属的空间范围"
           },
           "categoryCode": {
             "type": "string",
-            "description": "分类目录编码"
+            "description": "要操作的类目编码，用于唯一标识目标类目"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的附加信息，用于存储扩展属性",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "分类目录状态操作请求对象"
+        "description": "类目状态操作请求对象，用于激活或停用类目"
       },
       "ChannelCondition": {
         "type": "object",
@@ -6330,19 +6654,19 @@
           },
           "status": {
             "type": "string",
-            "description": "状态"
+            "description": "通道状态"
           },
           "priority": {
             "type": "string",
-            "description": "优先级"
+            "description": "通道优先级"
           },
           "protocol": {
             "type": "string",
-            "description": "协议类型"
+            "description": "通信协议"
           },
           "supplier": {
             "type": "string",
-            "description": "供应商"
+            "description": "供应商名称"
           },
           "ownerCode": {
             "type": "string",
@@ -6358,23 +6682,23 @@
           },
           "entityType": {
             "type": "string",
-            "description": "实体类型"
+            "description": "实体类型（endpoint或model）"
           },
           "visibility": {
             "type": "string",
-            "description": "可见性"
+            "description": "可见性（public/private）"
           },
           "entityCodes": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "实体编码集合",
+            "description": "实体编码列表",
             "uniqueItems": true
           },
           "dataDestination": {
             "type": "string",
-            "description": "数据目标位置"
+            "description": "数据流向"
           }
         },
         "description": "通道查询条件"
@@ -6408,34 +6732,34 @@
         "properties": {
           "user": {
             "type": "string",
-            "description": "用户标识符，用于区分不同用户的请求"
+            "description": "用户标识符，用于标识发起请求的用户"
           },
           "input": {
             "type": "object",
-            "description": "待转换为向量的输入内容，可以是单个字符串或字符串数组"
+            "description": "待生成嵌入向量的输入文本，可以是单个字符串或字符串数组"
           },
           "model": {
             "type": "string",
-            "description": "指定使用的向量嵌入模型名称"
+            "description": "指定使用的嵌入模型名称"
           },
           "dimensions": {
             "type": "integer",
             "format": "int32",
-            "description": "输出向量的维度数量，仅在text-embedding-3及更高版本模型中支持"
+            "description": "输出嵌入向量的维度数量，仅在text-embedding-3及更高版本模型中支持"
           },
           "encoding_format": {
             "type": "string",
-            "description": "返回向量的编码格式，可选值为float或base64，默认为float"
+            "description": "嵌入向量的返回格式，可选值为float或base64，默认为float"
           }
         },
-        "description": "文本向量嵌入请求对象，包含待处理的文本内容和相关配置参数"
+        "description": "嵌入向量生成请求对象，包含待处理的文本输入和相关配置参数"
       },
       "EndpointStatusOp": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "description": "用户邮箱地址"
+            "description": "操作用户邮箱地址"
           },
           "source": {
             "type": "string",
@@ -6444,11 +6768,11 @@
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "用户ID，标识操作用户"
+            "description": "操作用户ID"
           },
           "endpoint": {
             "type": "string",
-            "description": "端点标识符"
+            "description": "端点地址"
           },
           "sourceId": {
             "type": "string",
@@ -6456,11 +6780,11 @@
           },
           "tenantId": {
             "type": "string",
-            "description": "租户ID，用于多租户隔离"
+            "description": "租户标识"
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "操作用户名称"
           },
           "managerAk": {
             "type": "string",
@@ -6468,11 +6792,11 @@
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间代码，标识所属空间"
+            "description": "空间编码"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选的附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -6485,15 +6809,15 @@
         "properties": {
           "user": {
             "type": "string",
-            "description": "用户标识符"
+            "description": "用户标识"
           },
           "error": {
             "$ref": "#/components/schemas/OpenapiError",
-            "description": "错误信息对象"
+            "description": "错误信息"
           },
           "task_id": {
             "type": "string",
-            "description": "任务唯一标识符"
+            "description": "任务ID"
           },
           "sensitives": {
             "type": "object",
@@ -6505,7 +6829,7 @@
           },
           "requestRiskData": {
             "type": "object",
-            "description": "请求风险评估数据"
+            "description": "请求风险数据"
           }
         },
         "description": "快速语音识别响应结果"
@@ -6538,7 +6862,7 @@
           },
           "amount": {
             "type": "number",
-            "description": "费用金额（单位：分）"
+            "description": "费用金额（以分为单位）"
           }
         },
         "description": "API Key月度费用记录"
@@ -6549,35 +6873,35 @@
           "page": {
             "type": "integer",
             "format": "int32",
-            "description": "页码，从1开始"
+            "description": "页码，用于分页查询"
           },
           "size": {
             "type": "integer",
             "format": "int32",
-            "description": "每页大小，限制返回记录数量"
+            "description": "每页大小，用于分页查询"
           },
           "status": {
             "type": "string",
-            "description": "分类状态过滤条件"
+            "description": "分类状态筛选条件"
           },
           "parentCode": {
             "type": "string",
-            "description": "父分类代码过滤条件"
+            "description": "父分类代码，用于查询指定父分类下的子分类"
           },
           "topCategory": {
             "type": "boolean",
-            "description": "是否为顶级分类的过滤条件"
+            "description": "是否为顶级分类，true表示查询顶级分类"
           },
           "categoryCode": {
             "type": "string",
-            "description": "分类代码过滤条件"
+            "description": "分类代码，用于精确匹配查询"
           },
           "categoryName": {
             "type": "string",
-            "description": "分类名称过滤条件"
+            "description": "分类名称，用于模糊匹配查询"
           }
         },
-        "description": "分类查询条件，用于过滤和分页查询分类数据"
+        "description": "分类查询条件，用于筛选和分页查询分类数据"
       },
       "CompletionRequest": {
         "type": "object",
@@ -6585,40 +6909,40 @@
           "n": {
             "type": "integer",
             "format": "int32",
-            "description": "为每个输入消息生成的完成数量"
+            "description": "生成的候选回复数量"
           },
           "seed": {
             "type": "integer",
             "format": "int32",
-            "description": "随机种子，用于确保生成结果的可重现性"
+            "description": "随机种子，用于确保输出的可重现性"
           },
           "stop": {
             "type": "object",
-            "description": "停止生成的标记序列，遇到这些标记时停止生成"
+            "description": "停止序列，模型遇到时停止生成"
           },
           "user": {
             "type": "string",
-            "description": "发起请求的用户标识符，用于追踪和日志记录"
+            "description": "用户标识符，用于跟踪和限流"
           },
           "model": {
             "type": "string",
-            "description": "要使用的模型名称或标识符"
+            "description": "要使用的模型名称，支持逗号分隔的多个模型进行故障转移"
           },
           "tools": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Tool"
             },
-            "description": "模型可以使用的工具列表，如函数调用工具"
+            "description": "可用工具列表，包含函数调用定义"
           },
           "top_p": {
             "type": "number",
             "format": "float",
-            "description": "核采样参数，控制考虑的词汇概率质量，范围为0-1"
+            "description": "核采样参数，控制输出的多样性，范围0-1"
           },
           "stream": {
             "type": "boolean",
-            "description": "是否启用流式输出模式，true时逐步返回生成内容"
+            "description": "是否启用流式输出，true时返回SSE流"
           },
           "messages": {
             "type": "array",
@@ -6633,11 +6957,15 @@
               "$ref": "#/components/schemas/Function"
             },
             "deprecated": true,
-            "description": "可调用的函数列表（已弃用，建议使用tools）"
+            "description": "已废弃的函数定义列表，建议使用tools字段"
+          },
+          "extra_body": {
+            "type": "object",
+            "description": "额外的请求体参数"
           },
           "logit_bias": {
             "type": "object",
-            "description": "对特定token的logit偏置调整，键为token ID，值为偏置值",
+            "description": "token偏置映射，调整特定token的生成概率",
             "additionalProperties": {
               "type": "integer",
               "format": "int32"
@@ -6651,7 +6979,7 @@
           "temperature": {
             "type": "number",
             "format": "float",
-            "description": "控制生成文本的随机性，值越高越随机，范围通常为0-2"
+            "description": "采样温度，控制输出的随机性，范围0-2"
           },
           "tool_choice": {
             "type": "object",
@@ -6660,7 +6988,7 @@
           "function_call": {
             "type": "object",
             "deprecated": true,
-            "description": "函数调用配置（已弃用，建议使用tool_choice）"
+            "description": "已废弃的函数调用控制参数，建议使用tool_choice"
           },
           "stream_options": {
             "$ref": "#/components/schemas/StreamOptions",
@@ -6668,56 +6996,55 @@
           },
           "enable_thinking": {
             "type": "boolean",
-            "description": "是否启用思考模式，输出模型的推理过程"
+            "description": "是否启用思考过程输出"
           },
           "response_format": {
             "type": "object",
-            "description": "响应格式配置，如JSON模式等结构化输出格式"
+            "description": "响应格式配置，如JSON模式等"
           },
           "presence_penalty": {
             "type": "number",
             "format": "float",
-            "description": "存在惩罚参数，减少重复主题的可能性，范围为-2到2"
+            "description": "存在惩罚参数，减少重复内容，范围-2.0到2.0"
+          },
+          "reasoning_effort": {
+            "type": "object",
+            "description": "推理努力程度配置"
           },
           "frequency_penalty": {
             "type": "number",
             "format": "float",
-            "description": "频率惩罚参数，减少重复词汇的可能性，范围为-2到2"
+            "description": "频率惩罚参数，减少重复词汇，范围-2.0到2.0"
           },
           "parallel_tool_calls": {
             "type": "boolean",
-            "description": "是否允许并行调用多个工具"
+            "description": "是否允许并行工具调用"
           }
         },
-        "description": "聊天完成请求对象，包含模型配置、消息内容和各种生成参数"
+        "description": "聊天完成请求对象，包含模型配置、对话消息和各种参数设置"
       },
       "EndpointCondition": {
         "type": "object",
         "properties": {
           "page": {
             "type": "integer",
-            "format": "int32",
-            "description": "页码"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
-            "format": "int32",
-            "description": "每页大小"
+            "format": "int32"
           },
           "status": {
-            "type": "string",
-            "description": "状态"
+            "type": "string"
           },
           "endpoint": {
-            "type": "string",
-            "description": "端点标识"
+            "type": "string"
           },
           "endpoints": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "端点标识集合",
             "uniqueItems": true
           },
           "categoryCode": {
@@ -6725,27 +7052,21 @@
             "items": {
               "type": "string"
             },
-            "description": "分类编码集合",
             "uniqueItems": true
           },
           "endpointCode": {
-            "type": "string",
-            "description": "端点编码"
+            "type": "string"
           },
           "endpointName": {
-            "type": "string",
-            "description": "端点名称"
+            "type": "string"
           },
           "maintainerCode": {
-            "type": "string",
-            "description": "维护者编码"
+            "type": "string"
           },
           "maintainerName": {
-            "type": "string",
-            "description": "维护者名称"
+            "type": "string"
           }
-        },
-        "description": "端点查询条件"
+        }
       },
       "FunctionParameter": {
         "type": "object",
@@ -6761,6 +7082,9 @@
           },
           "properties": {
             "type": "object"
+          },
+          "additionalProperties": {
+            "type": "boolean"
           }
         }
       },
@@ -6773,7 +7097,7 @@
           },
           "model": {
             "type": "string",
-            "description": "模型名称"
+            "description": "目标模型名称"
           },
           "source": {
             "type": "string",
@@ -6809,18 +7133,18 @@
             "items": {
               "$ref": "#/components/schemas/ModelAuthorizer"
             },
-            "description": "授权者列表",
+            "description": "授权用户列表",
             "uniqueItems": true
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "模型授权操作参数，用于管理模型的访问权限"
+        "description": "模型授权操作参数，用于设置模型的访问权限"
       },
       "ModelVisibilityOp": {
         "type": "object",
@@ -6856,7 +7180,7 @@
           },
           "modelName": {
             "type": "string",
-            "description": "模型名称"
+            "description": "目标模型名称"
           },
           "spaceCode": {
             "type": "string",
@@ -6864,13 +7188,55 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选扩展信息",
             "additionalProperties": {
               "type": "object"
             }
           }
         },
-        "description": "模型可见性操作参数，用于控制模型的发布和取消发布"
+        "description": "模型可见性操作参数，用于发布或取消发布模型"
+      },
+      "SubApikeyUpdateOp": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "要更新的子API密钥编码"
+          },
+          "name": {
+            "type": "string",
+            "description": "API密钥的显示名称"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "允许访问的API路径列表"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注信息"
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "角色编码，定义API密钥的权限角色"
+          },
+          "monthQuota": {
+            "type": "number",
+            "description": "月度使用配额限制"
+          },
+          "safetyLevel": {
+            "type": "string",
+            "format": "byte",
+            "description": "安全等级，数值越高安全等级越高"
+          },
+          "outEntityCode": {
+            "type": "string",
+            "description": "外部实体编码，用于关联外部系统"
+          }
+        },
+        "description": "子API密钥更新操作参数对象"
       },
       "UpdateSpaceNameOp": {
         "type": "object",
@@ -6884,7 +7250,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -6893,7 +7259,7 @@
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -6919,7 +7285,7 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -6940,7 +7306,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -6949,11 +7315,11 @@
           },
           "ownerUid": {
             "type": "string",
-            "description": "新拥有者的唯一标识"
+            "description": "新的空间拥有者用户ID"
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -6973,7 +7339,7 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -6986,25 +7352,25 @@
         "properties": {
           "metrics": {
             "type": "object",
-            "description": "指标数据集合，包含各种性能统计信息如错误数、完成数、请求过多次数等",
+            "description": "性能指标数据集合，包含各种统计指标如错误数、完成数、请求过多数等",
             "additionalProperties": {
               "type": "object"
             }
           },
           "endpoint": {
             "type": "string",
-            "description": "API端点路径"
+            "description": "API端点地址"
           },
           "entityCode": {
             "type": "string",
-            "description": "实体代码，可以是模型名称或端点标识"
+            "description": "实体编码，可能是模型名称或端点标识"
           },
           "channelCode": {
             "type": "string",
-            "description": "渠道唯一标识码"
+            "description": "通道编码，用于标识具体的服务通道"
           }
         },
-        "description": "渠道指标查询结果，包含渠道信息和相关的性能统计数据"
+        "description": "指标查询结果，包含通道的性能统计数据"
       },
       "UpdateMemberRoleOp": {
         "type": "object",
@@ -7020,7 +7386,7 @@
           },
           "source": {
             "type": "string",
-            "description": "操作来源"
+            "description": "请求来源"
           },
           "userId": {
             "type": "integer",
@@ -7033,7 +7399,7 @@
           },
           "sourceId": {
             "type": "string",
-            "description": "操作来源ID"
+            "description": "来源ID"
           },
           "tenantId": {
             "type": "string",
@@ -7049,7 +7415,7 @@
           },
           "memberUid": {
             "type": "string",
-            "description": "要更新角色的成员唯一标识"
+            "description": "要更新角色的成员用户ID"
           },
           "spaceCode": {
             "type": "string",
@@ -7057,7 +7423,7 @@
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -7070,7 +7436,7 @@
         "properties": {
           "cost": {
             "type": "number",
-            "description": "请求成本费用"
+            "description": "请求成本"
           },
           "mock": {
             "type": "boolean",
@@ -7082,15 +7448,15 @@
           },
           "akSha": {
             "type": "string",
-            "description": "API密钥的SHA哈希值，用于标识用户身份"
+            "description": "API密钥的SHA哈希值，用于身份验证"
           },
           "model": {
             "type": "string",
-            "description": "使用的AI模型名称"
+            "description": "使用的模型名称"
           },
           "usage": {
             "type": "object",
-            "description": "资源使用情况，如token使用量等"
+            "description": "资源使用情况统计，如Token使用量等"
           },
           "akCode": {
             "type": "string",
@@ -7098,27 +7464,27 @@
           },
           "metrics": {
             "type": "object",
-            "description": "性能指标数据，包含TTLT等关键指标",
+            "description": "性能指标数据，包含各种统计信息",
             "additionalProperties": {
               "type": "object"
             }
           },
           "private": {
             "type": "boolean",
-            "description": "是否为私有渠道"
+            "description": "是否为私有请求"
           },
           "request": {
             "type": "object",
-            "description": "原始请求数据对象"
+            "description": "原始请求数据"
           },
           "duration": {
             "type": "integer",
             "format": "int64",
-            "description": "请求总耗时"
+            "description": "请求处理总耗时"
           },
           "endpoint": {
             "type": "string",
-            "description": "API端点路径，如/v1/audio/speech"
+            "description": "API端点路径"
           },
           "innerLog": {
             "type": "boolean",
@@ -7134,7 +7500,7 @@
           },
           "supplier": {
             "type": "string",
-            "description": "服务供应商"
+            "description": "服务提供商"
           },
           "priceInfo": {
             "type": "string",
@@ -7150,7 +7516,7 @@
           },
           "forwardUrl": {
             "type": "string",
-            "description": "转发的目标URL地址"
+            "description": "转发的目标URL"
           },
           "maxWaitSec": {
             "type": "integer",
@@ -7159,20 +7525,20 @@
           },
           "accountCode": {
             "type": "string",
-            "description": "账户编码，唯一标识账户"
+            "description": "账户编码"
           },
           "accountType": {
             "type": "string",
-            "description": "账户类型，标识账户的分类"
+            "description": "账户类型"
           },
           "channelCode": {
             "type": "string",
-            "description": "渠道编码，标识请求使用的服务渠道"
+            "description": "通道编码，标识请求使用的服务通道"
           },
           "requestTime": {
             "type": "integer",
             "format": "int64",
-            "description": "请求时间（秒级时间戳）"
+            "description": "请求时间戳（秒）"
           },
           "bellaTraceId": {
             "type": "string",
@@ -7180,7 +7546,7 @@
           },
           "encodingType": {
             "type": "string",
-            "description": "编码类型，用于token计数"
+            "description": "编码类型"
           },
           "parentAkCode": {
             "type": "string",
@@ -7197,7 +7563,7 @@
           },
           "channelRequestId": {
             "type": "string",
-            "description": "渠道请求ID"
+            "description": "通道请求ID"
           },
           "firstPackageTime": {
             "type": "integer",
@@ -7214,14 +7580,14 @@
             "description": "转录持续时间"
           }
         },
-        "description": "API端点处理数据，包含API调用过程中的完整信息和性能指标"
+        "description": "端点处理数据，用于记录API调用的完整处理过程和统计信息"
       },
       "EndpointCategoriesOp": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "description": "用户邮箱地址"
+            "description": "操作用户邮箱地址"
           },
           "source": {
             "type": "string",
@@ -7230,11 +7596,11 @@
           "userId": {
             "type": "integer",
             "format": "int64",
-            "description": "用户ID，标识操作用户"
+            "description": "操作用户ID"
           },
           "endpoint": {
             "type": "string",
-            "description": "端点标识符"
+            "description": "端点地址"
           },
           "sourceId": {
             "type": "string",
@@ -7242,11 +7608,11 @@
           },
           "tenantId": {
             "type": "string",
-            "description": "租户ID，用于多租户隔离"
+            "description": "租户标识"
           },
           "userName": {
             "type": "string",
-            "description": "用户名称"
+            "description": "操作用户名称"
           },
           "managerAk": {
             "type": "string",
@@ -7254,11 +7620,11 @@
           },
           "spaceCode": {
             "type": "string",
-            "description": "空间代码，标识所属空间"
+            "description": "空间编码"
           },
           "optionalInfo": {
             "type": "object",
-            "description": "可选的附加信息",
+            "description": "可选的扩展信息",
             "additionalProperties": {
               "type": "object"
             }
@@ -7268,11 +7634,11 @@
             "items": {
               "type": "string"
             },
-            "description": "分类代码集合，用于关联的分类列表",
+            "description": "分类编码集合",
             "uniqueItems": true
           }
         },
-        "description": "端点分类关联操作参数，用于管理端点与分类的关系"
+        "description": "端点分类操作参数，用于管理端点与分类的关联关系"
       },
       "EndpointCategoryTree": {
         "type": "object",
@@ -7293,14 +7659,14 @@
           },
           "categoryCode": {
             "type": "string",
-            "description": "分类代码，唯一标识一个分类"
+            "description": "分类代码，用于唯一标识分类"
           },
           "categoryName": {
             "type": "string",
             "description": "分类名称，用于显示的分类标题"
           }
         },
-        "description": "端点分类树结构，用于表示分类的层级关系和包含的端点信息"
+        "description": "端点分类树结构，用于表示分类的层级关系和包含的端点"
       },
       "AudioTranscriptionReq": {
         "type": "object",
@@ -7311,7 +7677,7 @@
           },
           "user": {
             "type": "string",
-            "description": "用户标识符"
+            "description": "用户标识"
           },
           "model": {
             "type": "string",
@@ -7319,7 +7685,7 @@
           },
           "hot_word": {
             "type": "string",
-            "description": "热词列表，用于提高特定词汇的识别准确率"
+            "description": "热词配置，提高特定词汇的识别准确率"
           },
           "language": {
             "type": "string",
@@ -7327,7 +7693,7 @@
           },
           "vocab_id": {
             "type": "string",
-            "description": "自定义词汇表ID"
+            "description": "词汇表ID，用于自定义词汇识别"
           },
           "candidate": {
             "type": "integer",
@@ -7337,11 +7703,11 @@
           "eng_rlang": {
             "type": "integer",
             "format": "int32",
-            "description": "英文语言处理参数"
+            "description": "英文语言识别参数"
           },
           "audio_mode": {
             "type": "string",
-            "description": "音频模式设置"
+            "description": "音频模式配置"
           },
           "enable_vad": {
             "type": "boolean",
@@ -7350,26 +7716,26 @@
           "trans_mode": {
             "type": "integer",
             "format": "int32",
-            "description": "转录模式设置"
+            "description": "转录模式配置"
           },
           "eng_vad_mdn": {
             "type": "integer",
             "format": "int32",
-            "description": "英文语音活动检测的中位数参数"
+            "description": "英文语音活动检测中值参数"
           },
           "sample_rate": {
             "type": "integer",
             "format": "int32",
-            "description": "音频采样率，单位为Hz"
+            "description": "音频采样率，单位Hz"
           },
           "callback_url": {
             "type": "string",
-            "description": "转录完成后的回调通知URL"
+            "description": "转录完成后的回调通知地址"
           },
           "chunk_length": {
             "type": "integer",
             "format": "int32",
-            "description": "音频分块长度，单位为秒"
+            "description": "音频分块长度"
           },
           "enable_words": {
             "type": "boolean",
@@ -7378,7 +7744,7 @@
           "standard_wav": {
             "type": "integer",
             "format": "int32",
-            "description": "是否使用标准WAV格式处理"
+            "description": "是否使用标准WAV格式"
           },
           "language_type": {
             "type": "integer",
@@ -7392,26 +7758,26 @@
           },
           "eng_collogproc": {
             "type": "boolean",
-            "description": "是否启用英文口语化处理"
+            "description": "英文口语化处理开关"
           },
           "eng_smoothproc": {
             "type": "boolean",
-            "description": "是否启用英文平滑处理"
+            "description": "英文平滑处理开关"
           },
           "eng_vad_margin": {
             "type": "integer",
             "format": "int32",
-            "description": "英文语音活动检测的边际参数"
+            "description": "英文语音活动检测边界参数"
           },
           "speaker_number": {
             "type": "integer",
             "format": "int32",
-            "description": "预期的说话人数量"
+            "description": "说话人数量"
           },
           "max_end_silence": {
             "type": "integer",
             "format": "int32",
-            "description": "最大结尾静音时长，单位为毫秒"
+            "description": "最大结尾静音时长，单位毫秒"
           },
           "speaker_diarization": {
             "type": "boolean",
@@ -7426,56 +7792,77 @@
             "description": "是否启用语义句子检测"
           }
         },
-        "description": "音频转录请求参数"
+        "description": "音频转录请求参数，包含音频文件信息和转录配置"
       },
       "CategoryTreeCondition": {
         "type": "object",
         "properties": {
           "status": {
             "type": "string",
-            "description": "分类状态过滤条件，如ACTIVE等"
+            "description": "分类状态筛选条件，用于过滤特定状态的分类"
           },
           "categoryCode": {
             "type": "string",
-            "description": "要查询的分类代码，作为树的根节点"
+            "description": "分类代码，指定要查询的根分类"
           },
           "includeEndpoint": {
             "type": "boolean",
-            "description": "是否在树结构中包含端点信息"
+            "description": "是否包含端点信息，true表示在树结构中包含端点数据"
           }
         },
-        "description": "分类树查询条件，用于指定树结构查询的参数"
+        "description": "分类树查询条件，用于构建特定分类的树形结构"
+      },
+      "ThinkingConfigEnabled": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ThinkingConfig"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "budget_tokens": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
       },
       "AudioTranscriptionResp": {
         "type": "object",
         "properties": {
           "task_id": {
             "type": "string",
-            "description": "转录任务的唯一标识符，用于后续查询结果"
+            "description": "转录任务的唯一标识ID"
           }
         },
         "description": "音频转录任务提交响应"
+      },
+      "ThinkingConfigDisabled": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ThinkingConfig"
+          }
+        ]
       },
       "EndpointDetailsCondition": {
         "type": "object",
         "properties": {
           "endpoint": {
-            "type": "string",
-            "description": "端点标识"
+            "type": "string"
           },
           "features": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "description": "特性列表"
+            }
           },
           "modelName": {
-            "type": "string",
-            "description": "模型名称"
+            "type": "string"
           }
-        },
-        "description": "端点详情查询条件"
+        }
       },
       "AudioTranscriptionResultReq": {
         "type": "object",
@@ -7488,7 +7875,7 @@
             "items": {
               "type": "string"
             },
-            "description": "转录任务ID列表，用于批量查询转录结果"
+            "description": "要查询的转录任务ID列表"
           }
         },
         "description": "查询音频转录结果的请求参数"
@@ -7501,7 +7888,7 @@
             "items": {
               "type": "object"
             },
-            "description": "转录结果数据列表，包含识别的文本内容和时间戳信息"
+            "description": "转录结果数据列表"
           }
         },
         "description": "音频转录结果响应"
