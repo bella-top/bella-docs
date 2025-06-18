@@ -86,7 +86,7 @@ const config: Config = {
         {
           label: 'DeepWiki',
           position: 'left',
-          href: 'https://wiki.bella.top/wiki/projects',
+          href: 'https://wiki.bella.top',
         },
         // GitHub点赞按钮
         {
