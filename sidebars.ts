@@ -42,8 +42,8 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: '特性介绍（Features Introduce）',
           items: [
-            'bella-openapi/features/claude-cache.md',
-            'bella-openapi/features/thinking.md',
+            'bella-openapi/features/claude-cache',
+            'bella-openapi/features/thinking',
           ],
         },
         {
