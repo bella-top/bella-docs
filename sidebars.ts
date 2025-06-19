@@ -40,6 +40,14 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'category',
+          label: '特性介绍（Features Introduce）',
+          items: [
+            'bella-openapi/features/claude-cache.md',
+            'bella-openapi/features/thinking.md',
+          ],
+        },
+        {
+          type: 'category',
           label: '技术文档（Tech Documents）',
           items: [
             'bella-openapi/tech/system-structure',
