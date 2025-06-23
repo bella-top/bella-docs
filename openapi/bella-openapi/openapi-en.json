@@ -3436,7 +3436,7 @@
   "openapi": "3.0.1",
   "servers": [
     {
-      "url": "https://open-chatgpt.ke.com:80",
+      "url": "http://localhost:8080",
       "description": "Generated server url"
     }
   ],
