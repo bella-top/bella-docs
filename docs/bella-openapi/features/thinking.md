@@ -48,7 +48,12 @@ Bella OpenAPI支持多个AI提供商的深度思考功能，通过统一的OpenA
 
 ### 5. 豆包系列 (Doubao)
 
-**状态:** 暂未实现深度思考功能的开启/关闭控制
+**支持的模型:**
+- `doubao-seed-1.6`
+- 其他支持思考模式的doubao模型
+
+**特殊说明:**
+- doubao-seed-1.6-thinking模型默认启用深度思考且不支持关闭
 
 ## 使用方法
 
@@ -78,7 +83,7 @@ Bella OpenAPI支持多个AI提供商的深度思考功能，通过统一的OpenA
 - **`"low"`**: 低强度思考（对于claude模型：预算token: 2000）
 - **`"medium"`**: 中等强度思考（对于claude模型：预算token: 4000）  
 - **`"high"`**: 高强度思考（对于claude模型：预算token: 8000）
-- 对于qwen和google系列模型，请求协议中只能控制是否开启，无法控制思考程度
+- 对于qwen、google、doubao系列模型，请求协议中只能控制是否开启，无法控制思考程度
 
 ### 各协议详细示例
 
@@ -156,6 +161,25 @@ Bella OpenAPI支持多个AI提供商的深度思考功能，通过统一的OpenA
 }
 ```
 *注：DeepSeek R1无需额外参数即可进行深度思考*
+
+#### 5. Doubao 深度思考
+
+**火山协议方式:**
+```json
+{
+  "model": "doubao-seed-1.6",
+  "messages": [
+    {
+      "role": "user", 
+      "content": "请分析这个复杂的技术问题..."
+    }
+  ],
+  "thinking": {
+    "type": "enabled"
+  }
+}
+```
+*注：doubao-seed-1.6-thinking 无需额外参数即可进行深度思考*
 
 ### 流式响应中的深度思考
 
