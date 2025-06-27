@@ -12,12 +12,12 @@ POST /v1/images/generations
 
 ## Supported Models
 
-| Model | Description | Max Prompt Length | Supported Sizes |
-|-------|-------------|-------------------|-----------------|
-| `dall-e-2` | DALL·E 2 model, lower cost | 1,000 characters | `256x256`, `512x512`, `1024x1024` |
-| `dall-e-3` | DALL·E 3 model, higher quality | 4,000 characters | `1024x1024`, `1792x1024`, `1024x1792` |
+| Model | Description                                          | Max Prompt Length | Supported Sizes |
+|-------|------------------------------------------------------|-------------------|-----------------|
+| `dall-e-2` | DALL·E 2 model, lower cost                           | 1,000 characters | `256x256`, `512x512`, `1024x1024` |
+| `dall-e-3` | DALL·E 3 model, higher quality                       | 4,000 characters | `1024x1024`, `1792x1024`, `1024x1792` |
 | `gpt-image-1` | GPT Image 1 model, supports more customization options | 32,000 characters | Supports multiple sizes |
-| `doubao-seedream-3-0-t2i` | Doubao Saint model, supports specific options | Not specified | Supports multiple sizes |
+| `doubao-seedream-3-0-t2i` | Huoshan platform, supports specific options          | Not specified | Supports multiple sizes |
 
 ## Request Format
 
