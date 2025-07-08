@@ -401,6 +401,38 @@
         }
       }
     },
+    "/v1/images/edits": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImagesResponse"
+                }
+              }
+            },
+            "description": "图片编辑成功"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "request",
+            "schema": {
+              "$ref": "#/components/schemas/ImagesEditRequest"
+            },
+            "required": true,
+            "description": "图片编辑请求参数"
+          }
+        ],
+        "description": "编辑现有图片，根据提示词和遮罩对图片进行局部修改",
+        "operationId": "editImages"
+      }
+    },
     "/v1/space/create": {
       "post": {
         "tags": [
@@ -794,6 +826,68 @@
         ],
         "description": "实时语音识别WebSocket连接处理",
         "operationId": "asrStream_6"
+      }
+    },
+    "/v1/document/parse": {
+      "get": {
+        "tags": [
+          "document"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocParseResponse"
+                }
+              }
+            },
+            "description": "成功返回文档解析结果"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "task_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "文档解析任务的唯一标识符，用于查询解析结果"
+          }
+        ],
+        "description": "查询文档解析任务的结果状态和解析内容",
+        "operationId": "queryParseResult"
+      },
+      "post": {
+        "tags": [
+          "document"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocParseTaskInfo"
+                }
+              }
+            },
+            "description": "成功创建文档解析任务"
+          }
+        },
+        "description": "提交文档解析任务，支持多种文档格式的智能解析",
+        "operationId": "parse",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocParseRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "文档解析请求参数，包含待解析的文件信息和解析配置"
+        }
       }
     },
     "/console/model/link": {
@@ -1316,6 +1410,38 @@
         }
       }
     },
+    "/v1/images/variations": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImagesResponse"
+                }
+              }
+            },
+            "description": "图片变化生成成功"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "request",
+            "schema": {
+              "$ref": "#/components/schemas/ImagesVariationRequest"
+            },
+            "required": true,
+            "description": "图片变化生成请求参数"
+          }
+        ],
+        "description": "根据输入图片生成变化版本，保持原图风格的同时创建不同的变体",
+        "operationId": "createVariations"
+      }
+    },
     "/v1/meta/channel/list": {
       "get": {
         "tags": [
@@ -1644,6 +1770,38 @@
           },
           "required": true,
           "description": "模型可见性操作参数"
+        }
+      }
+    },
+    "/v1/images/generations": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImagesResponse"
+                }
+              }
+            },
+            "description": "图片生成成功"
+          }
+        },
+        "description": "根据文本描述生成新的图片",
+        "operationId": "generateImages",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImagesRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "图片生成请求体，包含提示词和生成参数"
         }
       }
     },
@@ -3436,7 +3594,7 @@
   "openapi": "3.0.1",
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "https://open-chatgpt.ke.com:80",
       "description": "Generated server url"
     }
   ],
@@ -3447,6 +3605,34 @@
   ],
   "components": {
     "schemas": {
+      "Row": {
+        "type": "object",
+        "properties": {
+          "cells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cell"
+            }
+          }
+        }
+      },
+      "Cell": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "object"
+          },
+          "text": {
+            "type": "string"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocParseResult"
+            }
+          }
+        }
+      },
       "Tool": {
         "type": "object",
         "properties": {
@@ -3458,6 +3644,26 @@
           },
           "input_schema": {
             "$ref": "#/components/schemas/InputSchema"
+          },
+          "cache_control": {
+            "type": "object"
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "base64": {
+            "type": "string"
+          },
+          "file_id": {
+            "type": "string"
           }
         }
       },
@@ -3541,6 +3747,36 @@
           }
         },
         "description": "空间实体，表示一个工作空间或团队空间"
+      },
+      "Usage": {
+        "type": "object",
+        "properties": {
+          "num": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "string"
+          },
+          "quality": {
+            "type": "string"
+          },
+          "input_tokens": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total_tokens": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "output_tokens": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "input_tokens_details": {
+            "$ref": "#/components/schemas/InputTokensDetails"
+          }
+        }
       },
       "CodeOp": {
         "type": "object",
@@ -3900,6 +4136,38 @@
             "format": "byte"
           },
           "dataDestination": {
+            "type": "string"
+          }
+        }
+      },
+      "Element": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Row"
+            }
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Position"
+            }
+          },
+          "description": {
             "type": "string"
           }
         }
@@ -4394,6 +4662,22 @@
         },
         "description": "操作者信息，包含用户身份标识和权限相关数据"
       },
+      "Position": {
+        "type": "object",
+        "properties": {
+          "bbox": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "RolePath": {
         "type": "object",
         "properties": {
@@ -4445,6 +4729,9 @@
           },
           "function": {
             "$ref": "#/components/schemas/FunctionCall"
+          },
+          "cache_control": {
+            "type": "object"
           }
         }
       },
@@ -4605,6 +4892,29 @@
           }
         },
         "description": "通道数据库实体"
+      },
+      "ImageData": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "quality": {
+            "type": "string"
+          },
+          "b64_json": {
+            "type": "string"
+          },
+          "output_format": {
+            "type": "string"
+          },
+          "revised_prompt": {
+            "type": "string"
+          }
+        }
       },
       "ServiceOp": {
         "type": "object",
@@ -4987,6 +5297,27 @@
           }
         },
         "description": "Lua脚本信息，用于脚本重载操作"
+      },
+      "SourceFile": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          }
+        }
       },
       "ToolChoice": {
         "type": "object",
@@ -5560,6 +5891,80 @@
         },
         "description": "创建空间的操作参数"
       },
+      "ImagesRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "format": "int32",
+            "description": "要生成的图片数量，必须在1到10之间"
+          },
+          "seed": {
+            "type": "integer",
+            "format": "int32",
+            "description": "随机种子值，用于控制生成结果的可重现性"
+          },
+          "size": {
+            "type": "string",
+            "description": "生成图片的尺寸规格"
+          },
+          "user": {
+            "type": "string",
+            "description": "代表最终用户的唯一标识符，用于监控和检测滥用"
+          },
+          "model": {
+            "type": "string",
+            "description": "用于图片生成的模型名称"
+          },
+          "style": {
+            "type": "string",
+            "description": "图片生成的艺术风格"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "描述所需图片的文本提示词，最大长度根据模型而定"
+          },
+          "quality": {
+            "type": "string",
+            "description": "生成图片的质量，支持standard或hd"
+          },
+          "watermark": {
+            "type": "boolean",
+            "description": "是否在生成的图片上添加水印"
+          },
+          "background": {
+            "type": "string",
+            "description": "设置生成图片的背景透明度，支持transparent、opaque或auto"
+          },
+          "moderation": {
+            "type": "string",
+            "description": "内容审核级别，支持low或auto"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "生成图片的输出格式，支持png、jpeg或webp"
+          },
+          "guidance_scale": {
+            "type": "number",
+            "format": "float",
+            "description": "引导比例，控制模型对提示词的遵循程度"
+          },
+          "response_format": {
+            "type": "string",
+            "description": "返回生成图片的格式，支持url或b64_json"
+          },
+          "output_compression": {
+            "type": "integer",
+            "format": "int32",
+            "description": "生成图片的压缩级别，范围0-100%"
+          }
+        },
+        "description": "图片生成请求参数"
+      },
       "ModelStatusOp": {
         "type": "object",
         "properties": {
@@ -5817,6 +6222,75 @@
         },
         "description": "创建空间成员的操作参数"
       },
+      "DocParseResult": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "tokens": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "element": {
+            "$ref": "#/components/schemas/Element"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocParseResult"
+            }
+          },
+          "source_file": {
+            "$ref": "#/components/schemas/SourceFile"
+          }
+        }
+      },
+      "ImagesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageData"
+            },
+            "description": "生成的图片数据列表"
+          },
+          "error": {
+            "$ref": "#/components/schemas/OpenapiError",
+            "description": "错误信息，当操作失败时返回"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage",
+            "description": "Token使用量统计信息"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64",
+            "description": "图片创建的Unix时间戳（秒）"
+          },
+          "background": {
+            "type": "string",
+            "description": "图片生成时使用的背景参数"
+          },
+          "sensitives": {
+            "type": "object",
+            "description": "敏感内容检测结果"
+          },
+          "requestRiskData": {
+            "type": "object",
+            "description": "请求风险评估数据"
+          }
+        },
+        "description": "图片操作响应结果"
+      },
       "MessageRequest": {
         "type": "object",
         "properties": {
@@ -5838,7 +6312,7 @@
           },
           "top_p": {
             "type": "number",
-            "format": "double",
+            "format": "float",
             "description": "Top-P采样参数，基于累积概率进行采样，控制生成内容的多样性"
           },
           "stream": {
@@ -5878,7 +6352,7 @@
           },
           "temperature": {
             "type": "number",
-            "format": "double",
+            "format": "float",
             "description": "生成文本的随机性控制参数，值越高生成内容越随机，通常范围为0-1"
           },
           "tool_choice": {
@@ -5904,6 +6378,9 @@
               "type": "string"
             },
             "description": "停止序列列表，遇到这些字符串时停止生成"
+          },
+          "anthropic_version": {
+            "type": "string"
           }
         },
         "description": "消息请求对象，用于向AI模型发送对话消息和配置生成参数"
@@ -6440,6 +6917,28 @@
         },
         "description": "通道更新操作参数"
       },
+      "DocParseRequest": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/SourceFile",
+            "description": "待解析的源文件信息"
+          },
+          "type": {
+            "type": "string",
+            "description": "解析任务类型，支持task（异步任务）和block（同步阻塞）两种模式"
+          },
+          "user": {
+            "type": "string",
+            "description": "发起解析请求的用户标识"
+          },
+          "model": {
+            "type": "string",
+            "description": "指定用于文档解析的AI模型名称"
+          }
+        },
+        "description": "文档解析请求参数，包含待解析文件和相关配置信息"
+      },
       "EndpointDetails": {
         "type": "object",
         "properties": {
@@ -6727,6 +7226,34 @@
           }
         }
       },
+      "DocParseResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/DocParseResult",
+            "description": "文档解析的具体结果内容，包含文档结构化信息"
+          },
+          "status": {
+            "type": "string",
+            "description": "解析任务状态：success（成功）、failed（失败）、processing（处理中）"
+          },
+          "message": {
+            "type": "string",
+            "description": "解析状态的详细说明信息，失败时包含错误原因"
+          }
+        },
+        "description": "文档解析响应结果，包含解析状态和具体内容"
+      },
+      "DocParseTaskInfo": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "description": "文档解析任务的唯一标识符，用于后续查询解析结果"
+          }
+        },
+        "description": "文档解析任务信息，包含任务标识符"
+      },
       "EmbeddingRequest": {
         "type": "object",
         "properties": {
@@ -6951,6 +7478,9 @@
             },
             "description": "对话消息列表，包含用户和助手的历史对话"
           },
+          "thinking": {
+            "type": "object"
+          },
           "functions": {
             "type": "array",
             "items": {
@@ -7087,6 +7617,48 @@
             "type": "boolean"
           }
         }
+      },
+      "ImagesEditRequest": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "format": "int32",
+            "description": "要生成的编辑后图片数量"
+          },
+          "size": {
+            "type": "string",
+            "description": "编辑后图片的尺寸规格"
+          },
+          "user": {
+            "type": "string",
+            "description": "代表最终用户的唯一标识符，用于监控和检测滥用"
+          },
+          "model": {
+            "type": "string",
+            "description": "用于图片编辑的模型名称"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "描述所需编辑效果的文本提示词"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "要编辑的图片URL地址"
+          },
+          "image_b64_json": {
+            "type": "string",
+            "description": "要编辑的图片base64编码JSON格式"
+          },
+          "response_format": {
+            "type": "string",
+            "description": "返回编辑后图片的格式，支持url或b64_json"
+          }
+        },
+        "description": "图片编辑请求参数"
       },
       "ModelAuthorizerOp": {
         "type": "object",
@@ -7347,6 +7919,19 @@
         },
         "description": "变更空间拥有者的操作参数"
       },
+      "InputTokensDetails": {
+        "type": "object",
+        "properties": {
+          "text_tokens": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "image_tokens": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "MetricsQueryResult": {
         "type": "object",
         "properties": {
@@ -7522,6 +8107,9 @@
             "type": "integer",
             "format": "int32",
             "description": "最大等待时间（秒）"
+          },
+          "nativeSend": {
+            "type": "boolean"
           },
           "accountCode": {
             "type": "string",
@@ -7709,6 +8297,12 @@
             "type": "string",
             "description": "音频模式配置"
           },
+          "enable_ddc": {
+            "type": "boolean"
+          },
+          "enable_itn": {
+            "type": "boolean"
+          },
           "enable_vad": {
             "type": "boolean",
             "description": "是否启用语音活动检测"
@@ -7727,6 +8321,9 @@
             "type": "integer",
             "format": "int32",
             "description": "音频采样率，单位Hz"
+          },
+          "vad_segment": {
+            "type": "boolean"
           },
           "callback_url": {
             "type": "string",
@@ -7779,9 +8376,18 @@
             "format": "int32",
             "description": "最大结尾静音时长，单位毫秒"
           },
+          "show_utterances": {
+            "type": "boolean"
+          },
           "speaker_diarization": {
             "type": "boolean",
             "description": "是否启用说话人分离功能"
+          },
+          "enable_channel_split": {
+            "type": "boolean"
+          },
+          "sensitive_words_filter": {
+            "type": "string"
           },
           "enable_punctuation_prediction": {
             "type": "boolean",
@@ -7838,6 +8444,33 @@
           }
         },
         "description": "音频转录任务提交响应"
+      },
+      "ImagesVariationRequest": {
+        "type": "object",
+        "properties": {
+          "n": {
+            "type": "integer",
+            "format": "int32",
+            "description": "要生成的图片数量，必须在1到10之间"
+          },
+          "size": {
+            "type": "string",
+            "description": "生成图片的尺寸，支持256x256、512x512或1024x1024"
+          },
+          "user": {
+            "type": "string",
+            "description": "代表最终用户的唯一标识符，用于监控和检测滥用"
+          },
+          "model": {
+            "type": "string",
+            "description": "用于图片变化的模型名称"
+          },
+          "response_format": {
+            "type": "string",
+            "description": "返回生成图片的格式，支持url或b64_json"
+          }
+        },
+        "description": "图片变化生成请求参数"
       },
       "ThinkingConfigDisabled": {
         "type": "object",
