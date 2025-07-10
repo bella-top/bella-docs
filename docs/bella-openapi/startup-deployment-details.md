@@ -62,7 +62,9 @@ Bella OpenAPI是一个综合性的AI开放API平台，提供以下主要组件�
 ```bash
 ./start.sh [选项] （如果本地不存在镜像，会拉取远端镜像）
 ```
-注意：windows下请使用git bash工具执行命令
+注意：
+- windows下请使用git bash工具执行命令
+- 启动脚本只支持部分配置参数，如果需要配置更多参数，可以修改docker-compose.yml文件或修改应用的配置文件
 
 选项:
 - `-b, --build`: 重新构建服务

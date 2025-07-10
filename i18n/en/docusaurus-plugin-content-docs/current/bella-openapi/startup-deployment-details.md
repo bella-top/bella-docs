@@ -62,7 +62,9 @@ When starting the service, you typically need to configure user login. See: [Git
 ```bash
 ./start.sh [options] (if no local image exists, it will pull from remote repository)
 ```
-Note: On Windows, please use Git Bash to execute commands
+Note: 
+- On Windows, please use Git Bash to execute commands
+- The startup script only supports a subset of configuration parameters, if you need to configure more parameters, you can modify the docker-compose.yml file or modify the application's configuration file
 
 Options:
 - `-b, --build`: Rebuild services
