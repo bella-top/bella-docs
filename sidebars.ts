@@ -57,14 +57,15 @@ const sidebars: SidebarsConfig = {
             'bella-openapi/tech/function-call',
             'bella-openapi/tech/async-performace',
             'bella-openapi/tech/user-authorization',
-            'bella-openapi/tech/usage-manage'
+            'bella-openapi/tech/usage-manage',
           ],
         },
         {
           type: 'category',
           label: '开发者文档（Dev Documents）',
           items: [
-            'bella-openapi/dev/login-spi'
+            'bella-openapi/dev/login-spi',
+            'bella-openapi/dev/model-console'
           ],
         }
       ],

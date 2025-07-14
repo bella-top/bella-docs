@@ -150,7 +150,7 @@ public class CustomUserRepo implements IUserRepo {
 
 1. Frontend calls /openapi/oauth/config to get OAuth provider configuration
 2. User selects a provider and is redirected to the OAuth authorization page
-3. After successful authorization, callback to /openapi/oauth/callback/{provider}
+3. After successful authorization, callback to /openapi/oauth/callback/\{provider}
 4. System verifies the authorization code, retrieves user information, creates a session
 5. Redirects to the target page
 

@@ -6,25 +6,25 @@ Bella OpenAPI是一个企业级AI能力网关，提供了完整的SPI机制来�
 
 ## SPI登录服务支持的认证方式
 
-### 1. OAuth 2.0 登录
+### OAuth 2.0 登录
 
 - 支持提供商: GitHub、Google (可扩展其他提供商)
 - 配置路径: bella.oauth
 - 实现位置: api/spi/src/main/java/com/ke/bella/openapi/login/oauth/
 
-### 2. CAS 单点登录
+### CAS 单点登录
 
 - 协议版本: CAS 3.0
 - 配置路径: bella.cas
 - 实现位置: api/spi/src/main/java/com/ke/bella/openapi/login/cas/
 
-### 3. 客户端模式登录
+### 客户端模式登录
 
 - 适用场景: 独立前端应用
 - 配置路径: bella.login.type=client
 - 特点: 基于HTTP会话管理
 
-### 4. API Key 认证
+### API Key 认证
 
 - 认证方式: Header中的Authorization字段
 - 配置路径: bella.login.authorization-header
@@ -150,7 +150,7 @@ public class CustomUserRepo implements IUserRepo {
 
 1. 前端调用/openapi/oauth/config获取OAuth提供商配置
 2. 用户选择提供商，跳转到OAuth授权页面
-3. 授权成功后回调到/openapi/oauth/callback/{provider}
+3. 授权成功后回调到/openapi/oauth/callback/\{provider}
 4. 系统验证授权码，获取用户信息，创建会话
 5. 重定向到目标页面
 
