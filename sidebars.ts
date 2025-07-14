@@ -60,6 +60,13 @@ const sidebars: SidebarsConfig = {
             'bella-openapi/tech/usage-manage'
           ],
         },
+        {
+          type: 'category',
+          label: '开发者文档（Dev Documents）',
+          items: [
+            'bella-openapi/dev/login-spi'
+          ],
+        }
       ],
     },
     // 可以在这里添加更多项目
