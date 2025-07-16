@@ -1,4 +1,4 @@
-# Bella-OpenAPI Model Management Guide
+# Model Management Guide
 
 ## Overview
 

@@ -1,4 +1,4 @@
-# Bella OpenAPI SPI Login Service Integration Guide
+# SPI Login Service Integration Guide
 
 ## Project Architecture Overview
 

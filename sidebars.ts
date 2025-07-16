@@ -65,7 +65,8 @@ const sidebars: SidebarsConfig = {
           label: '开发者文档（Dev Documents）',
           items: [
             'bella-openapi/dev/login-spi',
-            'bella-openapi/dev/model-console'
+            'bella-openapi/dev/model-console',
+            `bella-openapi/dev/endpoint-console`
           ],
         }
       ],
