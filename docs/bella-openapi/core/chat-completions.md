@@ -59,6 +59,7 @@ POST /v1/chat/completions
 | seed | integer | 否 | 用于确定性采样的种子值 |
 | parallel_tool_calls | boolean | 否 | 是否允许并行工具调用 |
 | user | string | 否 | 表示最终用户的唯一标识符 |
+| 任意额外字段 | any | 否 | 支持传递任意额外的自定义参数，这些参数会被自动收集并传递给底层AI服务商 |
 
 ### Message对象类型
 
@@ -268,6 +269,37 @@ data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1677652288
 
 data: [DONE]
 ```
+
+### 额外参数传递示例
+
+Bella OpenAPI 支持在请求中传递任意额外参数，这些参数会被自动传递给底层的 AI 服务商：
+
+```json
+{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "user",
+      "content": "你好"
+    }
+  ],
+  "temperature": 0.7,
+  "custom_param": "custom_value",
+  "provider_specific_option": true,
+  "experimental_feature": {
+    "enabled": true,
+    "config": "value"
+  }
+}
+```
+
+**工作原理**：
+- 任何不是标准 Chat Completions API 参数的字段都会被收集为额外参数
+- 这些额外参数在发送给底层 AI 服务商时会被展平到请求的外层
+- 这个机制允许用户：
+  - 使用服务商特有的参数（如 OpenAI 的新实验性参数）
+  - 传递自定义配置给特定的模型
+  - 利用未来可能添加的新 API 参数而无需修改 Bella OpenAPI 代码
 
 ### reasoning_content 字段
 

@@ -59,6 +59,7 @@ POST /v1/chat/completions
 | seed | integer | No | Seed value for deterministic sampling |
 | parallel_tool_calls | boolean | No | Whether to allow parallel tool calls |
 | user | string | No | A unique identifier representing the end user |
+| Custom Parameters | any | No | Support passing arbitrary additional custom parameters that are automatically collected and passed to the underlying AI service provider |
 
 ### Message Object Types
 
@@ -611,3 +612,34 @@ data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1677652288
 
 data: [DONE]
 ```
+
+### Additional Parameters Example
+
+Bella OpenAPI supports passing arbitrary additional parameters in requests that are automatically forwarded to the underlying AI service provider:
+
+```json
+{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ],
+  "temperature": 0.7,
+  "custom_param": "custom_value",
+  "provider_specific_option": true,
+  "experimental_feature": {
+    "enabled": true,
+    "config": "value"
+  }
+}
+```
+
+**How it works**:
+- Any fields that are not standard Chat Completions API parameters are collected as additional parameters
+- These additional parameters are flattened to the outer layer when sent to the underlying AI service provider
+- This mechanism allows users to:
+  - Use provider-specific parameters (such as new experimental parameters from OpenAI)
+  - Pass custom configurations to specific models
+  - Utilize future API parameters that may be added without modifying Bella OpenAPI code
