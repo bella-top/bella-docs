@@ -46,9 +46,12 @@
           - 或者，打开插件市场安装
 
 - 配置：
+    - 配置文件示例：https://github.com/bella-top/claude-code-with-bella/blob/main/settings.example.json
+    - 创建文件写入配置：
     ```shell
-    cp setting.example.json ~/.claude/settings.json
+    vim ~/.claude/settings.json
     ```
+  
     - 如果希望claude直接修改代码，不需要经过同意可以添加`allow`权限
       ```
             "Edit(**)",
