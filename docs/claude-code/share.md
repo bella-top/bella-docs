@@ -186,7 +186,7 @@
 
 
 ## 六、立即行动
-- 根据[教程](../../README.md)安装配置Claude Code，本地体验提出问题，
+- 根据[教程](README.md)安装配置Claude Code，本地体验提出问题，
 - 为支持项目：[ClaudeCode集成Bella](https://github.com/bella-top/claude-code-with-bella)，[Bella Openapi](https://github.com/LianjiaTech/bella-openapi)点赞
 
 ## 七、Q&A和讨论
