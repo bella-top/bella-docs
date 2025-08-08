@@ -71,6 +71,20 @@ const sidebars: SidebarsConfig = {
         }
       ],
     },
+    {
+      type: 'category',
+      label: 'Claude Code With Bella',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        'claude-code/README',
+        'claude-code/README_GITHUB_ACTION',
+        'claude-code/integration-guide',
+        'claude-code/claude-code-technical-research-case-study',
+        'claude-code/agent_design',
+        'claude-code/share'
+      ],
+    },
     // 可以在这里添加更多项目
     // {
     //   type: 'category',
