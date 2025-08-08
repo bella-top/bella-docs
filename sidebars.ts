@@ -33,6 +33,7 @@ const sidebars: SidebarsConfig = {
             'bella-openapi/core/chat-completions',
             'bella-openapi/core/embeddings',
             'bella-openapi/core/flash-asr',
+            'bella-openapi/core/audio-transcriptions',
             'bella-openapi/core/tts',
             'bella-openapi/core/realtime',
             'bella-openapi/core/images-generage',
