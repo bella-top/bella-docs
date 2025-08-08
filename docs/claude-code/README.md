@@ -1,7 +1,5 @@
 # Claude Code With Bella Openapi In IDE
 
-[![Static Badge](https://img.shields.io/badge/UseIn-Github-blue?style=flat-square)](README_GITHUB_ACTION.md)
-
 ## Overview
 
 - Claude Code是由anthropic-ai推出的一款强大的Code Agent，其主要特点如下：
