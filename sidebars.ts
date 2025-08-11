@@ -38,6 +38,7 @@ const sidebars: SidebarsConfig = {
             'bella-openapi/core/realtime',
             'bella-openapi/core/images-generage',
             'bella-openapi/core/advanced-features',
+            'bella-openapi/core/document-parse',
           ],
         },
         {
