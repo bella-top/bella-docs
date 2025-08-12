@@ -29,13 +29,13 @@ Authorization: Bearer YOUR_API_KEY
 ### 请求体参数
 
 | 参数名 | 类型 | 必填 | 描述 |
-|--------|------|------|------|
-| `file` | SourceFile | 是 | 文档文件信息 |
-| `user` | string | 否 | 用户标识 |
-| `model` | string | 否 | 解析模型名称 |
-| `type` | string | 否 | 处理类型：`task`（异步，默认）或 `blocking`（同步） |
-| `callbackUrl` | string | 否 | 异步模式下的回调地址 |
-| `maxTimeoutMillis` | integer | 否 | 同步模式下的最大等待时间（毫秒，最小30000） |
+|--------|------|----|------|
+| `file` | SourceFile | 是  | 文档文件信息 |
+| `user` | string | 否  | 用户标识 |
+| `model` | string | 是  | 解析模型名称 |
+| `type` | string | 否  | 处理类型：`task`（异步，默认）或 `blocking`（同步） |
+| `callbackUrl` | string | 否  | 异步模式下的回调地址 |
+| `maxTimeoutMillis` | integer | 否  | 同步模式下的最大等待时间（毫秒，最小30000） |
 
 #### SourceFile 对象
 
