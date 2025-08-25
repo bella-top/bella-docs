@@ -65,6 +65,7 @@ const config: Config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
+      style: 'primary',
       title: 'Bella Opensource',
       logo: {
         alt: 'Bella Logo',

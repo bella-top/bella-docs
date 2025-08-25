@@ -220,3 +220,101 @@
     padding: 0.4rem 0.8rem 1.2rem;
   }
 }
+
+/* 改善代码块语法高亮颜色 */
+.token.string {
+  color: #22863a !important; /* 绿色字符串，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.plain {
+  color: #b66916 !important; /* 黄色字符串，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.parameter.variable {
+  color: #20a3b7 !important; /* 蓝色参数，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.operator {
+  color: #ab34af !important; /* 紫色操作符，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.keyword {
+  color: #0cad8c !important; /* 绿色关键字，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.property {
+  color: #005cc5 !important; /* 蓝色属性名，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.property-access {
+  color: #390962 !important; /* 紫色属性访问，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.string-interpolation {
+  color: #ded717 !important; /* 黄色字符串插值，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.template-string {
+  color: #f1080c8d !important; /* 红色模板字符串，更深更清晰 */
+  font-weight: 500;
+}
+
+.token.number {
+  color: #d73a49 !important; /* 红色数字，更醒目 */
+  font-weight: 500;
+}
+
+.token.boolean {
+  color: #d73a49 !important; /* 红色布尔值 */
+  font-weight: 500;
+}
+
+.token.null {
+  color: #6f42c1 !important; /* 紫色null值 */
+  font-weight: 500;
+}
+
+.token.punctuation {
+  color: #24292e !important; /* 深色标点符号 */
+}
+
+/* 代码块背景和整体样式 */
+.prism-code {
+  background-color: #f6f8fa !important;
+  border: 1px solid #e1e4e8 !important;
+}
+
+/* 暗色主题下的代码块颜色 */
+[data-theme='dark'] .token.string {
+  color: #9ecbff !important;
+}
+
+[data-theme='dark'] .token.property {
+  color: #79b8ff !important;
+}
+
+[data-theme='dark'] .token.number,
+[data-theme='dark'] .token.boolean {
+  color: #ffab70 !important;
+}
+
+[data-theme='dark'] .token.null {
+  color: #b392f0 !important;
+}
+
+[data-theme='dark'] .token.punctuation {
+  color: #e1e4e8 !important;
+}
+
+[data-theme='dark'] .prism-code {
+  background-color: #161b22 !important;
+  border: 1px solid #30363d !important;
+}
