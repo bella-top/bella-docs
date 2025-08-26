@@ -80,6 +80,11 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {
+          type: 'doc',
+          id: 'claude-code/introduction',
+          label: '导读（Introduction）',
+        },
+        {
           type: 'category',
           label: '快速使用（Quick Start）',
           items: [
@@ -109,6 +114,7 @@ const sidebars: SidebarsConfig = {
           label: '经验分享（shares）',
           items: [
             'claude-code/share/share',
+            'claude-code/share/think-share'
           ],
         }
       ],

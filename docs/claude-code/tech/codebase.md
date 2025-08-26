@@ -1,4 +1,4 @@
-# CodeBase解读
+# CodeBase对比：Cursor vs Claude Code
 
 ## 技术路线对比
 
