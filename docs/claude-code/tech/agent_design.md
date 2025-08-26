@@ -1,4 +1,4 @@
-# Claude Code的Agent设计理念
+# Agent设计
 
 ## **核心设计：主Agent + 有限子Agent + 丰富工具生态**
 

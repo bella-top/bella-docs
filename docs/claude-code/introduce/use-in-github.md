@@ -1,4 +1,4 @@
-# Claude Code With GitHub Actions
+# GitHub使用配置
 
 ## 概述
 

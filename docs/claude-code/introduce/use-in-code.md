@@ -1,4 +1,4 @@
-# Claude Code CLI 代码集成完整攻略
+# 编程方式调用
 
 ## 目录
 1. [概述](#概述)
@@ -24,7 +24,7 @@
 
 ### 1. 环境要求
 
-[按照Claude-Code-Cli](README.md)
+[安装Claude-Code-Cli](use-in-ide.md)
 
 ### 2. Node.js依赖
 

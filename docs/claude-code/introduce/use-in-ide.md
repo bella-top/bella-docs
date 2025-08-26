@@ -1,9 +1,9 @@
-# Claude Code With Bella Openapi In IDE
+# IDE使用配置
 
 ## Overview
 
 - Claude Code是由anthropic-ai推出的一款强大的Code Agent，其主要特点如下：
-  - 功能齐全：集成了主流IDE和GitHub中的cr, issues，在GitHub中使用：[Claude Code With GitHubActions](README_GITHUB_ACTION.md)
+  - 功能齐全：集成了主流IDE和GitHub中的cr, issues，在GitHub中使用：[Claude Code With GitHubActions](use-in-github.md)
   - 设计合理：其执行任务的过程，完美复刻了一个程序员在进行项目开发时的思考过程，在执行复杂任务上表现很好
   - 不依赖Code Embeddings: 与依赖RAG的Code Agent不同，不需要针对代码训练Embedding模型，只需要LLM模型即可使用，将类似`README`的文件作为Code Base也更像一个人在进行开发
   - 安全性：Code Base不依赖向量库，确保了不会在服务端存储向量化的代码
@@ -18,8 +18,8 @@
 - 对比Cursor和Windsurf，Claude Code更适合异步编程的场景。Claude Code的Planning更为复杂，执行速度较慢，但是能力更强
 
 ## Tech Background
-- [Agent设计](agent_design.md)
-- [Code-Base设计](codebase_Cursor_vs_Claude.md)
+- [Agent设计](../tech/agent_design.md)
+- [Code-Base设计](../tech/codebase.md)
 
 ## Dependency
 
@@ -68,7 +68,7 @@
 ## 工作流程
 
 ### CodeBase
-- 通过`/init` 生成 `CLAUDE.md` 文件，作为每个任务的起始提示词，相当于给claude提供进行项目开发的 `README`。[示例](./CLAUDE.example.md)
+- 通过`/init` 生成 `CLAUDE.md` 文件，作为每个任务的起始提示词，相当于给claude提供进行项目开发的 `README`。[示例](../share/CLAUDE.example.md)
 - claude code的user messages中会加入`CLAUDE.md` 文件的全量内容，示例：
 ```json
 {
@@ -95,7 +95,7 @@
 ```
 - 重复执行`/init`可以修改当前的`CLAUDE.md` 文件，常用于更新代码后
 - Code Base优化
- - 示例CodeBase中的[Key Directories](./CLAUDE.example.md#key-directories)和[Key Architecture Patterns](./CLAUDE.example.md#key-architecture-patterns)用于提示LLM如何查找项目文件
+ - 示例CodeBase中的[Key Directories](../share/CLAUDE.example.md#key-directories)和[Key Architecture Patterns](../share/CLAUDE.example.md#key-architecture-patterns)用于提示LLM如何查找项目文件
  - 如果要加速推理，就需要优化这部分的提示词，比如给出更详细的介绍。可以加一个`Key Files`，涵盖重要且修改代码时阅读频率高的文件
  - 如果模型上下文足够大，甚至可以提供全量的`File Description`
  - 对于当前实现的特定任务，也可以临时添加对应的`Key Files`来加速LLM的推理
@@ -215,7 +215,7 @@ echo "- When the user requests code examples, setup or configuration steps, or l
 /user:mcp-tool Amazon Bedrock RAG库应该怎么使用
 ```
 **使用示例：**
-[context7使用示例](context7.example.md)
+[context7使用示例](../share/context7.example.md)
 
 **3.将Claude Code集成为mcp服务**： 
 不仅可以在Claude Code中配置MCP服务，还可以将Claude Code启动为MCP服务器，命令：`claude mcp serve`
@@ -224,7 +224,7 @@ echo "- When the user requests code examples, setup or configuration steps, or l
 ```shell
 claude -p "按照我们的编码标准修复GitHub Issues 123"
 ```
-**注意**：此命令可以在自己的服务中直接调用Claude Code，实现自己需要的功能，附[使用攻略](integration-guide.md)
+**注意**：此命令可以在自己的服务中直接调用Claude Code，实现自己需要的功能，附[使用攻略](use-in-code.md)
 
 
 ## 常见问题

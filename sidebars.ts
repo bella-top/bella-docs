@@ -77,14 +77,39 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Claude Code With Bella',
       collapsible: true,
-      collapsed: true,
+      collapsed: false,
       items: [
-        'claude-code/README',
-        'claude-code/README_GITHUB_ACTION',
-        'claude-code/integration-guide',
-        'claude-code/claude-code-technical-research-case-study',
-        'claude-code/agent_design',
-        'claude-code/share'
+        {
+          type: 'category',
+          label: '快速使用（Quick Start）',
+          items: [
+            'claude-code/introduce/use-in-ide',
+            'claude-code/introduce/use-in-github',
+            'claude-code/introduce/use-in-code',
+          ],
+        },
+        {
+          type: 'category',
+          label: '技术分析（Tech Analysis）',
+          items: [
+            'claude-code/tech/agent_design',
+            'claude-code/tech/codebase',
+          ],
+        },
+        {
+          type: 'category',
+          label: '实践案例（cases）',
+          items: [
+            'claude-code/case/technical-research-case',
+          ],
+        },
+        {
+          type: 'category',
+          label: '经验分享（shares）',
+          items: [
+            'claude-code/share/share',
+          ],
+        }
       ],
     },
     // 可以在这里添加更多项目

@@ -39,21 +39,21 @@
 ## 三、深入理解Claude Code为什么更好
 
 ### 3.1 Agent设计理念
-[Claude Code的单Agent设计](agent_design.md)
+[Claude Code的单Agent设计](../tech/agent_design.md)
 
 ### 3.2 合理的codebase管理
-[Claude Code与Cursor的codebase对比](codebase_Cursor_vs_Claude.md)
+[Claude Code与Cursor的codebase对比](../tech/codebase.md)
 
 ## 四、快速使用
 
 ### 4.1 本地coding
-[Claude-Code-Cli快速使用攻略](README.md)
+[Claude-Code-Cli快速使用攻略](../introduce/use-in-ide.md)
 
 ### 4.2 GitHub集成
-[Claude-Code-GitHub快速集成攻略](README_GITHUB_ACTION.md)
+[Claude-Code-GitHub快速集成攻略](../introduce/use-in-github.md)
 
 ### 4.3 在自建应用中集成
-[Claude-Code代码集成指南](integration-guide.md)
+[Claude-Code代码集成指南](../introduce/use-in-code.md)
 
 ## 五、让Claude Code更好地为你工作
 
@@ -182,11 +182,11 @@
     - 使用context7或deepwiki等mcp工具
 
 #### 技术调研
-[Claude Code 技术调研任务使用案例](claude-code-technical-research-case-study.md)
+[Claude Code 技术调研任务使用案例](../case/technical-research-case.md)
 
 
 ## 六、立即行动
-- 根据[教程](README.md)安装配置Claude Code，本地体验提出问题，
+- 根据[教程](../introduce/use-in-ide.md)安装配置Claude Code，本地体验提出问题，
 - 为支持项目：[ClaudeCode集成Bella](https://github.com/bella-top/claude-code-with-bella)，[Bella Openapi](https://github.com/LianjiaTech/bella-openapi)点赞
 
 ## 七、Q&A和讨论
