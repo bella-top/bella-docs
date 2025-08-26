@@ -100,6 +100,7 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: '实践案例（cases）',
           items: [
+            'claude-code/case/tips',
             'claude-code/case/technical-research-case',
           ],
         },
