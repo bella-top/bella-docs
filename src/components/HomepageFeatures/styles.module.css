@@ -75,6 +75,10 @@
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sectionTitle {
@@ -98,9 +102,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #E5E7EB;
   overflow: hidden;
-  max-width: 90%;  
+  max-width: 90%;
   margin-left: auto;
   margin-right: auto;
+  max-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
 }
 
 .architectureTitleContainer {
@@ -130,10 +137,13 @@
 .architectureLevels {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(8px, 1.5vh, 16px);
   width: 100%;
   margin: 0 auto;
   max-width: 95%;
+  flex: 1;
+  justify-content: space-evenly;
+  min-height: 0;
 }
 
 .architectureLevel {
@@ -143,7 +153,9 @@
   margin-bottom: 0;
   background-color: #F9FAFB;
   border-radius: 8px;
-  padding: 8px 0;
+  padding: clamp(4px, 1vh, 12px) 0;
+  flex: 1;
+  min-height: 0;
 }
 
 /* 彻底移除所有层级间连线样式 */
@@ -165,15 +177,15 @@
 }
 
 .levelTitle {
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
   font-weight: 600;
   margin: 0;
-  padding: 6px 10px 6px 12px; /* 增加左侧内边距，为竖线留出空间 */
+  padding: clamp(4px, 1vh, 8px) clamp(6px, 1vw, 12px);
   white-space: nowrap;
-  text-align: left; /* 确保文本左对齐 */
+  text-align: left;
   color: #4B5563;
   position: relative;
-  border-left: 4px solid transparent; /* 添加基础竖线 */
+  border-left: 4px solid transparent;
 }
 
 .levelTitle-gateway {
@@ -209,8 +221,8 @@
 
 .levelModules {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 25vw, 280px), 1fr));
+  gap: clamp(8px, 1vw, 16px);
   justify-content: flex-start;
   align-items: stretch;
 }
@@ -224,12 +236,13 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  height: 70px;
-  width: 280px;
+  height: clamp(50px, 8vh, 80px);
+  width: 100%;
+  max-width: clamp(200px, 25vw, 300px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 1.5rem;
+  padding: clamp(0.5rem, 2vh, 1.5rem);
   border: 2px solid #E5E7EB;
   box-sizing: border-box;
 }
@@ -270,14 +283,14 @@
 }
 
 .moduleHeader h3 {
-  font-size: 0.9rem;
+  font-size: clamp(0.6rem, 1.2vw, 0.85rem);
   font-weight: 600;
   margin: 0;
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: #111827;
-  line-height: 1.3;
+  line-height: 1.2;
   flex: 1;
   text-align: center;
   hyphens: auto;
@@ -429,6 +442,10 @@
 /* 架构部分 */
 .architectureSection {
   padding: 0 2rem;
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  justify-content: flex-start;
+  padding-top: 1rem;
 }
 
 .architectureDiagramContainer {
@@ -438,6 +455,12 @@
   margin-bottom: 3rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #E5E7EB;
+  width: 95%;
+  max-width: 95%;
+  margin: 0 auto;
+  padding: 0.75rem;
+  max-height: calc(100vh - 150px);
+  flex: 1;
 }
 
 .architectureLevels {
@@ -446,6 +469,7 @@
   margin: 0 auto;
   max-width: 95%;
   position: relative;
+  gap: clamp(4px, 1vh, 8px);
 }
 
 .architectureLevel {
@@ -793,25 +817,29 @@
     max-width: none;
   }
   
+  .architectureSection {
+    min-height: 100vh;
+    padding: 0 0.5rem;
+  }
+  
   /* 架构图容器整体缩小 */
   .architectureDiagramContainer {
-    width: 90%;
-    max-width: 90%;
+    width: 95%;
+    max-width: 95%;
     margin: 0 auto;
-    padding: 0.5rem;
+    padding: 0.75rem;
+    max-height: calc(100vh - 150px);
+  }
+  
+  .architectureLevels {
+    gap: clamp(4px, 1vh, 8px);
   }
   
   /* 调整模块宽度和间距 */
   .architectureModule {
-    min-width: 30%;
-    margin: 0.3rem 0;
-    padding: 0.5rem;
-    /* 缩小模块框 */
-    transform: scale(0.8);
-    transform-origin: center;
-    /* 统一模块大小，覆盖动态宽度设置 */
-    width: 200px !important;
-    height: 50px !important;
+    height: clamp(40px, 6vh, 60px);
+    max-width: clamp(150px, 30vw, 250px);
+    padding: clamp(0.3rem, 1.5vh, 1rem);
   }
 
   /* 手机端标题样式调整 */
@@ -906,9 +934,9 @@
   }
 
   .levelModules {
+    grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 25vw, 200px), 1fr));
+    gap: clamp(4px, 0.8vw, 8px);
     justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0.2rem; /* 进一步减小模块之间的间距 */
   }
 
   /* 项目详情面板调整 */
@@ -935,11 +963,21 @@
 
 /* 更小屏幕的适配 */
 @media (max-width: 480px) {
+  .architectureSection {
+    min-height: 100vh;
+    padding: 0 0.25rem;
+  }
+  
   /* 架构图容器在更小屏幕上进一步缩小 */
   .architectureDiagramContainer {
-    width: 95%;
-    max-width: 95%;
-    padding: 0.2rem;
+    width: 98%;
+    max-width: 98%;
+    padding: 0.5rem;
+    max-height: calc(100vh - 120px);
+  }
+  
+  .architectureLevels {
+    gap: clamp(2px, 0.8vh, 6px);
   }
   
   /* 标题进一步缩小 */
@@ -965,11 +1003,14 @@
   
   /* 调整模块大小和间距 */
   .architectureModule {
-    min-width: 45%;
-    padding: 0.3rem;
-    margin: 0.1rem 0;
-    /* 在小屏幕上进一步缩小模块框 */
-    transform: scale(0.55);
+    height: clamp(35px, 5vh, 50px);
+    max-width: clamp(100px, 28vw, 180px);
+    padding: clamp(0.2rem, 1vh, 0.8rem);
+  }
+  
+  .levelModules {
+    grid-template-columns: repeat(auto-fit, minmax(clamp(100px, 22vw, 150px), 1fr));
+    gap: clamp(2px, 0.5vw, 6px);
   }
   
   /* 调整模块内部样式 */
@@ -989,26 +1030,24 @@
   
   /* 调整层级标题宽度和间距 */
   .levelTitleContainer {
-    width: 40px;
-    margin-right: 0.15rem;
+    width: clamp(35px, 8vw, 50px);
+    margin-right: clamp(0.1rem, 0.5vw, 0.2rem);
   }
   
   .levelTitle {
-    font-size: 0.65rem;
-    padding: 2px 4px;
+    font-size: clamp(0.6rem, 1vw, 0.75rem);
+    padding: clamp(2px, 0.5vh, 4px) clamp(3px, 0.8vw, 6px);
   }
   
   .levelModulesContainer {
-    width: calc(100% - 45px); /* 调整宽度以适应更窄的标题容器 */
+    width: calc(100% - clamp(40px, 9vw, 55px));
+    margin: 0;
+    padding: clamp(2px, 0.5vh, 6px);
   }
   
   .architectureLevel {
-    padding: 2px 0;
-    gap: 0.15rem;
-  }
-  
-  .levelModules {
-    gap: 0.15rem;
+    padding: clamp(1px, 0.5vh, 4px) 0;
+    gap: clamp(0.1rem, 0.3vw, 0.2rem);
   }
 
   .featureIcon {
