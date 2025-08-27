@@ -82,7 +82,7 @@
       "description": "类似DIFY但拥有诸多差异化能力，如回调模式、Groovy脚本支持、批处理能力、第三方数据源注册等，同时性能更为卓越。",
       "en_description": "Similar to DIFY but with many differentiated capabilities, such as callback mode, Groovy script support, batch processing capabilities, third-party data source registration, while delivering superior performance.",
       "type": "endpoint",
-      "status": "upcoming",
+      "status": "released",
       "github": "https://github.com/LianjiaTech/bella-workflow",
       "documentationLink": "/docs/bella-workflow/intro",
       "dependencies": [

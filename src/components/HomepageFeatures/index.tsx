@@ -89,8 +89,7 @@ const ArchitectureModule: React.FC<{
   project: Project;
   onClick: () => void;
   isSelected: boolean;
-  width: number;
-}> = ({ project, onClick, isSelected, width }) => {
+}> = ({ project, onClick, isSelected }) => {
   
   // 根据项目状态设置不同的样式
   const moduleClasses = [
@@ -104,7 +103,6 @@ const ArchitectureModule: React.FC<{
     <div 
       className={moduleClasses} 
       onClick={onClick}
-      style={{ width: `${width}px` }}
     >
       <div className={styles.moduleHeader}>
         <h3>
@@ -205,19 +203,6 @@ const ArchitectureDiagram: React.FC<{
       .filter(type => projectsByType[type] && projectsByType[type]!.length > 0);
   }, [projectsByType]);
   
-  // 根据每层的模块数量计算宽度
-  const getModuleWidth = (type: ProjectType): number => {
-    const count = projectsByType[type]?.length || 0;
-    
-    // 根据数量动态调整宽度
-    if (count === 1) {
-      return 260; // 增加模块宽度
-    } else if (count === 2) {
-      return 220; // 增加模块宽度
-    } else {
-      return 200; // 增加模块宽度
-    }
-  };
   
   // 处理模块点击
   const handleModuleClick = (projectId: string) => {
@@ -500,8 +485,6 @@ const ArchitectureDiagram: React.FC<{
       {/* 架构图层级布局 */}
       <div className={styles.architectureLevels}>
         {orderedLayers.map((type) => {
-          const moduleWidth = getModuleWidth(type);
-          
           return (
             <div key={type} className={styles.architectureLevel}>
               <div className={styles.levelTitleContainer}>
@@ -521,7 +504,6 @@ const ArchitectureDiagram: React.FC<{
                         project={project}
                         onClick={() => handleModuleClick(project.id)}
                         isSelected={selectedProject === project.id}
-                        width={moduleWidth}
                       />
                     </div>
                   ))}
