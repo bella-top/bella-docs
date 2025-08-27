@@ -36,7 +36,8 @@ const sidebars: SidebarsConfig = {
             'bella-openapi/core/audio-transcriptions',
             'bella-openapi/core/tts',
             'bella-openapi/core/realtime',
-            'bella-openapi/core/images-generage',
+            'bella-openapi/core/images-generate',
+            'bella-openapi/core/images-edit',
             'bella-openapi/core/advanced-features',
             'bella-openapi/core/document-parse',
           ],
@@ -99,6 +100,7 @@ const sidebars: SidebarsConfig = {
           items: [
             'claude-code/tech/agent_design',
             'claude-code/tech/codebase',
+            'claude-code/tech/sub-agents',
           ],
         },
         {
@@ -107,6 +109,8 @@ const sidebars: SidebarsConfig = {
           items: [
             'claude-code/case/tips',
             'claude-code/case/technical-research-case',
+            'claude-code/case/sub-agents-use',
+            'claude-code/case/client',
           ],
         },
         {

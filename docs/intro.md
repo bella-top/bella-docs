@@ -30,3 +30,6 @@ Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平
 
 ### Bella-whisper - 中文优化ASR模型
 基于领域数据精心微调的Whisper模型，拥有卓越的简体中文识别能力，为语音应用提供更精准的支持。
+
+### [Bella-claude-code - 集成Bella Openapi的Code Agent](./claude-code/introduction.md)
+Claude Code是由anthropic-ai推出的一款当前市面上coding能力最强大的Code Agent。所有在Bella-Openapi为其LLM调用提供了Route能力，Bella-Openapi中接入的LLM协议均可使用Claude Code，不仅仅支持Claude系列模型，同时支持了Openai全系列、Gemini、DeepSeek、Qwen、Doubao等主流模型。
