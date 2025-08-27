@@ -21,6 +21,27 @@
       ]
     },
     {
+      "id": "bella-domify",
+      "name": "Bella-domify",
+      "description": "依托Bella-knowledge数据源,提供文档解析服务，为RAG等项目提供底层能力，也可以做为lib库单独使用",
+      "en_description": "Leveraging Bella-knowledge data sources, provides document parsing services, offering foundational capabilities for RAG and other projects, and can also be used independently as a library.",
+      "type": "endpoint",
+      "status": "released",
+      "github": "https://github.com/LianjiaTech/bella-domify",
+      "apiDocPath": "bella-domify",
+      "documentationLink": "/docs/bella-domify/intro",
+      "dependencies": [
+        {
+          "project": "bella-knowledge",
+          "endpoints": ["knwledge management"]
+        },
+        {
+          "project": "bella-openapi",
+          "endpoints": ["AI Endpoint"]
+        }
+      ]
+    },
+    {
       "id": "bella-knowledge",
       "name": "Bella-knowledge",
       "description": "专注于知识的统一存储与管理，优雅处理文件、问答对等多类知识源，为智能应用提供强大的知识支撑。",

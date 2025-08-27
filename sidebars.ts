@@ -76,6 +76,28 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Domify',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-domify/intro',
+          label: '介绍（Introduction）',
+        },
+        {
+          type: 'category',
+          label: '使用文档 (Usage Documents)',
+          items: [
+            'bella-domify/integration-knowledge-rag-integration',
+            'bella-domify/standalone-quick-start',
+            'bella-domify/domtree',
+          ],
+        }
+      ],
+    },
+    {
+      type: 'category',
       label: 'Claude Code With Bella',
       collapsible: true,
       collapsed: false,
