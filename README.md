@@ -36,3 +36,6 @@ Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平
 
 ### Bella-claude-code - 集成Bella Openapi的Code Agent <a href="https://doc.bella.top/docs/claude-code/introduction"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/logo.svg alt="GitHub" /></a>
 Claude Code是由anthropic-ai推出的一款当前市面上coding能力最强大的Code Agent。所有在Bella-Openapi为其LLM调用提供了Route能力，Bella-Openapi中接入的LLM协议均可使用Claude Code，不仅仅支持Claude系列模型，同时支持了Openai全系列、Gemini、DeepSeek、Qwen、Doubao等主流模型。
+
+### Bella-domify - 文档解析服务  <a href="https://github.com/LianjiaTech/bella-domify"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
+文档解析Python库。使用Python lib包形式引入，也可以服务化方式运行，支持多种文档格式的解析和转换。是检索增强等服务能力的基石

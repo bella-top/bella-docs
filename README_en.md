@@ -36,3 +36,6 @@ A Whisper model carefully fine-tuned with domain data, possessing excellent Simp
 
 ### Bella-claude-code - Code Agent Integrated with Bella Openapi <a href="https://doc.bella.top/docs/claude-code/introduction"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/logo.svg alt="GitHub" /></a>
 Claude Code is a Code Agent launched by anthropic-ai, which boasts the most powerful coding capability currently available on the market. All LLMs integrated into Bella-Openapi are provided with Route capability, and Claude Code can be utilized by all LLM protocols integrated into Bella-Openapi. It not only supports Claude series models but also supports the entire series of OpenAI models, as well as mainstream models such as Gemini, DeepSeek, Qwen, and Doubao.
+
+### Bella-domify - Document Parsing Service <a href="https://github.com/LianjiaTech/bella-domify"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
+A document parsing Python library that can be imported as a Python lib package or run as a service, supporting parsing and conversion of multiple document formats. It serves as the cornerstone for retrieval-augmented generation and other service capabilities.
