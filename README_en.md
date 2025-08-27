@@ -33,3 +33,6 @@ Supports multiple models including LLM, ASR, TTS, Embedding, Rerank, compatible 
 
 ### Bella-whisper - Chinese-optimized ASR Model <a href="https://github.com/LianjiaTech/bella-whisper"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 A Whisper model carefully fine-tuned with domain data, possessing excellent Simplified Chinese recognition capabilities, providing more accurate support for voice applications.
+
+### Bella-claude-code - Code Agent Integrated with Bella Openapi <a href="https://doc.bella.top/docs/claude-code/introduction"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/logo.svg alt="GitHub" /></a>
+Claude Code is a Code Agent launched by anthropic-ai, which boasts the most powerful coding capability currently available on the market. All LLMs integrated into Bella-Openapi are provided with Route capability, and Claude Code can be utilized by all LLM protocols integrated into Bella-Openapi. It not only supports Claude series models but also supports the entire series of OpenAI models, as well as mainstream models such as Gemini, DeepSeek, Qwen, and Doubao.
