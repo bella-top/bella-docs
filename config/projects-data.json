@@ -50,6 +50,7 @@
       "status": "upcoming",
       "github": "https://github.com/LianjiaTech/bella-knowledge",
       "documentationLink": "/docs/bella-knowledge/intro",
+      "deepwiki": "https://wiki.bella.top/LianjiaTech/bella-domify?type=github&language=zh",
       "dependencies": [
         {
           "project": "bella-openapi",
