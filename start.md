@@ -114,6 +114,8 @@ const sidebars: SidebarsConfig = {
 
 如果项目包含 API 文档：
 
+**注意：如果不打算提供openapi v3.0规范的文档，请删除配置中的apiDocPath参数**
+
 1. 将中英文版本的OpenAPI v3.0 规范的json文件置于正确的目录中（ `/openapi/your-project-api-path/`）
 2. 确保在 `projects-data.json` 中设置了正确的 `apiDocPath` 值
 3. 运行 `npm run generate-api-docs` 命令生成对应的 API 文档页面，直接执行`npm run start`或`npm run build`时也会自动执行该命令。

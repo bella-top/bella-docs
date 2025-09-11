@@ -28,7 +28,6 @@
       "type": "endpoint",
       "status": "released",
       "github": "https://github.com/LianjiaTech/bella-domify",
-      "apiDocPath": "bella-domify",
       "documentationLink": "/docs/bella-domify/intro",
       "deepwiki": "https://wiki.bella.top/LianjiaTech/bella-domify?type=github&language=zh",
       "dependencies": [
@@ -52,7 +51,6 @@
       "github": "https://github.com/LianjiaTech/bella-knowledge",
       "website": "https://knowledge.bella.top",
       "documentationLink": "/docs/bella-knowledge/intro",
-      "apiDocPath": "bella-knowledge",
       "dependencies": [
         {
           "project": "bella-openapi",
