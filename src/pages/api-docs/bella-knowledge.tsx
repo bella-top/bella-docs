@@ -1,31 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-
-// 读取项目配置文件
-function readProjectsConfig() {
-  try {
-    const configPath = path.join(__dirname, '../config/projects-data.json');
-    const content = fs.readFileSync(configPath, 'utf8');
-    return JSON.parse(content);
-  } catch (error) {
-    console.error(`Error reading projects config:`, error);
-    return { projects: [] };
-  }
-}
-
-// 创建 API 文档页面
-function createApiDocPage(project, outputPath) {
-  // 获取项目路径或
-  const projectPath = project.apiDocPath;
-  
-  // 将项目ID转换为驼峰命名
-  const componentName = project.id
-    .split(/[-_]/)
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('') + 'ApiPage';
-  
-  const template = `import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Layout from '@theme/Layout';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -33,15 +6,15 @@ import { translate } from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import '../../css/redoc-overrides.css'; // 引入自定义CSS样式
 
-export default function ${componentName}() {
+export default function BellaKnowledgeApiPage() {
   const { i18n } = useDocusaurusContext();
   const currentLocale = i18n.currentLocale;
   
   // 根据当前语言选择正确的API规范文件
   const specUrl = useBaseUrl(
     currentLocale === 'en' 
-      ? '/openapi/${projectPath}/' + 'openapi-en.json' 
-      : '/openapi/${projectPath}/' + 'openapi.json' 
+      ? '/openapi/bella-knowledge/' + 'openapi-en.json' 
+      : '/openapi/bella-knowledge/' + 'openapi.json' 
   );
   
   // 翻译项目名称的API文档标题
@@ -51,7 +24,7 @@ export default function ${componentName}() {
       message: '{projectName} API 文档',
       description: 'API documentation page title with project name'
     },
-    { projectName: '${project.name}' }
+    { projectName: 'Bella-knowledge' }
   );
   
   // 翻译项目名称的API文档描述
@@ -61,7 +34,7 @@ export default function ${componentName}() {
       message: '{projectName} API 文档',
       description: 'API documentation page description with project name'
     },
-    { projectName: '${project.name}' }
+    { projectName: 'Bella-knowledge' }
   );
   
   return (
@@ -128,7 +101,7 @@ export default function ${componentName}() {
                         message: '{projectName} API 文档',
                         description: 'API documentation page title with project name'
                       },
-                      { projectName: '${project.name}' }
+                      { projectName: 'Bella-knowledge' }
                     );
                     title.style.margin = '0 0 0 20px';
                     title.style.fontSize = '1.5rem';
@@ -216,168 +189,4 @@ export default function ${componentName}() {
       </main>
     </Layout>
   );
-}`;
-
-  try {
-    fs.writeFileSync(outputPath, template, 'utf8');
-    console.log(`Created API doc page for ${project.id} at ${outputPath}`);
-  } catch (error) {
-    console.error(`Error creating API doc page for ${project.id}:`, error);
-  }
 }
-
-// 主函数
-function generateApiDocs() {
-  // 读取项目配置
-  const config = readProjectsConfig();
-  
-  if (!config.projects || config.projects.length === 0) {
-    console.error('No projects found in config');
-    return;
-  }
-  
-  // 确保目录存在
-  const pagesDir = path.join(__dirname, '../src/pages/api-docs');
-  if (!fs.existsSync(pagesDir)) {
-    fs.mkdirSync(pagesDir, { recursive: true });
-  }
-  
-  // 为每个有 API 文档的项目创建页面
-  config.projects.forEach(project => {
-    if (project.apiDocPath && project.status === 'released') {
-      const outputPath = path.join(pagesDir, `${project.id}.tsx`);
-      createApiDocPage(project, outputPath);
-    }
-  });
-}
-
-// 从 GitHub 获取 README.md 内容
-function fetchReadmeFromGitHub(url, outputPath) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-      
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          // 处理相对路径，将其转换为 GitHub 的绝对路径
-          let processedData = data;
-          
-          // 替换相对路径链接为 GitHub 绝对路径
-          const repoUrl = 'https://github.com/LianjiaTech/bella-knowledge';
-          
-          // 处理 markdown 链接 [text](./path) -> [text](https://github.com/.../path)
-          processedData = processedData.replace(/\]\(\.\/([^)]+)\)/g, `](${repoUrl}/blob/main/$1)`);
-          
-          // 处理 markdown 链接 [text](../../path) -> [text](https://github.com/.../path)  
-          processedData = processedData.replace(/\]\(\.\.\/\.\.\/([^)]+)\)/g, `](${repoUrl}/$1)`);
-          
-          // 处理 badge 链接中的相对路径 (./LICENSE) -> GitHub路径
-          processedData = processedData.replace(/\(\.\/LICENSE\)/g, `(${repoUrl}/blob/main/LICENSE)`);
-          
-          // 处理 README_EN.md 链接
-          processedData = processedData.replace(/href="\.\/README_EN\.md"/g, `href="${repoUrl}/blob/main/README_EN.md"`);
-          
-          // 添加元数据和处理后的内容
-          const processedContent = `---
-title: Bella-Knowledge 介绍
-description: 专注于知识的统一存储与管理，优雅处理文件、数据集、问答对等多类知识源
----
-
-<!-- 此文档自动从 https://github.com/LianjiaTech/bella-knowledge 同步更新 -->
-
-${processedData}
-
----
-
-:::info 自动同步
-此文档内容自动从 [GitHub Repository](https://github.com/LianjiaTech/bella-knowledge) 同步更新，所有链接已自动转换为 GitHub 绝对路径。
-:::`;
-
-          try {
-            fs.writeFileSync(outputPath, processedContent, 'utf8');
-            console.log(`Updated bella-knowledge intro from GitHub README with fixed links`);
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        } else {
-          reject(new Error(`GitHub request failed with status ${res.statusCode}`));
-        }
-      });
-    }).on('error', (err) => {
-      reject(err);
-    });
-  });
-}
-
-// 更新 bella-knowledge 的介绍文档
-async function updateBellaKnowledgeIntro() {
-  const readmeUrls = [
-    'https://raw.githubusercontent.com/LianjiaTech/bella-knowledge/main/README.md',
-    'https://raw.githubusercontent.com/LianjiaTech/bella-knowledge/master/README.md',
-    'https://raw.githubusercontent.com/LianjiaTech/bella-knowledge/dev/README.md'
-  ];
-  const introPath = path.join(__dirname, '../docs/bella-knowledge/intro.md');
-  
-  // 尝试多个可能的 URL
-  for (const readmeUrl of readmeUrls) {
-    try {
-      console.log(`Trying to fetch README from: ${readmeUrl}`);
-      await fetchReadmeFromGitHub(readmeUrl, introPath);
-      return; // 成功获取就返回
-    } catch (error) {
-      console.log(`Failed to fetch from ${readmeUrl}: ${error.message}`);
-      continue;
-    }
-  }
-  
-  // 如果所有 URL 都失败，使用备用内容
-  console.warn('Warning: Could not fetch README from any GitHub URL');
-  console.log('Using fallback content for bella-knowledge intro');
-  
-  const fallbackContent = `---
-title: Bella-Knowledge 介绍
-description: 专注于知识的统一存储与管理，优雅处理文件、数据集、问答对等多类知识源
----
-
-# Bella-Knowledge
-
-专注于知识的统一存储与管理，优雅处理文件、数据集、问答对等多类知识源，为智能应用提供强大的知识支撑。
-
-## 主要特性
-
-- **OpenAI File API 兼容性** - 与 OpenAI File API 完全对齐，扩展企业级数据管理能力
-- **统一数据管理** - 集中存储文件、数据集和知识库，实现跨系统数据标准化
-- **生态系统集成** - 支持 Bella-Workflow 和 Bella-RAG 系统，实现无缝数据共享
-- **智能数据处理** - 多格式文档解析，企业级可靠性和安全性
-
-## 技术栈
-
-- 后端：Java + Spring Boot
-- 前端：React 19+
-- 数据库：MySQL 5.7+, Redis 6.0+
-- 部署：Docker
-
-:::info 项目信息
-了解更多详情请访问 [GitHub Repository](https://github.com/LianjiaTech/bella-knowledge)
-:::`;
-
-  try {
-    fs.writeFileSync(introPath, fallbackContent, 'utf8');
-    console.log('Created fallback bella-knowledge intro');
-  } catch (writeError) {
-    console.error('Error creating fallback intro:', writeError);
-  }
-}
-
-// 执行主函数
-async function main() {
-  generateApiDocs();
-  await updateBellaKnowledgeIntro();
-}
-
-main().catch(console.error);
