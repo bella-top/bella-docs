@@ -45,12 +45,14 @@
     {
       "id": "bella-knowledge",
       "name": "Bella-knowledge",
-      "description": "专注于知识的统一存储与管理，优雅处理文件、问答对等多类知识源，为智能应用提供强大的知识支撑。",
-      "en_description": "Focused on unified storage and management of knowledge, elegantly handling multiple knowledge sources such as files and Q&A pairs, providing powerful knowledge support for intelligent applications.",
+      "description": "专注于知识的统一存储与管理，优雅处理文件、数据集、问答对等多类知识源，为智能应用提供强大的知识支撑。兼容OpenAI File API，支持私有部署。",
+      "en_description": "Focused on unified storage and management of knowledge, elegantly handling multiple knowledge sources including files, datasets, and QA pairs. Provides powerful knowledge support for intelligent applications with OpenAI File API compatibility and private deployment support.",
       "type": "endpoint",
-      "status": "upcoming",
+      "status": "released",
       "github": "https://github.com/LianjiaTech/bella-knowledge",
+      "website": "https://knowledge.bella.top",
       "documentationLink": "/docs/bella-knowledge/intro",
+      "apiDocPath": "bella-knowledge",
       "dependencies": [
         {
           "project": "bella-openapi",

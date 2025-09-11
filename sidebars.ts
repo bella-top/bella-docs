@@ -98,6 +98,106 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Bella-Knowledge',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-knowledge/intro',
+          label: '介绍（Introduction）',
+        },
+        {
+          type: 'category',
+          label: '使用文档 (Usage Documents)',
+          items: [
+            {
+              type: 'category',
+              label: 'File API',
+              items: [
+                'bella-knowledge/api/files/upload',
+                'bella-knowledge/api/files/list',
+                'bella-knowledge/api/files/retrieve',
+                'bella-knowledge/api/files/delete',
+                'bella-knowledge/api/files/content',
+                'bella-knowledge/api/files/url',
+                'bella-knowledge/api/files/rename',
+                'bella-knowledge/api/files/mkdir',
+                'bella-knowledge/api/files/find',
+                'bella-knowledge/api/files/info',
+                'bella-knowledge/api/files/progress',
+                'bella-knowledge/api/files/dom-tree',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Dataset API',
+              items: [
+                {
+                  type: 'category',
+                  label: '数据集管理',
+                  items: [
+                    'bella-knowledge/api/datasets/create',
+                    'bella-knowledge/api/datasets/update',
+                    'bella-knowledge/api/datasets/delete',
+                    'bella-knowledge/api/datasets/get',
+                    'bella-knowledge/api/datasets/page',
+                    'bella-knowledge/api/datasets/import',
+                    'bella-knowledge/api/datasets/export',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'QA数据管理',
+                  items: [
+                    'bella-knowledge/api/datasets/qa/create',
+                    'bella-knowledge/api/datasets/qa/update',
+                    'bella-knowledge/api/datasets/qa/delete',
+                    'bella-knowledge/api/datasets/qa/get',
+                    'bella-knowledge/api/datasets/qa/page',
+                    'bella-knowledge/api/datasets/qa/list',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'QA引用管理',
+                  items: [
+                    'bella-knowledge/api/datasets/qa/reference/create',
+                    'bella-knowledge/api/datasets/qa/reference/update',
+                    'bella-knowledge/api/datasets/qa/reference/delete',
+                    'bella-knowledge/api/datasets/qa/reference/get',
+                    'bella-knowledge/api/datasets/qa/reference/page',
+                    'bella-knowledge/api/datasets/qa/reference/list',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: '文档管理',
+                  items: [
+                    'bella-knowledge/api/datasets/documents/create',
+                    'bella-knowledge/api/datasets/documents/delete',
+                    'bella-knowledge/api/datasets/documents/get',
+                    'bella-knowledge/api/datasets/documents/page',
+                    'bella-knowledge/api/datasets/documents/list',
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'category',
+          label: '特性介绍（Features Introduce）',
+          items: [
+            'bella-knowledge/features/openai-compatibility',
+            'bella-knowledge/features/multi-format-support',
+            'bella-knowledge/features/enterprise',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Claude Code With Bella',
       collapsible: true,
       collapsed: false,
