@@ -30,11 +30,11 @@ POST /v1/audio/asr/flash
 ### 请求头
 
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
-| --- | --- | --- | --- | --- |
-| format | string | 否 | wav | 音频格式，支持 wav、mp3、pcm 等常见格式 |
-| sample_rate | integer | 否 | 16000 | 音频采样率，单位为 Hz |
-| max_sentence_silence | integer | 否 | 3000 | 最大句子间隔静音时长，单位为毫秒 |
-| model | string | 否 | - | 要使用的 ASR 模型，不指定时使用默认模型 |
+| --- | --- |----| --- | --- |
+| format | string | 否  | wav | 音频格式，支持 wav、mp3、pcm 等常见格式 |
+| sample_rate | integer | 否  | 16000 | 音频采样率，单位为 Hz |
+| max_sentence_silence | integer | 否  | 3000 | 最大句子间隔静音时长，单位为毫秒 |
+| model | string | 是  | - | 要使用的 ASR 模型 |
 
 ### 请求体
 
