@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.7.0">
 <title data-rh="true">一句话语音识别接口文档 | Bella Documentation</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://doc.bella.top/img/bella-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://doc.bella.top/img/bella-social-card.jpg"><meta data-rh="true" property="og:url" content="https://doc.bella.top/docs/bella-openapi/core/flash-asr"><meta data-rh="true" property="og:locale" content="zh_CN"><meta data-rh="true" property="og:locale:alternate" content="en_US"><meta data-rh="true" name="docusaurus_locale" content="zh-CN"><meta data-rh="true" name="docsearch:language" content="zh-CN"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="一句话语音识别接口文档 | Bella Documentation"><meta data-rh="true" name="description" content="目录"><meta data-rh="true" property="og:description" content="目录"><link data-rh="true" rel="icon" href="/img/favicon.svg"><link data-rh="true" rel="canonical" href="https://doc.bella.top/docs/bella-openapi/core/flash-asr"><link data-rh="true" rel="alternate" href="https://doc.bella.top/docs/bella-openapi/core/flash-asr" hreflang="zh-CN"><link data-rh="true" rel="alternate" href="https://doc.bella.top/en/docs/bella-openapi/core/flash-asr" hreflang="en-US"><link data-rh="true" rel="alternate" href="https://doc.bella.top/docs/bella-openapi/core/flash-asr" hreflang="x-default"><link rel="stylesheet" href="/assets/css/styles.d2062bad.css">
-<script src="/assets/js/runtime~main.a83b2421.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.f0651bc4.js" defer="defer"></script>
 <script src="/assets/js/main.954fde3b.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -39,7 +39,7 @@
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="http-请求">HTTP 请求<a href="#http-请求" class="hash-link" aria-label="HTTP 请求的直接链接" title="HTTP 请求的直接链接">​</a></h3>
 <div class="language-http codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-http codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">POST /v1/audio/asr/flash</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="请求头">请求头<a href="#请求头" class="hash-link" aria-label="请求头的直接链接" title="请求头的直接链接">​</a></h3>
-<table><thead><tr><th>参数</th><th>类型</th><th>必填</th><th>默认值</th><th>描述</th></tr></thead><tbody><tr><td>format</td><td>string</td><td>否</td><td>wav</td><td>音频格式，支持 wav、mp3、pcm 等常见格式</td></tr><tr><td>sample_rate</td><td>integer</td><td>否</td><td>16000</td><td>音频采样率，单位为 Hz</td></tr><tr><td>max_sentence_silence</td><td>integer</td><td>否</td><td>3000</td><td>最大句子间隔静音时长，单位为毫秒</td></tr><tr><td>model</td><td>string</td><td>否</td><td>-</td><td>要使用的 ASR 模型，不指定时使用默认模型</td></tr></tbody></table>
+<table><thead><tr><th>参数</th><th>类型</th><th>必填</th><th>默认值</th><th>描述</th></tr></thead><tbody><tr><td>format</td><td>string</td><td>否</td><td>wav</td><td>音频格式，支持 wav、mp3、pcm 等常见格式</td></tr><tr><td>sample_rate</td><td>integer</td><td>否</td><td>16000</td><td>音频采样率，单位为 Hz</td></tr><tr><td>max_sentence_silence</td><td>integer</td><td>否</td><td>3000</td><td>最大句子间隔静音时长，单位为毫秒</td></tr><tr><td>model</td><td>string</td><td>是</td><td>-</td><td>要使用的 ASR 模型</td></tr></tbody></table>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="请求体">请求体<a href="#请求体" class="hash-link" aria-label="请求体的直接链接" title="请求体的直接链接">​</a></h3>
 <p>请求体为二进制音频数据流，直接将音频文件内容作为请求体发送。</p>
 <p>支持的音频格式：</p>
@@ -58,7 +58,7 @@
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="sentence-对象">Sentence 对象<a href="#sentence-对象" class="hash-link" aria-label="Sentence 对象的直接链接" title="Sentence 对象的直接链接">​</a></h4>
 <table><thead><tr><th>参数</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>text</td><td>string</td><td>识别出的文本内容</td></tr><tr><td>begin_time</td><td>integer</td><td>句子开始时间，单位为毫秒</td></tr><tr><td>end_time</td><td>integer</td><td>句子结束时间，单位为毫秒</td></tr></tbody></table>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="错误码">错误码<a href="#错误码" class="hash-link" aria-label="错误码的直接链接" title="错误码的直接链接">​</a></h2>
-<table><thead><tr><th>错误码</th><th>描述</th></tr></thead><tbody><tr><td>400</td><td>请求参数错误，例如音频格式不支持或参数格式不正确</td></tr><tr><td>401</td><td>认证失败，无效的 API 密钥</td></tr><tr><td>403</td><td>权限不足，API 密钥没有权限访问请求的资源</td></tr><tr><td>404</td><td>请求的资源不存在，例如指定的模型不存在</td></tr><tr><td>413</td><td>请求实体过大，音频文件超过大小限制</td></tr><tr><td>415</td><td>不支持的媒体类型，音频格式不受支持</td></tr><tr><td>429</td><td>请求过多，超出速率限制</td></tr><tr><td>500</td><td>服务器内部错误</td></tr><tr><td>503</td><td>服务暂时不可用</td></tr></tbody></table>
+<table><thead><tr><th>错误码</th><th>描述</th></tr></thead><tbody><tr><td>400</td><td>请求参数错误，例如音频格式不支持或参数格式不正确</td></tr><tr><td>401</td><td>认证失败，无效的 API 密钥</td></tr><tr><td>403</td><td>权限不足，API 密钥没有权限访问请求的资源</td></tr><tr><td>404</td><td>请求的资源不存在，例如指定的模型不存在</td></tr><tr><td>413</td><td>请求实体过大，音频文件超过大小限制</td></tr><tr><td>415</td><td>不支持 的媒体类型，音频格式不受支持</td></tr><tr><td>429</td><td>请求过多，超出速率限制</td></tr><tr><td>500</td><td>服务器内部错误</td></tr><tr><td>503</td><td>服务暂时不可用</td></tr></tbody></table>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="示例">示例<a href="#示例" class="hash-link" aria-label="示例的直接链接" title="示例的直接链接">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="请求示例">请求示例<a href="#请求示例" class="hash-link" aria-label="请求示例的直接链接" title="请求示例的直接链接">​</a></h3>
 <p>使用 curl 发送请求：</p>
@@ -89,7 +89,7 @@
 <ul>
 <li>根据实际需求调整 <code>max_sentence_silence</code> 参数</li>
 <li>较小的值可以更敏感地检测句子边界</li>
-<li>较大的值适合语速较慢或有自然停顿 的语音</li>
+<li>较大的值适合语速较慢或有自然停顿的语音</li>
 </ul>
 </li>
 <li>
