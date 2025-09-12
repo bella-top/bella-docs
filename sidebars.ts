@@ -198,6 +198,19 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Bella-Workflow',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-workflow/intro',
+          label: '介绍（Introduction）',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Claude Code With Bella',
       collapsible: true,
       collapsed: false,
