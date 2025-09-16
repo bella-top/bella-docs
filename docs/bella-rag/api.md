@@ -292,7 +292,7 @@ curl --location 'http://localhost:8008/api/file/stream/indexing' \
     "object": "plan.step.complete",
     "step": {
         "step_order": 1,
-        "actions": [...],
+        "actions": [],
         "status": "success",
         "step_result": "执行结果"
     }
@@ -535,6 +535,3 @@ async function chatStream(query, fileIds) {
 - [项目主页](./intro.md) - 返回项目概览
 
 ---
-
-**技术支持**: 如有API使用问题，请查看[故障排除](./usage.md#故障排除)或联系技术团队。
-

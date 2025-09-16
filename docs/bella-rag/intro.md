@@ -6,7 +6,7 @@
 
 ### 🏆 技术优势
 
-- **🔥 业界领先的文档解析**: 文档结构化解析效果业界领先，支持复杂版面和多模态内容理解，文档解析能力见[bella-domify](../bella-domify/intro.md)
+- **🔥 业界领先的文档解析**: 文档结构化解析效果业界领先，支持复杂版面和多模态内容理解，文档解析能力见[bella-domify](/docs/bella-domify/intro)
 - **🎯 高精度检索技术**: 利用多路召回、small2big、rerank等技术，兼顾语义检索效果与信息完整度，多场景验证综合结果可用率 > 85%
 - **🧠 Contextual RAG增强**: 支持Contextual RAG技术，在chunk编码前预先添加解释性的上下文信息，大幅提升检索准确率
 - **🚀 Deep RAG智能agent模式**: 基于Planning and Solve模式的智能agent，通过自动制定执行计划（圈定文件范围 → 阅读文件 → 反思）、步骤式执行和动态重规划，实现比传统RAG更优的问答效果
