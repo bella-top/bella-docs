@@ -198,6 +198,29 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Bella-RAG',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-rag/intro',
+          label: '介绍（Introduction）',
+        },
+        {
+          type: 'category',
+          label: '使用文档 (Usage Documents)',
+          items: [
+            'bella-rag/usage',
+            'bella-rag/deep-rag',
+            'bella-rag/api',
+            'bella-rag/advanced',
+          ],
+        }
+      ],
+    },
+    {
+      type: 'category',
       label: 'Bella-Workflow',
       collapsible: true,
       collapsed: false,

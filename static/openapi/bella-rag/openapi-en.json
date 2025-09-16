@@ -1,0 +1,586 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bella-RAG API",
+    "description": "Bella-RAG is a best practice RAG (Retrieval-Augmented Generation) system based on Django and LlamaIndex framework, providing complete RAG capabilities including document understanding, index construction, and retrieval Q&A.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Bella Team",
+      "url": "https://github.com/LianjiaTech/bella-rag"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://rag.bella.top",
+      "description": "Production Environment"
+    }
+  ],
+  "paths": {
+    "/api/file/stream/indexing": {
+      "post": {
+        "tags": ["Document Management"],
+        "summary": "Document Upload and Indexing",
+        "description": "Upload documents and build indexes, supporting multiple formats including PDF, Word, Excel, HTML, Markdown, etc.",
+        "operationId": "uploadAndIndex",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Index created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexingResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/rag/search": {
+      "post": {
+        "tags": ["Knowledge Retrieval"],
+        "summary": "Knowledge Search",
+        "description": "Retrieve relevant document fragments based on vector and keyword search, supporting multiple retrieval modes (fast/normal/ultra)",
+        "operationId": "knowledgeSearch",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/rag/chat": {
+      "post": {
+        "tags": ["Retrieval Augmented Generation"],
+        "summary": "Retrieval Augmented Q&A",
+        "description": "Generate intelligent answers based on retrieved document content, supporting both streaming and non-streaming output, including Deep RAG intelligent agent mode",
+        "operationId": "ragChat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Q&A successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "Server-Sent Events format streaming response"
+                },
+                "example": "data: {\"id\":\"session_id\",\"object\":\"message.delta\",\"delta\":{\"content\":[{\"type\":\"text\",\"text\":[{\"value\":\"Answer content\",\"annotations\":[]}]}]}}"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FileUploadRequest": {
+        "type": "object",
+        "required": ["file_id", "file_name", "user", "file"],
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "description": "Unique file identifier"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "File name"
+          },
+          "user": {
+            "type": "string",
+            "description": "User identifier"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "File to upload"
+          }
+        }
+      },
+      "IndexingResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Response status code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "file_id": {
+                "type": "string",
+                "description": "File ID"
+              },
+              "status": {
+                "type": "string",
+                "description": "Indexing status"
+              }
+            }
+          }
+        }
+      },
+      "SearchRequest": {
+        "type": "object",
+        "required": ["query", "scope", "user"],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchScope"
+            },
+            "description": "Search scope"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 3,
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum number of results"
+          },
+          "user": {
+            "type": "string",
+            "description": "User identifier"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["fast", "normal", "ultra"],
+            "default": "normal",
+            "description": "Search mode"
+          }
+        }
+      },
+      "SearchScope": {
+        "type": "object",
+        "required": ["type", "ids"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["file", "directory", "space"],
+            "description": "Scope type (currently only file is supported)"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of file IDs"
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Response status code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "Total number of results"
+              },
+              "docs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SearchDoc"
+                },
+                "description": "Search results"
+              }
+            }
+          }
+        }
+      },
+      "SearchDoc": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "text",
+            "description": "Content type"
+          },
+          "text": {
+            "type": "string",
+            "description": "Retrieved text content"
+          },
+          "score": {
+            "type": "number",
+            "format": "float",
+            "description": "Relevance score"
+          },
+          "annotation": {
+            "$ref": "#/components/schemas/DocumentAnnotation"
+          }
+        }
+      },
+      "DocumentAnnotation": {
+        "type": "object",
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "description": "File ID"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "File name"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "Logical position of referenced content"
+          }
+        }
+      },
+      "ChatRequest": {
+        "type": "object",
+        "required": ["query", "scope", "user"],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "User question"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchScope"
+            },
+            "description": "Search scope"
+          },
+          "user": {
+            "type": "string",
+            "description": "User identifier"
+          },
+          "response_type": {
+            "type": "string",
+            "enum": ["blocking", "stream"],
+            "default": "blocking",
+            "description": "Response type"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "Timeout in seconds"
+          },
+          "model": {
+            "type": "string",
+            "description": "Generation model"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["fast", "normal", "ultra", "deep"],
+            "default": "normal",
+            "description": "Search mode"
+          }
+        }
+      },
+      "ChatResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Response status code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChatContent"
+                },
+                "description": "Response content"
+              },
+              "plan": {
+                "$ref": "#/components/schemas/ExecutionPlan",
+                "description": "Execution plan (Deep mode)"
+              }
+            }
+          }
+        }
+      },
+      "ChatContent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "text",
+            "description": "Content type"
+          },
+          "text": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextContent"
+            }
+          }
+        }
+      },
+      "TextContent": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Text content"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "description": "Citation annotations"
+          }
+        }
+      },
+      "Citation": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "file_citation",
+            "description": "Citation type"
+          },
+          "file_citation": {
+            "$ref": "#/components/schemas/FileCitation"
+          }
+        }
+      },
+      "FileCitation": {
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Reference location path"
+          },
+          "file_id": {
+            "type": "string",
+            "description": "File ID"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "File name"
+          }
+        }
+      },
+      "ExecutionPlan": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanStep"
+            },
+            "description": "Execution steps"
+          }
+        }
+      },
+      "PlanStep": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Task description"
+          },
+          "status": {
+            "type": "integer",
+            "description": "Execution status (-1: skipped, 0: pending, 1: completed)"
+          },
+          "order": {
+            "type": "integer",
+            "description": "Execution order"
+          },
+          "result": {
+            "type": "string",
+            "description": "Execution result"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Dependent steps"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanAction"
+            },
+            "description": "Execution actions"
+          }
+        }
+      },
+      "PlanAction": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Action name"
+          },
+          "params": {
+            "type": "object",
+            "description": "Action parameters"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Error type"
+              },
+              "details": {
+                "type": "string",
+                "description": "Error details"
+              }
+            }
+          }
+        }
+      },
+      "StreamEvent": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "object"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Session ID"
+          },
+          "object": {
+            "type": "string",
+            "enum": [
+              "retrieval.doc",
+              "message.delta", 
+              "error",
+              "message.sensitives",
+              "plan.create",
+              "plan.step.start",
+              "plan.step.complete", 
+              "plan.update",
+              "plan.complete",
+              "heartbeat"
+            ],
+            "description": "Event type"
+          }
+        },
+        "required": ["id", "object"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Authentication using Bearer Token, format: Bearer {OPEN_API_KEY}"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Document Management",
+      "description": "APIs for document upload, indexing and management"
+    },
+    {
+      "name": "Knowledge Retrieval", 
+      "description": "Vector and keyword based knowledge retrieval APIs"
+    },
+    {
+      "name": "Retrieval Augmented Generation",
+      "description": "Intelligent Q&A generation APIs based on retrieval results"
+    }
+  ]
+}

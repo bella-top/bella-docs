@@ -81,11 +81,12 @@
     {
       "id": "bella-rag",
       "name": "Bella-rag",
-      "description": "依托Bella-knowledge数据源，提供统一的检索问答生成能力，支持多种检索方式和RAG实现范式，让AI回答更精准、更可靠。",
-      "en_description": "Leveraging Bella-knowledge data sources, it provides unified retrieval question-answering generation capabilities, supports various retrieval methods and RAG implementation paradigms, making AI responses more accurate and reliable.",
+      "description": "依托Bella-knowledge数据源，提供统一的检索问答生成能力，支持混合检索、small2big、contextual Rag等多种高级特性，包含业界领先的Deep RAG智能agent模式，让AI回答更精准、更可靠。",
+      "en_description": "Based on the Bella-knowledge data source, it provides a unified search and question-answering capability, supporting advanced features such as hybrid retrieval, small-to-big, and contextual RAG. It also incorporates an industry-leading Deep RAG intelligent agent mode, enabling AI to deliver more accurate and reliable answers.",
       "type": "endpoint",
-      "status": "upcoming",
+      "status": "released",
       "github": "https://github.com/LianjiaTech/bella-rag",
+      "apiDocPath": "bella-rag",
       "documentationLink": "/docs/bella-rag/intro",
       "dependencies": [
         {
