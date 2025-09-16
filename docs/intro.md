@@ -13,8 +13,8 @@ Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平
 ### Bella-assistants - 跨平台智能助手引擎
 兼容OpenAI Assistants API和Responses API的开源实现，突破原生生态限制，支持灵活切换各大厂商模型，真正实现"一次开发，处处可用"。
 
-### Bella-rag - 高效检索增强生成系统
-依托Bella-knowledge数据源，提供统一的检索问答生成能力，支持多种检索方式和RAG实现范式，让AI回答更精准、更可靠。
+### Bella-RAG - 检索增强生成系统
+依托Bella-knowledge数据源，提供统一的检索问答生成能力，支持混合检索、small2big、contextual Rag等多种高级特性，包含业界领先的Deep RAG智能agent模式，让AI回答更精准、更可靠。
 
 ### Bella-workflow - 超越想象的工作流引擎
 类似DIFY但拥有诸多差异化能力，如回调模式、Groovy脚本支持、批处理能力、第三方数据源注册等，同时性能更为卓越。

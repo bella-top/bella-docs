@@ -13,8 +13,8 @@ export default function BellaOpenapiApiPage() {
   // 根据当前语言选择正确的API规范文件
   const specUrl = useBaseUrl(
     currentLocale === 'en' 
-      ? '/openapi/bella-openapi/' + 'openapi-en.json' 
-      : '/openapi/bella-openapi/' + 'openapi.json' 
+      ? '/openapi/bella-openapi/' + 'openapi-en.json'
+      : '/openapi/bella-openapi/' + 'openapi.json'
   );
   
   // 翻译项目名称的API文档标题
