@@ -1,0 +1,586 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bella-RAG API",
+    "description": "Bella-RAG是一个基于Django和LlamaIndex框架的RAG（Retrieval-Augmented Generation）最佳实践，提供文档理解、索引构建、检索问答等完整的RAG基础能力。",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Bella Team",
+      "url": "https://github.com/LianjiaTech/bella-rag"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://rag.bella.top",
+      "description": "生产环境"
+    }
+  ],
+  "paths": {
+    "/api/file/stream/indexing": {
+      "post": {
+        "tags": ["文档管理"],
+        "summary": "文档上传索引",
+        "description": "上传文档并建立索引，支持PDF、Word、Excel、HTML、Markdown等多种格式",
+        "operationId": "uploadAndIndex",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "索引创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexingResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/rag/search": {
+      "post": {
+        "tags": ["知识检索"],
+        "summary": "知识检索",
+        "description": "基于向量和关键词检索相关文档片段，支持多种检索模式（fast/normal/ultra）",
+        "operationId": "knowledgeSearch",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检索成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/rag/chat": {
+      "post": {
+        "tags": ["检索增强生成"],
+        "summary": "检索增强问答",
+        "description": "基于检索到的文档内容生成智能回答，支持流式和非流式输出，包含Deep RAG智能agent模式",
+        "operationId": "ragChat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "问答成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "Server-Sent Events格式的流式响应"
+                },
+                "example": "data: {\"id\":\"session_id\",\"object\":\"message.delta\",\"delta\":{\"content\":[{\"type\":\"text\",\"text\":[{\"value\":\"回答内容\",\"annotations\":[]}]}]}}"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FileUploadRequest": {
+        "type": "object",
+        "required": ["file_id", "file_name", "user", "file"],
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "description": "文件唯一标识"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "文件名称"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "上传的文件"
+          }
+        }
+      },
+      "IndexingResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "file_id": {
+                "type": "string",
+                "description": "文件ID"
+              },
+              "status": {
+                "type": "string",
+                "description": "索引状态"
+              }
+            }
+          }
+        }
+      },
+      "SearchRequest": {
+        "type": "object",
+        "required": ["query", "scope", "user"],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "检索查询"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchScope"
+            },
+            "description": "检索范围"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 3,
+            "minimum": 1,
+            "maximum": 20,
+            "description": "检索数量限制"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["fast", "normal", "ultra"],
+            "default": "normal",
+            "description": "检索模式"
+          }
+        }
+      },
+      "SearchScope": {
+        "type": "object",
+        "required": ["type", "ids"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["file", "directory", "space"],
+            "description": "范围类型（目前仅支持file）"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "文件ID列表"
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "结果总数"
+              },
+              "docs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SearchDoc"
+                },
+                "description": "检索结果列表"
+              }
+            }
+          }
+        }
+      },
+      "SearchDoc": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "text",
+            "description": "内容类型"
+          },
+          "text": {
+            "type": "string",
+            "description": "检索到的文本内容"
+          },
+          "score": {
+            "type": "number",
+            "format": "float",
+            "description": "相关度得分"
+          },
+          "annotation": {
+            "$ref": "#/components/schemas/DocumentAnnotation"
+          }
+        }
+      },
+      "DocumentAnnotation": {
+        "type": "object",
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "description": "文件ID"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "文件名"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "引用内容逻辑位置"
+          }
+        }
+      },
+      "ChatRequest": {
+        "type": "object",
+        "required": ["query", "scope", "user"],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "用户问题"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchScope"
+            },
+            "description": "检索范围"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识"
+          },
+          "response_type": {
+            "type": "string",
+            "enum": ["blocking", "stream"],
+            "default": "blocking",
+            "description": "响应类型"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "超时时间（秒）"
+          },
+          "model": {
+            "type": "string",
+            "description": "生成模型"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["fast", "normal", "ultra", "deep"],
+            "default": "normal",
+            "description": "检索模式"
+          }
+        }
+      },
+      "ChatResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChatContent"
+                },
+                "description": "回复内容"
+              },
+              "plan": {
+                "$ref": "#/components/schemas/ExecutionPlan",
+                "description": "执行计划（Deep模式）"
+              }
+            }
+          }
+        }
+      },
+      "ChatContent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "text",
+            "description": "内容类型"
+          },
+          "text": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextContent"
+            }
+          }
+        }
+      },
+      "TextContent": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "文本内容"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "description": "引用注释"
+          }
+        }
+      },
+      "Citation": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "file_citation",
+            "description": "引用类型"
+          },
+          "file_citation": {
+            "$ref": "#/components/schemas/FileCitation"
+          }
+        }
+      },
+      "FileCitation": {
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "引用位置路径"
+          },
+          "file_id": {
+            "type": "string",
+            "description": "文件ID"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "文件名"
+          }
+        }
+      },
+      "ExecutionPlan": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanStep"
+            },
+            "description": "执行步骤"
+          }
+        }
+      },
+      "PlanStep": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "任务描述"
+          },
+          "status": {
+            "type": "integer",
+            "description": "执行状态（-1:跳过, 0:待执行, 1:已完成）"
+          },
+          "order": {
+            "type": "integer",
+            "description": "执行顺序"
+          },
+          "result": {
+            "type": "string",
+            "description": "执行结果"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "依赖步骤"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanAction"
+            },
+            "description": "执行动作"
+          }
+        }
+      },
+      "PlanAction": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "动作名称"
+          },
+          "params": {
+            "type": "object",
+            "description": "动作参数"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "错误消息"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "错误类型"
+              },
+              "details": {
+                "type": "string",
+                "description": "错误详情"
+              }
+            }
+          }
+        }
+      },
+      "StreamEvent": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "object"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "会话ID"
+          },
+          "object": {
+            "type": "string",
+            "enum": [
+              "retrieval.doc",
+              "message.delta", 
+              "error",
+              "message.sensitives",
+              "plan.create",
+              "plan.step.start",
+              "plan.step.complete", 
+              "plan.update",
+              "plan.complete",
+              "heartbeat"
+            ],
+            "description": "事件类型"
+          }
+        },
+        "required": ["id", "object"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "使用Bearer Token进行认证，格式：Bearer {OPEN_API_KEY}"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "文档管理",
+      "description": "文档上传、索引和管理相关接口"
+    },
+    {
+      "name": "知识检索", 
+      "description": "基于向量和关键词的知识检索接口"
+    },
+    {
+      "name": "检索增强生成",
+      "description": "基于检索结果的智能问答生成接口"
+    }
+  ]
+}
