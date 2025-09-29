@@ -779,6 +779,53 @@
   background-color: #e5e7eb;
 }
 
+/* --- Responsive overrides for project tiles --- */
+/* Ensure tiles auto-fit and look good on mobile/tablet */
+@media (max-width: 1024px) {
+  /* Allow full vertical scroll on smaller screens */
+  .architectureDiagramContainer {
+    max-height: none !important;
+  }
+
+  /* Use grid for better wrapping */
+  .levelModules {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .moduleWrapper {
+    width: 100%;
+  }
+
+  .architectureModule {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0.75rem;
+    height: auto; /* let height adapt to content */
+  }
+
+  .moduleHeader h3 {
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .levelModules {
+    grid-template-columns: 1fr; /* single column on small phones */
+  }
+
+  .moduleHeader h3 {
+    font-size: clamp(0.8rem, 4vw, 0.95rem);
+  }
+
+  .architectureModule {
+    padding: 0.6rem;
+  }
+}
+
 /* 页脚样式 */
 .footer {
   border-top: 1px solid #e5e7eb;
@@ -837,9 +884,10 @@
   
   /* 调整模块宽度和间距 */
   .architectureModule {
-    height: clamp(40px, 6vh, 60px);
-    max-width: clamp(150px, 30vw, 250px);
-    padding: clamp(0.3rem, 1.5vh, 1rem);
+    height: auto; /* 自适应高度，避免文字被裁剪 */
+    width: 100%;
+    max-width: 100%;
+    padding: clamp(0.5rem, 1.5vh, 1rem);
   }
 
   /* 手机端标题样式调整 */
@@ -934,9 +982,10 @@
   }
 
   .levelModules {
-    grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 25vw, 200px), 1fr));
-    gap: clamp(4px, 0.8vw, 8px);
-    justify-content: flex-start;
+    display: grid; /* 使用网格布局更好地自适配 */
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    gap: clamp(6px, 1vw, 10px);
+    justify-content: stretch;
   }
 
   /* 项目详情面板调整 */
@@ -1003,14 +1052,16 @@
   
   /* 调整模块大小和间距 */
   .architectureModule {
-    height: clamp(35px, 5vh, 50px);
-    max-width: clamp(100px, 28vw, 180px);
-    padding: clamp(0.2rem, 1vh, 0.8rem);
+    height: auto; /* 自适应高度，保证可读性 */
+    width: 100%;
+    max-width: 100%;
+    padding: clamp(0.4rem, 1vh, 0.8rem);
   }
   
   .levelModules {
-    grid-template-columns: repeat(auto-fit, minmax(clamp(100px, 22vw, 150px), 1fr));
-    gap: clamp(2px, 0.5vw, 6px);
+    display: grid;
+    grid-template-columns: 1fr; /* 手机端单列展示 */
+    gap: clamp(4px, 1.2vw, 8px);
   }
   
   /* 调整模块内部样式 */

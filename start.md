@@ -88,6 +88,7 @@ const sidebars: SidebarsConfig = {
           type: 'doc',
           id: 'your-project/intro',
           label: '介绍（Introduction）',
+          key: '{your_project}-intro' 
         },
         // 添加更多文档页面，example
         {
@@ -97,6 +98,7 @@ const sidebars: SidebarsConfig = {
             'your-project/core/feature1',
             'your-project/core/feature2',
           ],
+           key: '{your_project}-usag'
         },
       ],
     },

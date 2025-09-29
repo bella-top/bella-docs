@@ -1,0 +1,5135 @@
+{
+  "info": {
+    "title": "Bella Assistant",
+    "license": {
+      "url": "https://opensource.org/licenses/MIT",
+      "name": "MIT License"
+    },
+    "version": "1.0.0",
+    "description": "Bella Assistant REST API Documentation"
+  },
+  "paths": {
+    "/v1/threads": {
+      "get": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonPageThread"
+                }
+              }
+            },
+            "description": "成功返回线程列表"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "after",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，返回此ID之后的结果"
+          },
+          {
+            "in": "query",
+            "name": "before",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，返回此ID之前的结果"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            },
+            "required": false,
+            "description": "返回结果的最大数量，默认为20"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "required": false,
+            "description": "排序方式，默认为降序"
+          }
+        ],
+        "description": "获取线程列表，支持分页和排序",
+        "operationId": "listThreads"
+      },
+      "post": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "description": "成功创建线程"
+          }
+        },
+        "description": "创建新的对话线程",
+        "operationId": "createThread",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "创建线程的请求参数"
+        }
+      }
+    },
+    "/v1/responses": {
+      "post": {
+        "tags": [
+          "response-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功创建响应"
+          }
+        },
+        "description": "创建AI助手响应，支持多种输入类型和工具调用",
+        "operationId": "createResponses",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateResponseRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "创建响应的请求体，包含模型配置、输入内容和各种参数设置"
+        }
+      }
+    },
+    "/v1/assistants": {
+      "get": {
+        "tags": [
+          "assistant-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonPageAssistant"
+                }
+              }
+            },
+            "description": "成功返回助手列表"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "after",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，获取指定ID之后的助手列表"
+          },
+          {
+            "in": "query",
+            "name": "before",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，获取指定ID之前的助手列表"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            },
+            "required": false,
+            "description": "返回的助手数量限制，默认为20"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "required": false,
+            "description": "排序方式，desc为降序，asc为升序"
+          }
+        ],
+        "description": "获取助手列表，支持分页和排序",
+        "operationId": "listAssistants"
+      },
+      "post": {
+        "tags": [
+          "assistant-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            },
+            "description": "成功创建助手"
+          }
+        },
+        "description": "创建新的AI助手",
+        "operationId": "createAssistant",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "创建助手的请求参数"
+        }
+      }
+    },
+    "/v1/memory/query": {
+      "post": {
+        "tags": [
+          "memory-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoryResponse"
+                }
+              }
+            },
+            "description": "记忆查询成功"
+          }
+        },
+        "description": "查询用户的记忆信息，支持长期记忆、短期记忆或混合记忆的检索",
+        "operationId": "queryMemory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemoryRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "记忆查询请求参数"
+        }
+      }
+    },
+    "/v1/threads/runs": {
+      "post": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "线程创建并运行成功"
+          }
+        },
+        "description": "创建一个新的线程并立即在该线程中启动一个运行",
+        "operationId": "createThreadAndRun",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateThreadAndRunRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "创建线程并运行的请求参数"
+        }
+      }
+    },
+    "/v1/threads/{thread_id}": {
+      "get": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "description": "成功返回线程信息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          }
+        ],
+        "description": "根据ID获取指定的线程信息",
+        "operationId": "getThread"
+      },
+      "post": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "description": "成功更新线程"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          }
+        ],
+        "description": "更新指定线程的信息",
+        "operationId": "updateThread",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "更新线程的请求参数"
+        }
+      },
+      "delete": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            },
+            "description": "成功删除线程"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          }
+        ],
+        "description": "删除指定的线程",
+        "operationId": "deleteThread"
+      }
+    },
+    "/v1/responses/{response_id}": {
+      "get": {
+        "tags": [
+          "response-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功获取响应信息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "response_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "响应的唯一标识符"
+          },
+          {
+            "in": "query",
+            "name": "stream",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "是否启用流式传输模式"
+          },
+          {
+            "in": "query",
+            "name": "starting_after",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "required": false,
+            "description": "分页查询的起始位置"
+          }
+        ],
+        "description": "获取指定响应的详细信息，支持流式传输和分页查询",
+        "operationId": "getResponses"
+      }
+    },
+    "/v1/threads/{thread_id}/fork": {
+      "post": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "description": "成功创建分支线程"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "要复制的线程的唯一标识符"
+          }
+        ],
+        "description": "复制指定线程创建新的分支线程",
+        "operationId": "forkThread"
+      }
+    },
+    "/v1/threads/{thread_id}/runs": {
+      "get": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonPageRun"
+                }
+              }
+            },
+            "description": "成功返回运行记录列表"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，返回此ID之后的结果"
+          },
+          {
+            "in": "query",
+            "name": "before",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，返回此ID之前的结果"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            },
+            "required": false,
+            "description": "返回结果的最大数量，默认为20"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "required": false,
+            "description": "排序方式，默认为降序"
+          }
+        ],
+        "description": "获取指定线程的运行记录列表",
+        "operationId": "listRuns"
+      },
+      "post": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功创建运行任务"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          }
+        ],
+        "description": "在指定线程中创建新的运行任务",
+        "operationId": "createRun",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "创建运行任务的请求参数"
+        }
+      }
+    },
+    "/v1/assistants/{assistant_id}": {
+      "get": {
+        "tags": [
+          "assistant-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            },
+            "description": "成功返回助手信息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistant_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "助手的唯一标识符"
+          }
+        ],
+        "description": "根据ID获取指定助手的详细信息",
+        "operationId": "getAssistant"
+      },
+      "post": {
+        "tags": [
+          "assistant-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            },
+            "description": "成功更新助手"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistant_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "助手的唯一标识符"
+          }
+        ],
+        "description": "更新指定助手的配置信息",
+        "operationId": "updateAssistant",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "更新助手的请求参数"
+        }
+      },
+      "delete": {
+        "tags": [
+          "assistant-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            },
+            "description": "成功删除助手"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistant_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "助手的唯一标识符"
+          }
+        ],
+        "description": "删除指定的助手",
+        "operationId": "deleteAssistant"
+      }
+    },
+    "/v1/threads/{thread_id}/messages": {
+      "get": {
+        "tags": [
+          "message-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonPageMessage"
+                }
+              }
+            },
+            "description": "成功返回消息列表"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，返回此ID之后的结果"
+          },
+          {
+            "in": "query",
+            "name": "before",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，返回此ID之前的结果"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            },
+            "required": false,
+            "description": "返回结果的最大数量，默认为20"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "required": false,
+            "description": "排序方式，默认为降序"
+          }
+        ],
+        "description": "获取指定线程的消息列表",
+        "operationId": "listMessages"
+      },
+      "post": {
+        "tags": [
+          "message-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "description": "成功创建消息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          }
+        ],
+        "description": "在指定线程中创建新消息",
+        "operationId": "createMessage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "创建消息的请求参数"
+        }
+      }
+    },
+    "/v1/threads/{thread_id}/runs/{run_id}": {
+      "get": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            },
+            "description": "成功返回运行任务信息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "运行任务的唯一标识符"
+          }
+        ],
+        "description": "获取指定运行任务的详细信息",
+        "operationId": "getRun"
+      },
+      "post": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            },
+            "description": "成功更新运行任务"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "运行任务的唯一标识符"
+          }
+        ],
+        "description": "更新指定运行任务的信息",
+        "operationId": "updateRun",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyRunRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "修改运行任务的请求参数"
+        }
+      }
+    },
+    "/v1/threads/{thread_id}/runs/step/list": {
+      "post": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RunStep"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "成功返回运行步骤列表"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          }
+        ],
+        "description": "根据运行ID列表获取对应的运行步骤",
+        "operationId": "listRunStepsByRunIds",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunStepListRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "查询运行步骤的请求参数"
+        }
+      }
+    },
+    "/v1/threads/{thread_id}/runs/{run_id}/steps": {
+      "get": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonPageRunStep"
+                }
+              }
+            },
+            "description": "成功获取运行步骤列表"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "运行的唯一标识符"
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，获取此ID之后的步骤"
+          },
+          {
+            "in": "query",
+            "name": "before",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "用于分页的游标，获取此ID之前的步骤"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            },
+            "required": false,
+            "description": "返回的步骤数量限制"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "required": false,
+            "description": "排序方式，desc为降序，asc为升序"
+          }
+        ],
+        "description": "获取指定运行的所有步骤信息",
+        "operationId": "getRunSteps"
+      }
+    },
+    "/v1/threads/{thread_id}/runs/{run_id}/cancel": {
+      "post": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            },
+            "description": "成功取消运行任务"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "运行任务的唯一标识符"
+          }
+        ],
+        "description": "取消指定的运行任务",
+        "operationId": "cancelRun"
+      }
+    },
+    "/v1/threads/{thread_id}/messages/{message_id}": {
+      "get": {
+        "tags": [
+          "message-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "description": "成功返回消息信息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "message_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "消息的唯一标识符"
+          }
+        ],
+        "description": "获取指定消息的详细信息",
+        "operationId": "getMessage"
+      },
+      "post": {
+        "tags": [
+          "message-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "description": "成功更新消息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "message_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "消息的唯一标识符"
+          }
+        ],
+        "description": "更新指定消息的信息",
+        "operationId": "updateMessage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "更新消息的请求参数"
+        }
+      },
+      "delete": {
+        "tags": [
+          "message-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            },
+            "description": "成功删除消息"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "message_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "消息的唯一标识符"
+          }
+        ],
+        "description": "删除指定的消息",
+        "operationId": "deleteMessage"
+      }
+    },
+    "/v1/threads/{from_thread_id}/copy_to/{to_thread_id}": {
+      "post": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "description": "线程复制成功"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "from_thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "源线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "to_thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "目标线程的唯一标识符"
+          }
+        ],
+        "description": "将源线程的消息和数据复制到目标线程中",
+        "operationId": "copyThread"
+      }
+    },
+    "/v1/threads/{from_thread_id}/merge_to/{to_thread_id}": {
+      "post": {
+        "tags": [
+          "thread-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "description": "线程合并成功"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "from_thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "源线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "to_thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "目标线程的唯一标识符"
+          }
+        ],
+        "description": "将源线程的消息和数据合并到目标线程中",
+        "operationId": "mergeThread"
+      }
+    },
+    "/v1/threads/{thread_id}/runs/{run_id}/submit_tool_outputs": {
+      "post": {
+        "tags": [
+          "run-controller"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功提交工具输出"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "线程的唯一标识符"
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "运行任务的唯一标识符"
+          }
+        ],
+        "description": "提交工具调用的输出结果到指定运行任务",
+        "operationId": "submitToolOutputs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitToolOutputsRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "提交工具输出的请求参数"
+        }
+      }
+    }
+  },
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "http://localhost:8087",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Bar": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "Pie": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "Rag": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "default_metadata": {
+                "$ref": "#/components/schemas/DefaultMetadata"
+              }
+            }
+          }
+        ]
+      },
+      "Run": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "运行任务的唯一标识符"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "model": {
+            "type": "string",
+            "description": "使用的AI模型名称"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Function"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            },
+            "description": "运行中可使用的工具列表"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "核采样参数，控制词汇选择的多样性"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage",
+            "description": "运行任务的资源使用统计"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定值为'thread.run'"
+          },
+          "status": {
+            "type": "string",
+            "description": "运行状态（queued、in_progress、requires_action、completed、failed等）"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "运行任务的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "failed_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运行任务失败时间的Unix时间戳（秒）"
+          },
+          "thread_id": {
+            "type": "string",
+            "description": "所属线程的ID"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运行任务创建时间的Unix时间戳（秒）"
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运行任务过期时间的Unix时间戳（秒）"
+          },
+          "last_error": {
+            "$ref": "#/components/schemas/LastError",
+            "description": "最后一次错误的详细信息"
+          },
+          "started_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运行任务开始时间的Unix时间戳（秒）"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "采样温度，控制输出的随机性"
+          },
+          "tool_choice": {
+            "$ref": "#/components/schemas/ToolChoice",
+            "description": "工具选择策略"
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "执行运行的助手ID"
+          },
+          "cancelled_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运行任务取消时间的Unix时间戳（秒）"
+          },
+          "completed_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运行任务完成时间的Unix时间戳（秒）"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "给助手的指令"
+          },
+          "tool_resources": {
+            "$ref": "#/components/schemas/ToolResources",
+            "description": "工具资源配置"
+          },
+          "required_action": {
+            "$ref": "#/components/schemas/RequiredAction",
+            "description": "需要执行的操作详情"
+          },
+          "response_format": {
+            "$ref": "#/components/schemas/ChatResponseFormat",
+            "description": "响应格式配置"
+          },
+          "reasoning_effort": {
+            "type": "string",
+            "description": "推理努力程度设置"
+          },
+          "max_prompt_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "提示词的最大token数量"
+          },
+          "incomplete_details": {
+            "$ref": "#/components/schemas/IncompleteDetails",
+            "description": "未完成任务的详细信息"
+          },
+          "truncation_strategy": {
+            "$ref": "#/components/schemas/TruncationStrategy",
+            "description": "截断策略配置"
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "生成内容的最大token数量"
+          }
+        },
+        "description": "运行任务对象，表示助手在线程中的执行实例"
+      },
+      "Line": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Annotation"
+            }
+          }
+        }
+      },
+      "Tool": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Usage": {
+        "type": "object",
+        "properties": {
+          "total_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "prompt_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "completion_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "prompt_tokens_details": {
+            "$ref": "#/components/schemas/PromptTokensDetails"
+          },
+          "completion_tokens_details": {
+            "$ref": "#/components/schemas/CompletionTokensDetails"
+          }
+        }
+      },
+      "Custom": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "definition": {
+                "$ref": "#/components/schemas/CustomTool"
+              }
+            }
+          }
+        ]
+      },
+      "Format": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Thread": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "线程的唯一标识符"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定为'thread'"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "用户自定义的键值对元数据，用于存储额外信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "线程创建时间的Unix时间戳（秒）"
+          },
+          "environment": {
+            "type": "object",
+            "description": "线程的环境配置信息",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "tool_resources": {
+            "$ref": "#/components/schemas/ToolResources",
+            "description": "线程使用的工具资源配置"
+          }
+        },
+        "description": "表示一个对话线程，包含消息和配置信息"
+      },
+      "MCPTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "server_url": {
+                "type": "string"
+              },
+              "connector_id": {
+                "type": "string"
+              },
+              "server_label": {
+                "type": "string"
+              },
+              "allowed_tools": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "string"
+              },
+              "require_approval": {
+                "type": "object"
+              },
+              "server_description": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "消息的唯一标识符"
+          },
+          "role": {
+            "type": "string",
+            "description": "消息发送者的角色"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定值为'thread.message'"
+          },
+          "run_id": {
+            "type": "string",
+            "description": "关联的运行任务ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "消息的状态（如completed、in_progress等）"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageContent"
+            },
+            "description": "消息内容列表"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "消息的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "thread_id": {
+            "type": "string",
+            "description": "所属线程的ID"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "消息创建时间的Unix时间戳（秒）"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            },
+            "description": "消息附件列表"
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "关联的助手ID"
+          },
+          "completed_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "消息完成时间的Unix时间戳（秒）"
+          },
+          "incomplete_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "消息变为未完成状态的Unix时间戳（秒）"
+          },
+          "reasoning_content": {
+            "type": "string",
+            "description": "推理过程的内容描述"
+          },
+          "incomplete_details": {
+            "$ref": "#/components/schemas/IncompleteDetails",
+            "description": "未完成消息的详细信息"
+          }
+        },
+        "description": "消息对象，包含完整的消息信息"
+      },
+      "RunStep": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "运行步骤的唯一标识符"
+          },
+          "type": {
+            "type": "string",
+            "description": "步骤类型（如message_creation、tool_calls等）"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage",
+            "description": "步骤的资源使用统计"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定值为'thread.run.step'"
+          },
+          "run_id": {
+            "type": "string",
+            "description": "所属运行任务的ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "步骤状态（in_progress、completed、failed等）"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "步骤的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "failed_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "步骤失败时间的Unix时间戳（秒）"
+          },
+          "thread_id": {
+            "type": "string",
+            "description": "所属线程的ID"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "步骤创建时间的Unix时间戳（秒）"
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "步骤过期时间的Unix时间戳（秒）"
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "步骤过期时间的Unix时间戳（秒）"
+          },
+          "last_error": {
+            "$ref": "#/components/schemas/LastError",
+            "description": "最后一次错误的详细信息"
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "执行步骤的助手ID"
+          },
+          "cancelled_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "步骤取消时间的Unix时间戳（秒）"
+          },
+          "completed_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "步骤完成时间的Unix时间戳（秒）"
+          },
+          "step_details": {
+            "$ref": "#/components/schemas/StepDetails",
+            "description": "步骤的详细执行信息"
+          }
+        },
+        "description": "运行步骤对象，表示运行任务中的单个执行步骤"
+      },
+      "FilePath": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Annotation"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "file_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Function": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "function": {
+                "$ref": "#/components/schemas/FunctionDefinition"
+              },
+              "is_final": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "ImageUrl": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "JsonNode": {
+        "type": "object"
+      },
+      "RunImage": {
+        "type": "object",
+        "properties": {
+          "file_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ToolCall": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "function": {
+            "$ref": "#/components/schemas/ToolCallFunction"
+          },
+          "file_search": {
+            "$ref": "#/components/schemas/ToolCallFileSearch"
+          },
+          "code_interpreter": {
+            "$ref": "#/components/schemas/ToolCallCodeInterpreter"
+          }
+        }
+      },
+      "Assistant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "助手的唯一标识符"
+          },
+          "name": {
+            "type": "string",
+            "description": "助手的名称"
+          },
+          "model": {
+            "type": "string",
+            "description": "使用的AI模型标识符"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Function"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            },
+            "description": "助手启用的工具列表"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "核采样参数"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，始终为'assistant'"
+          },
+          "file_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "关联的文件ID列表"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "附加到助手的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int32",
+            "description": "助手创建时间的Unix时间戳（秒）"
+          },
+          "description": {
+            "type": "string",
+            "description": "助手的描述信息"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "采样温度设置"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "助手使用的系统指令"
+          },
+          "tool_resources": {
+            "$ref": "#/components/schemas/ToolResources",
+            "description": "助手工具使用的资源"
+          },
+          "response_format": {
+            "$ref": "#/components/schemas/ChatResponseFormat",
+            "description": "模型输出格式配置"
+          },
+          "reasoning_effort": {
+            "type": "string",
+            "description": "推理努力程度"
+          }
+        },
+        "description": "AI助手对象"
+      },
+      "AudioData": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string"
+          },
+          "file_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ImageFile": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "file_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ImgVision": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "LastError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadFiles": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hidden": {
+                "type": "boolean"
+              },
+              "inherit": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "Reasoning": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReasoningText"
+                }
+              },
+              "summary": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SummaryText"
+                }
+              },
+              "encrypted_content": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Retrieval": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hidden": {
+                "type": "boolean"
+              },
+              "inherit": {
+                "type": "boolean"
+              },
+              "file_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default_metadata": {
+                "$ref": "#/components/schemas/DefaultMetadata"
+              }
+            }
+          }
+        ]
+      },
+      "WebSearch": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "Annotation": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "end_index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "file_path": {
+            "$ref": "#/components/schemas/FilePath"
+          },
+          "start_index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "file_citation": {
+            "$ref": "#/components/schemas/FileCitation"
+          }
+        }
+      },
+      "Attachment": {
+        "type": "object",
+        "properties": {
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Function"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            }
+          },
+          "file_id": {
+            "type": "string"
+          }
+        }
+      },
+      "CustomTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "format": {
+                "$ref": "#/components/schemas/Format"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "FileCounts": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cancelled": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "completed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "in_progress": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FileSearch": {
+        "type": "object",
+        "properties": {
+          "max_num_results": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ranking_options": {
+            "$ref": "#/components/schemas/FileSearchRankingOptions"
+          }
+        }
+      },
+      "InputValue": {
+        "type": "object",
+        "properties": {
+          "inputType": {
+            "enum": [
+              "STRING",
+              "OBJECT_LIST"
+            ],
+            "type": "string"
+          },
+          "stringValue": {
+            "type": "string"
+          },
+          "objectListValue": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/ComputerToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/ComputerToolCallOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/ContentMessage"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomToolCallOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/FunctionToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/FunctionToolCallOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/ImageGenerationToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/ItemReference"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShellCallOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShellToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/MCPApprovalRequest"
+                },
+                {
+                  "$ref": "#/components/schemas/MCPApprovalResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/MCPListTools"
+                },
+                {
+                  "$ref": "#/components/schemas/MCPToolCall"
+                },
+                {
+                  "$ref": "#/components/schemas/Reasoning"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchToolCall"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "LocalShell": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "TextConfig": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "$ref": "#/components/schemas/ChatResponseFormat"
+          },
+          "verbosity": {
+            "type": "string"
+          }
+        }
+      },
+      "ToolChoice": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "function": {
+            "$ref": "#/components/schemas/Function"
+          },
+          "allowedTools": {
+            "$ref": "#/components/schemas/AllowedTools"
+          }
+        }
+      },
+      "WebCrawler": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "WikiSearch": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "ImgGenerate": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "MCPToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "output": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "string"
+              },
+              "server_label": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MCPToolInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "ShellAction": {
+        "type": "object",
+        "properties": {
+          "env": {
+            "type": "object"
+          },
+          "type": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "command": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "working_directory": {
+            "type": "string"
+          }
+        }
+      },
+      "StepDetails": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCall"
+            }
+          },
+          "message_creation": {
+            "$ref": "#/components/schemas/MessageCreation"
+          },
+          "reasoning_content": {
+            "type": "string"
+          },
+          "redacted_reasoning_content": {
+            "type": "string"
+          },
+          "reasoning_content_signature": {
+            "type": "string"
+          }
+        }
+      },
+      "SummaryText": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "ToolMessage": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "tool_call_id": {
+            "type": "string"
+          }
+        }
+      },
+      "VectorStore": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "object": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "file_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "file_counts": {
+            "$ref": "#/components/schemas/FileCounts"
+          },
+          "expires_after": {
+            "$ref": "#/components/schemas/ExpiresAfter"
+          },
+          "last_active_at": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AllowedTools": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Tool"
+                },
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "ChatToolCall": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32",
+            "writeOnly": true
+          },
+          "function": {
+            "$ref": "#/components/schemas/ChatFunctionCall"
+          }
+        }
+      },
+      "ExpiresAfter": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "anchor": {
+            "type": "string"
+          }
+        }
+      },
+      "FileCitation": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Annotation"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "file_id": {
+                "type": "string"
+              },
+              "filename": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "FunctionTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "strict": {
+                "type": "boolean"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MCPListTools": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MCPToolInfo"
+                }
+              },
+              "server_label": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MyWeekReport": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "SearchAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchSource"
+            }
+          }
+        }
+      },
+      "SearchResult": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
+          "file_id": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "SearchSource": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "UserLocation": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonPageRun": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Run"
+            },
+            "description": "运行任务数据列表"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定值为'list'"
+          },
+          "last_id": {
+            "type": "string",
+            "description": "最后一条记录的ID"
+          },
+          "first_id": {
+            "type": "string",
+            "description": "第一条记录的ID"
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "是否还有更多数据"
+          }
+        },
+        "description": "运行任务列表的分页响应结果"
+      },
+      "ItemReference": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MemoryRequest": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "LONG_MEMORY",
+              "SHORT_MEMORY",
+              "MIX_MEMORY"
+            ],
+            "type": "string",
+            "description": "记忆类型，指定查询长期记忆、短期记忆或混合记忆"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "query": {
+            "type": "string",
+            "description": "查询内容或关键词"
+          },
+          "thread_id": {
+            "type": "string",
+            "description": "线程标识符，用于关联对话上下文"
+          },
+          "strategy_param": {
+            "$ref": "#/components/schemas/StrategyParam",
+            "description": "查询策略参数配置"
+          }
+        },
+        "description": "记忆查询请求参数"
+      },
+      "ReasoningText": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "SearchFilters": {
+        "type": "object",
+        "properties": {
+          "allowed_domains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "search_context_size": {
+            "type": "string"
+          }
+        }
+      },
+      "StrategyParam": {
+        "type": "object",
+        "description": "查询策略参数配置"
+      },
+      "ThreadRequest": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageRequest"
+            },
+            "description": "线程初始消息列表"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "线程的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "environment": {
+            "type": "object",
+            "description": "线程的环境配置",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "tool_resources": {
+            "$ref": "#/components/schemas/ToolResources",
+            "description": "线程可使用的工具资源"
+          }
+        },
+        "description": "创建或更新线程的请求参数"
+      },
+      "ToolResources": {
+        "type": "object",
+        "properties": {
+          "functions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FunctionResources"
+            }
+          },
+          "file_search": {
+            "$ref": "#/components/schemas/FileSearchResources"
+          },
+          "code_interpreter": {
+            "$ref": "#/components/schemas/CodeInterpreterResources"
+          }
+        }
+      },
+      "WeatherSearch": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "WebSearchTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "filters": {
+                "$ref": "#/components/schemas/SearchFilters"
+              },
+              "user_location": {
+                "$ref": "#/components/schemas/UserLocation"
+              }
+            }
+          }
+        ]
+      },
+      "ComputerAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ContentMessage": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "enum": [
+                  "user",
+                  "assistant",
+                  "system",
+                  "developer"
+                ],
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "discriminator": {
+          "propertyName": "role"
+        }
+      },
+      "CustomToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "input": {
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "DeleteResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "被删除对象的ID"
+          },
+          "object": {
+            "type": "string",
+            "description": "被删除的对象类型"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否成功删除"
+          }
+        },
+        "description": "删除操作的响应"
+      },
+      "FileSearchTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "file_search": {
+                "$ref": "#/components/schemas/FileSearch"
+              }
+            }
+          }
+        ]
+      },
+      "InputImageMask": {
+        "type": "object",
+        "properties": {
+          "file_id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          }
+        }
+      },
+      "LocalShellTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          }
+        ]
+      },
+      "MemoryResponse": {
+        "type": "object",
+        "properties": {
+          "longMemory": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "长期记忆项",
+              "additionalProperties": {
+                "type": "object"
+              }
+            },
+            "description": "长期记忆数据列表"
+          },
+          "shortMemory": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "短期记忆项",
+              "additionalProperties": {
+                "type": "object"
+              }
+            },
+            "description": "短期记忆数据列表"
+          }
+        },
+        "description": "记忆查询响应结果"
+      },
+      "MessageContent": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "$ref": "#/components/schemas/Text"
+          },
+          "type": {
+            "type": "string"
+          },
+          "vision": {
+            "type": "boolean"
+          },
+          "image_url": {
+            "$ref": "#/components/schemas/ImageUrl"
+          },
+          "tool_call": {
+            "$ref": "#/components/schemas/ChatToolCall"
+          },
+          "audio_data": {
+            "$ref": "#/components/schemas/AudioData"
+          },
+          "image_file": {
+            "$ref": "#/components/schemas/ImageFile"
+          },
+          "tool_result": {
+            "$ref": "#/components/schemas/ToolMessage"
+          }
+        }
+      },
+      "MessageRequest": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "消息发送者的角色（如user、assistant等）"
+          },
+          "runId": {
+            "type": "string",
+            "description": "关联的运行任务ID"
+          },
+          "content": {
+            "type": "object",
+            "description": "消息内容，可以是文本或其他格式"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "消息的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            },
+            "description": "消息附件列表"
+          },
+          "reasoning_content": {
+            "type": "string",
+            "description": "推理过程的内容描述"
+          }
+        },
+        "description": "创建或更新消息的请求参数"
+      },
+      "RequiredAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "submit_tool_outputs": {
+            "$ref": "#/components/schemas/SubmitToolOutputs"
+          }
+        }
+      },
+      "ToolDefinition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "WeekReportToMe": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "ComputerUseTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "environment": {
+                "type": "string"
+              },
+              "display_width": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "display_height": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "DefaultMetadata": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
+          "top_k": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plugins": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "retrieve_mode": {
+            "type": "string"
+          },
+          "metadata_filter": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          },
+          "empty_recall_reply": {
+            "type": "string"
+          }
+        }
+      },
+      "MessageCreation": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ReasoningConfig": {
+        "type": "object",
+        "properties": {
+          "effort": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      },
+      "ToolChoiceValue": {
+        "type": "object",
+        "properties": {
+          "string": {
+            "type": "boolean"
+          },
+          "objectValue": {
+            "type": "object"
+          },
+          "stringValue": {
+            "type": "string"
+          },
+          "allowedChoice": {
+            "type": "boolean"
+          },
+          "specificChoice": {
+            "type": "boolean"
+          }
+        }
+      },
+      "WebSearchTavily": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "AssistantRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "助手的名称，最大长度256字符"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "model": {
+            "type": "string",
+            "description": "使用的AI模型标识符"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Function"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            },
+            "description": "助手启用的工具列表，最多支持128个工具"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "核采样参数，模型考虑具有top_p概率质量的令牌结果。建议修改此参数或temperature，但不要同时修改"
+          },
+          "file_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "文件ID列表"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "附加到对象的16个键值对，用于存储结构化的额外信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "助手的描述信息，最大长度512字符"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "采样温度，取值范围0-2。较高值（如0.8）使输出更随机，较低值（如0.2）使输出更集中和确定"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "助手使用的系统指令，最大长度256,000字符"
+          },
+          "tool_resources": {
+            "$ref": "#/components/schemas/ToolResources",
+            "description": "助手工具使用的资源集合"
+          },
+          "response_format": {
+            "$ref": "#/components/schemas/ChatResponseFormat",
+            "description": "指定模型必须输出的格式"
+          },
+          "reasoning_effort": {
+            "type": "string",
+            "description": "推理努力程度配置"
+          }
+        },
+        "description": "创建或更新助手的请求参数"
+      },
+      "ChatFunctionCall": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "arguments": {
+            "$ref": "#/components/schemas/JsonNode"
+          }
+        }
+      },
+      "CommonPageThread": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Thread"
+            },
+            "description": "线程数据列表"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定值为'list'"
+          },
+          "last_id": {
+            "type": "string",
+            "description": "最后一条记录的ID"
+          },
+          "first_id": {
+            "type": "string",
+            "description": "第一条记录的ID"
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "是否还有更多数据"
+          }
+        },
+        "description": "线程列表的分页响应结果"
+      },
+      "ComputerToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "action": {
+                "$ref": "#/components/schemas/ComputerAction"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              },
+              "pending_safety_checks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ConversationItem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "FunctionToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ModifyRunRequest": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "description": "要更新的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "修改运行任务的请求参数"
+      },
+      "RunCreateRequest": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "model": {
+            "type": "string",
+            "description": "要使用的AI模型名称"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Function"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            },
+            "description": "运行中可使用的工具列表"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "核采样参数，控制词汇选择的多样性"
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "是否启用流式响应"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "运行任务的元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "采样温度，控制输出的随机性"
+          },
+          "tool_choice": {
+            "$ref": "#/components/schemas/ToolChoice",
+            "description": "工具选择策略"
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "要使用的助手ID"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "给助手的执行指令"
+          },
+          "save_message": {
+            "type": "boolean",
+            "description": "是否保存消息到线程中"
+          },
+          "response_format": {
+            "$ref": "#/components/schemas/ChatResponseFormat",
+            "description": "响应格式配置"
+          },
+          "reasoning_effort": {
+            "type": "string",
+            "description": "推理努力程度设置"
+          },
+          "max_prompt_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "提示词的最大token数量"
+          },
+          "additional_messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageRequest"
+            },
+            "description": "运行前添加到线程的额外消息"
+          },
+          "truncation_strategy": {
+            "$ref": "#/components/schemas/TruncationStrategy",
+            "description": "截断策略配置"
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "生成内容的最大token数量"
+          },
+          "additional_instructions": {
+            "type": "string",
+            "description": "额外的执行指令"
+          }
+        },
+        "description": "创建运行任务的请求参数"
+      },
+      "ToolCallFunction": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "output": {
+            "type": "string"
+          },
+          "arguments": {
+            "$ref": "#/components/schemas/JsonNode"
+          }
+        }
+      },
+      "CommonPageMessage": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "description": "消息数据列表"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型，固定值为'list'"
+          },
+          "last_id": {
+            "type": "string",
+            "description": "最后一条记录的ID"
+          },
+          "first_id": {
+            "type": "string",
+            "description": "第一条记录的ID"
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "是否还有更多数据"
+          }
+        },
+        "description": "消息列表的分页响应结果"
+      },
+      "CommonPageRunStep": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RunStep"
+            },
+            "description": "运行步骤数据列表"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型标识"
+          },
+          "last_id": {
+            "type": "string",
+            "description": "当前页最后一个步骤的ID"
+          },
+          "first_id": {
+            "type": "string",
+            "description": "当前页第一个步骤的ID"
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "是否还有更多数据"
+          }
+        },
+        "description": "运行步骤的分页响应结果"
+      },
+      "ConversationValue": {
+        "type": "object",
+        "properties": {
+          "string": {
+            "type": "boolean"
+          },
+          "objectValue": {
+            "$ref": "#/components/schemas/ConversationReference"
+          },
+          "stringValue": {
+            "type": "string"
+          }
+        }
+      },
+      "FunctionResources": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "file_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "IncompleteDetails": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "SubmitToolOutputs": {
+        "type": "object",
+        "properties": {
+          "tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCall"
+            }
+          }
+        }
+      },
+      "WebSearchToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "action": {
+                "$ref": "#/components/schemas/SearchAction"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "AudioTranscription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "ChatResponseFormat": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "jsonSchema": {
+            "$ref": "#/components/schemas/ResponseJsonSchema"
+          }
+        }
+      },
+      "ComputerScreenshot": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "format": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "image_url": {
+            "type": "string"
+          }
+        }
+      },
+      "FileSearchToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "queries": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "FunctionDefinition": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "strict": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "LocalShellToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "action": {
+                "$ref": "#/components/schemas/ShellAction"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MCPApprovalRequest": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "string"
+              },
+              "server_label": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ResponseJsonSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "object"
+          },
+          "strict": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RunStepListRequest": {
+        "type": "object",
+        "properties": {
+          "run_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "运行任务ID列表"
+          }
+        },
+        "description": "查询运行步骤列表的请求参数"
+      },
+      "ToolCallFileSearch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCallFileSearchResult"
+            }
+          },
+          "ranking_options": {
+            "$ref": "#/components/schemas/FileSearchRankingOptions"
+          }
+        }
+      },
+      "TruncationStrategy": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "last_messages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CodeInterpreterTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tool"
+          }
+        ]
+      },
+      "CommonPageAssistant": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Assistant"
+            },
+            "description": "助手对象数组"
+          },
+          "object": {
+            "type": "string",
+            "description": "对象类型标识"
+          },
+          "last_id": {
+            "type": "string",
+            "description": "最后一个对象的ID"
+          },
+          "first_id": {
+            "type": "string",
+            "description": "第一个对象的ID"
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "是否还有更多数据"
+          }
+        },
+        "description": "助手列表的分页响应"
+      },
+      "FileSearchResources": {
+        "type": "object",
+        "properties": {
+          "vector_stores": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VectorStore"
+            }
+          },
+          "vector_store_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ImageGenerationTool": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ToolDefinition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "size": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "quality": {
+                "type": "string"
+              },
+              "background": {
+                "type": "string"
+              },
+              "moderation": {
+                "type": "string"
+              },
+              "output_format": {
+                "type": "string"
+              },
+              "input_fidelity": {
+                "type": "string"
+              },
+              "partial_images": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "input_image_mask": {
+                "$ref": "#/components/schemas/InputImageMask"
+              },
+              "output_compression": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "MCPApprovalResponse": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "approval_request_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "PromptTokensDetails": {
+        "type": "object",
+        "properties": {
+          "audio_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cached_tokens": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CustomToolCallOutput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "output": {
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "LocalShellCallOutput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "output": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "CodeInterpreterOutput": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ConversationReference": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreateResponseRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "$ref": "#/components/schemas/TextConfig",
+            "description": "文本输出相关配置"
+          },
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "input": {
+            "$ref": "#/components/schemas/InputValue",
+            "description": "输入内容，可以是文本、图片或其他格式"
+          },
+          "model": {
+            "type": "string",
+            "description": "要使用的AI模型名称"
+          },
+          "store": {
+            "type": "boolean",
+            "description": "是否存储此次对话"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/ComputerUseTool"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomTool"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/FunctionTool"
+                },
+                {
+                  "$ref": "#/components/schemas/ImageGenerationTool"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShellTool"
+                },
+                {
+                  "$ref": "#/components/schemas/MCPTool"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTool"
+                }
+              ]
+            },
+            "description": "可用工具列表，支持多种工具类型"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "核采样参数，控制生成多样性"
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "是否启用流式响应"
+          },
+          "include": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "要包含的字段列表"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "附加元数据信息",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "reasoning": {
+            "$ref": "#/components/schemas/ReasoningConfig",
+            "description": "推理配置参数"
+          },
+          "background": {
+            "type": "boolean",
+            "description": "是否在后台处理"
+          },
+          "truncation": {
+            "type": "string",
+            "description": "截断策略"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "采样温度，控制输出的随机性，范围0-2"
+          },
+          "tool_choice": {
+            "$ref": "#/components/schemas/ToolChoiceValue",
+            "description": "工具选择策略"
+          },
+          "conversation": {
+            "$ref": "#/components/schemas/ConversationValue",
+            "description": "对话上下文信息"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "给AI助手的系统指令"
+          },
+          "max_tool_calls": {
+            "type": "integer",
+            "format": "int32",
+            "description": "最大工具调用次数"
+          },
+          "prompt_cache_key": {
+            "type": "string",
+            "description": "提示缓存键，用于优化性能"
+          },
+          "max_output_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "最大输出token数量"
+          },
+          "parallel_tool_calls": {
+            "type": "boolean",
+            "description": "是否允许并行工具调用"
+          },
+          "truncation_strategy": {
+            "$ref": "#/components/schemas/TruncationStrategy",
+            "description": "截断策略配置"
+          },
+          "previous_response_id": {
+            "type": "string",
+            "description": "上一个响应的ID，用于对话连续性"
+          }
+        },
+        "description": "创建AI助手响应的请求对象，包含模型配置、输入内容、工具设置等参数"
+      },
+      "ComputerToolCallOutput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "output": {
+                "$ref": "#/components/schemas/ComputerScreenshot"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              },
+              "acknowledged_safety_checks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "FunctionToolCallOutput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "output": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "call_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "CodeInterpreterToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CodeInterpreterOutput"
+                }
+              },
+              "container_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "CompletionTokensDetails": {
+        "type": "object",
+        "properties": {
+          "audio_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reasoning_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accepted_prediction_tokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rejected_prediction_tokens": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ImageGenerationToolCall": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConversationItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "result": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "type": "string"
+              },
+              "data_type": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ToolCallCodeInterpreter": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCallCodeInterpreterOutput"
+            }
+          }
+        }
+      },
+      "CodeInterpreterResources": {
+        "type": "object",
+        "properties": {
+          "file_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FileSearchRankingOptions": {
+        "type": "object",
+        "required": [
+          "score_threshold"
+        ],
+        "properties": {
+          "ranker": {
+            "type": "string"
+          },
+          "score_threshold": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SubmitToolOutputsRequest": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "用户标识符"
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "是否启用流式响应"
+          },
+          "tool_outputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmitToolOutputRequestItem"
+            },
+            "description": "工具输出结果列表"
+          }
+        },
+        "description": "提交工具输出的请求参数"
+      },
+      "ToolCallFileSearchResult": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCallFileSearchResultContent"
+            }
+          },
+          "file_id": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateThreadAndRunRequest": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "发起请求的用户标识"
+          },
+          "model": {
+            "type": "string",
+            "description": "要使用的AI模型名称"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AudioTranscription"
+                },
+                {
+                  "$ref": "#/components/schemas/Bar"
+                },
+                {
+                  "$ref": "#/components/schemas/CodeInterpreterTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Custom"
+                },
+                {
+                  "$ref": "#/components/schemas/FileSearchTool"
+                },
+                {
+                  "$ref": "#/components/schemas/Function"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgGenerate"
+                },
+                {
+                  "$ref": "#/components/schemas/ImgVision"
+                },
+                {
+                  "$ref": "#/components/schemas/Line"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalShell"
+                },
+                {
+                  "$ref": "#/components/schemas/MyWeekReport"
+                },
+                {
+                  "$ref": "#/components/schemas/Pie"
+                },
+                {
+                  "$ref": "#/components/schemas/Rag"
+                },
+                {
+                  "$ref": "#/components/schemas/ReadFiles"
+                },
+                {
+                  "$ref": "#/components/schemas/Retrieval"
+                },
+                {
+                  "$ref": "#/components/schemas/WeatherSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebCrawler"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearch"
+                },
+                {
+                  "$ref": "#/components/schemas/WebSearchTavily"
+                },
+                {
+                  "$ref": "#/components/schemas/WeekReportToMe"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiSearch"
+                }
+              ]
+            },
+            "description": "助手可以使用的工具列表"
+          },
+          "top_p": {
+            "type": "number",
+            "format": "double",
+            "description": "核采样参数，控制生成文本的多样性"
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "是否以流式方式返回结果"
+          },
+          "thread": {
+            "$ref": "#/components/schemas/ThreadRequest",
+            "description": "要创建的线程配置信息"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "用户自定义的键值对元数据",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "采样温度值，范围0-2，值越高输出越随机"
+          },
+          "tool_choice": {
+            "$ref": "#/components/schemas/ToolChoice",
+            "description": "工具选择策略"
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "要使用的助手ID"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "给助手的指令说明"
+          },
+          "save_message": {
+            "type": "boolean",
+            "description": "是否保存消息到线程中"
+          },
+          "tool_resources": {
+            "$ref": "#/components/schemas/ToolResources",
+            "description": "工具资源配置"
+          },
+          "response_format": {
+            "$ref": "#/components/schemas/ChatResponseFormat",
+            "description": "响应格式配置"
+          },
+          "reasoning_effort": {
+            "type": "string",
+            "description": "推理努力程度设置"
+          },
+          "max_prompt_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "提示词的最大令牌数"
+          },
+          "additional_messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageRequest"
+            },
+            "description": "在创建运行前添加到线程的额外消息"
+          },
+          "parallel_tool_calls": {
+            "type": "boolean",
+            "description": "是否允许并行调用多个工具"
+          },
+          "truncation_strategy": {
+            "$ref": "#/components/schemas/TruncationStrategy",
+            "description": "消息截断策略配置"
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "生成内容的最大令牌数"
+          }
+        },
+        "description": "创建线程并运行的请求参数"
+      },
+      "SubmitToolOutputRequestItem": {
+        "type": "object",
+        "properties": {
+          "output": {
+            "type": "string"
+          },
+          "tool_call_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ToolCallCodeInterpreterOutput": {
+        "type": "object",
+        "properties": {
+          "logs": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "image": {
+            "$ref": "#/components/schemas/RunImage"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ToolCallFileSearchResultContent": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey"
+      }
+    }
+  }
+}

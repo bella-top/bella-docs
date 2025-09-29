@@ -6,15 +6,15 @@ import { translate } from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import '../../css/redoc-overrides.css'; // 引入自定义CSS样式
 
-export default function BellaOpenapiApiPage() {
+export default function BellaRagApiPage() {
   const { i18n } = useDocusaurusContext();
   const currentLocale = i18n.currentLocale;
   
   // 根据当前语言选择正确的API规范文件
   const specUrl = useBaseUrl(
     currentLocale === 'en' 
-      ? '/openapi/bella-openapi/' + 'openapi-en.json' 
-      : '/openapi/bella-openapi/' + 'openapi.json' 
+      ? '/openapi/bella-rag/' + 'openapi-en.json' 
+      : '/openapi/bella-rag/' + 'openapi.json' 
   );
   
   // 翻译项目名称的API文档标题
@@ -24,7 +24,7 @@ export default function BellaOpenapiApiPage() {
       message: '{projectName} API 文档',
       description: 'API documentation page title with project name'
     },
-    { projectName: 'Bella-openapi' }
+    { projectName: 'Bella-rag' }
   );
   
   // 翻译项目名称的API文档描述
@@ -34,7 +34,7 @@ export default function BellaOpenapiApiPage() {
       message: '{projectName} API 文档',
       description: 'API documentation page description with project name'
     },
-    { projectName: 'Bella-openapi' }
+    { projectName: 'Bella-rag' }
   );
   
   return (
@@ -101,7 +101,7 @@ export default function BellaOpenapiApiPage() {
                         message: '{projectName} API 文档',
                         description: 'API documentation page title with project name'
                       },
-                      { projectName: 'Bella-openapi' }
+                      { projectName: 'Bella-rag' }
                     );
                     title.style.margin = '0 0 0 20px';
                     title.style.fontSize = '1.5rem';

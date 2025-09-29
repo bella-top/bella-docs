@@ -51,6 +51,13 @@ const config: Config = {
   plugins: [
   ],
 
+  themes: ['@docusaurus/theme-mermaid'],
+
+  // Enable Mermaid parsing for Markdown fenced code blocks
+  markdown: {
+    mermaid: true,
+  },
+
   // 客户端模块 - 添加GitHub点赞按钮
   clientModules: [
     require.resolve('./src/clientModules/GitHubStarButtonInjector.js'),
@@ -147,6 +154,9 @@ const config: Config = {
     },
     prism: {
       additionalLanguages: ['bash', 'json', 'yaml', 'java', 'csharp', 'python'],
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'forest'},
     },
   } as ThemeConfig,
 };

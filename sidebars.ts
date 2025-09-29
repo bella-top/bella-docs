@@ -6,6 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'doc',
       id: 'intro',
       label: '介绍（Introduction）',
+      key: 'main-intro',
     },
     {
       type: 'category',
@@ -17,6 +18,7 @@ const sidebars: SidebarsConfig = {
           type: 'doc',
           id: 'bella-openapi/intro',
           label: '介绍（Introduction）',
+          key: 'openapi-intro',
         },
         {
           type: 'category',
@@ -29,6 +31,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: '使用文档 (Usage Documents)',
+          key: 'openapi-usage-docs',
           items: [
             'bella-openapi/core/chat-completions',
             'bella-openapi/core/embeddings',
@@ -45,6 +48,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: '特性介绍（Features Introduce）',
+          key: 'openapi-features',
           items: [
             'bella-openapi/features/claude-cache',
             'bella-openapi/features/thinking',
@@ -53,6 +57,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: '技术文档（Tech Documents）',
+          key: 'openapi-tech-docs',
           items: [
             'bella-openapi/tech/system-structure',
             'bella-openapi/tech/metadata',
@@ -76,6 +81,82 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'assistant&responses',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-assistants/intro',
+          label: '介绍（Introduction）',
+          key: 'assistant-intro',
+        },
+        {
+          type: 'category',
+          label: '使用文档 (Usage Documents)',
+          key: 'assistant-usage-docs',
+          items: [
+            'bella-assistants/api/assistant-core-api',
+            'bella-assistants/api/create-response',
+          ],
+        },
+        {
+          type: 'category',
+          label: '开发者文档（Dev Documents）',
+          key: 'assistant-Dev-docs',
+          items: [
+            'bella-assistants/dev/run-executor-design',
+            'bella-assistants/dev/thread-concurrent',
+            'bella-assistants/dev/responses-api-architecture-reuse',
+            'bella-assistants/dev/dialog-branching-multipath-execution',
+            'bella-assistants/dev/non-store-mode-architecture',
+            'bella-assistants/dev/tool-plugin-architecture',
+            'bella-assistants/dev/multimodal-input-architecture'
+          ],
+        }
+      ],
+    },
+    {
+      type: 'category',
+      label: 'RAG',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-rag/intro',
+          label: '介绍（Introduction）',
+          key: 'rag-intro',
+        },
+        {
+          type: 'category',
+          label: '使用文档 (Usage Documents)',
+          key: 'rag-usage-docs',
+          items: [
+            'bella-rag/usage',
+            'bella-rag/deep-rag',
+            'bella-rag/api',
+            'bella-rag/advanced',
+          ],
+        }
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Workflow',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-workflow/intro',
+          label: '介绍（Introduction）',
+          key: 'workflow-intro',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Domify',
       collapsible: true,
       collapsed: false,
@@ -84,10 +165,12 @@ const sidebars: SidebarsConfig = {
           type: 'doc',
           id: 'bella-domify/intro',
           label: '介绍（Introduction）',
+          key: 'domify-intro',
         },
         {
           type: 'category',
           label: '使用文档 (Usage Documents)',
+          key: 'domify-usage-docs',
           items: [
             'bella-domify/integration-knowledge-rag-integration',
             'bella-domify/standalone-quick-start',
@@ -98,7 +181,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Bella-Knowledge',
+      label: 'Knowledge',
       collapsible: true,
       collapsed: false,
       items: [
@@ -106,10 +189,12 @@ const sidebars: SidebarsConfig = {
           type: 'doc',
           id: 'bella-knowledge/intro',
           label: '介绍（Introduction）',
+          key: 'knowledge-intro',
         },
         {
           type: 'category',
           label: '使用文档 (Usage Documents)',
+          key: 'knowledge-usage-docs',
           items: [
             {
               type: 'category',
@@ -188,47 +273,12 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: '特性介绍（Features Introduce）',
+          key: 'knowledge-features',
           items: [
             'bella-knowledge/features/openai-compatibility',
             'bella-knowledge/features/multi-format-support',
             'bella-knowledge/features/enterprise',
           ],
-        },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Bella-RAG',
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: 'doc',
-          id: 'bella-rag/intro',
-          label: '介绍（Introduction）',
-        },
-        {
-          type: 'category',
-          label: '使用文档 (Usage Documents)',
-          items: [
-            'bella-rag/usage',
-            'bella-rag/deep-rag',
-            'bella-rag/api',
-            'bella-rag/advanced',
-          ],
-        }
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Bella-Workflow',
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: 'doc',
-          id: 'bella-workflow/intro',
-          label: '介绍（Introduction）',
         },
       ],
     },
