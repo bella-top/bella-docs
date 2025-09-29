@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en-US" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-bella-assistants/dev/responses-api-architecture-reuse" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.1">
+<title data-rh="true">最小增量实现 Responses API | Bella Documentation</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://doc.bella.top/en/img/bella-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://doc.bella.top/en/img/bella-social-card.jpg"><meta data-rh="true" property="og:url" content="https://doc.bella.top/en/docs/bella-assistants/dev/responses-api-architecture-reuse"><meta data-rh="true" property="og:locale" content="en_US"><meta data-rh="true" property="og:locale:alternate" content="zh_CN"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="最小增量实现 Responses API | Bella Documentation"><meta data-rh="true" name="description" content="以最小增量复用 Run/Thread/Tool/Message 全链路，构建 Response API 的轻量化执行与流式协议适配。"><meta data-rh="true" property="og:description" content="以最小增量复用 Run/Thread/Tool/Message 全链路，构建 Response API 的轻量化执行与流式协议适配。"><link data-rh="true" rel="icon" href="/en/img/favicon.svg"><link data-rh="true" rel="canonical" href="https://doc.bella.top/en/docs/bella-assistants/dev/responses-api-architecture-reuse"><link data-rh="true" rel="alternate" href="https://doc.bella.top/docs/bella-assistants/dev/responses-api-architecture-reuse" hreflang="zh-CN"><link data-rh="true" rel="alternate" href="https://doc.bella.top/en/docs/bella-assistants/dev/responses-api-architecture-reuse" hreflang="en-US"><link data-rh="true" rel="alternate" href="https://doc.bella.top/docs/bella-assistants/dev/responses-api-architecture-reuse" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"最小增量实现 Responses API","item":"https://doc.bella.top/en/docs/bella-assistants/dev/responses-api-architecture-reuse"}]}</script><link rel="stylesheet" href="/en/assets/css/styles.94352ccd.css">
+<script src="/en/assets/js/runtime~main.073057fa.js" defer="defer"></script>
+<script src="/en/assets/js/main.fc2b2dfd.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top navbar--primary"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/en/"><div class="navbar__logo"><img src="/en/img/logo.svg" alt="Bella Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/en/img/logo.svg" alt="Bella Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Bella</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/en/docs/intro">Document</a><a class="navbar__item navbar__link" href="/en/api-viewer">API</a><a href="https://wiki.bella.top" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">DeepWiki<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item"><div id="github-star-button"></div></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_nlXk"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>English</a><ul class="dropdown__menu"><li><a href="/docs/bella-assistants/dev/responses-api-architecture-reuse" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-CN">中文 (简体)</a></li><li><a href="/en/docs/bella-assistants/dev/responses-api-architecture-reuse" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="en-US">English</a></li></ul></div><a href="https://github.com/LianjiaTech/bella-openapi" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/en/docs/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/en/docs/bella-openapi/intro"><span title="OpenAPI" class="categoryLinkLabel_W154">OpenAPI</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-openapi/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-openapi/configuration-details"><span title="配置与部署 (Configuration &amp; Deployment)" class="categoryLinkLabel_W154">配置与部署 (Configuration &amp; Deployment)</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-openapi/core/chat-completions"><span title="使用文档 (Usage Documents)" class="categoryLinkLabel_W154">使用文档 (Usage Documents)</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-openapi/features/claude-cache"><span title="特性介绍（Features Introduce）" class="categoryLinkLabel_W154">特性介绍（Features Introduce）</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-openapi/tech/system-structure"><span title="技术文档（Tech Documents）" class="categoryLinkLabel_W154">技术文档（Tech Documents）</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-openapi/dev/login-spi"><span title="开发者文档（Dev Documents）" class="categoryLinkLabel_W154">开发者文档（Dev Documents）</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/en/docs/bella-assistants/intro"><span title="assistant&amp;responses" class="categoryLinkLabel_W154">assistant&amp;responses</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-assistants/api/assistant-core-api"><span title="使用文档 (Usage Documents)" class="categoryLinkLabel_W154">使用文档 (Usage Documents)</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" tabindex="0" href="/en/docs/bella-assistants/dev/run-executor-design"><span title="开发者文档（Dev Documents）" class="categoryLinkLabel_W154">开发者文档（Dev Documents）</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/dev/run-executor-design"><span title="深入执行引擎：Run Executor的设计" class="linkLabel_WmDU">深入执行引擎：Run Executor的设计</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/dev/thread-concurrent"><span title="突破OpenAI限制：Thread并发的实现" class="linkLabel_WmDU">突破OpenAI限制：Thread并发的实现</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/en/docs/bella-assistants/dev/responses-api-architecture-reuse"><span title="最小增量实现 Responses API" class="linkLabel_WmDU">最小增量实现 Responses API</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/dev/dialog-branching-multipath-execution"><span title="对话树：response的多路径执行" class="linkLabel_WmDU">对话树：response的多路径执行</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/dev/non-store-mode-architecture"><span title="轻量级：非Store模式设计与实现" class="linkLabel_WmDU">轻量级：非Store模式设计与  实现</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/dev/tool-plugin-architecture"><span title="工具扩展：工具插件系统深度剖析" class="linkLabel_WmDU">工具扩展：工具插件系统深度剖析</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-assistants/dev/multimodal-input-architecture"><span title="多模态：文件与音频输入的支持" class="linkLabel_WmDU">多模态：文件与音频输入的支持</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/en/docs/bella-rag/intro"><span title="RAG" class="categoryLinkLabel_W154">RAG</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-rag/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-rag/usage"><span title="使用文档 (Usage Documents)" class="categoryLinkLabel_W154">使用文档 (Usage Documents)</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/en/docs/bella-workflow/intro"><span title="Workflow" class="categoryLinkLabel_W154">Workflow</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-workflow/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/en/docs/bella-domify/intro"><span title="Domify" class="categoryLinkLabel_W154">Domify</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-domify/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-domify/integration-knowledge-rag-integration"><span title="使用文档 (Usage Documents)" class="categoryLinkLabel_W154">使用文档 (Usage Documents)</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/en/docs/bella-knowledge/intro"><span title="Knowledge" class="categoryLinkLabel_W154">Knowledge</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/bella-knowledge/intro"><span title="介绍（Introduction）" class="linkLabel_WmDU">介绍（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-knowledge/api/files/upload"><span title="使用文档 (Usage Documents)" class="categoryLinkLabel_W154">使用文档 (Usage Documents)</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/bella-knowledge/features/openai-compatibility"><span title="特性介绍（Features Introduce）" class="categoryLinkLabel_W154">特性介绍（Features Introduce）</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/en/docs/claude-code/introduction"><span title="Claude Code With Bella" class="categoryLinkLabel_W154">Claude Code With Bella</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/en/docs/claude-code/introduction"><span title="导读（Introduction）" class="linkLabel_WmDU">导读（Introduction）</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/claude-code/introduce/use-in-ide"><span title="快速使用（Quick Start）" class="categoryLinkLabel_W154">快速使用（Quick Start）</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/claude-code/tech/agent_design"><span title="技术分析（Tech Analysis）" class="categoryLinkLabel_W154">技术分析（Tech Analysis）</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/claude-code/case/tips"><span title="实践案例（cases）" class="categoryLinkLabel_W154">实践案例（cases）</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/en/docs/claude-code/share"><span title="经验分享（shares）" class="categoryLinkLabel_W154">经验分享（shares）</span></a></div></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/en/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">assistant&amp;responses</span></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">开发者文档（Dev Documents）</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">最小增量实现 Responses API</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>最小增量实现 Responses API</h1></header>
+<blockquote>
+<p>以最小增量复用 Run/Thread/Tool/Message 全链路，构建 Response API 的轻量化执行与流式协议适配。</p>
+</blockquote>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="架构复用的设计理念">架构复用的设计理念<a href="#架构复用的设计理念" class="hash-link" aria-label="Direct link to 架构复用的设计理念" title="Direct link to 架构复用的设计理念" translate="no">​</a></h2>
+<ul>
+<li>
+<p><strong>共性分析（以 Run 为中心）</strong></p>
+<ul>
+<li>两条路径本质一致：均是“规划 → 模型流式 → 工具并发 → 状态机落库/返回”。</li>
+<li>共享核心：<code>RunExecutor.executeRun()</code> + <code>executeLoop()</code>、<code>Planner.nextStep()</code>、<code>ChatService.chat()</code>、<code>ToolExecutor</code>、<code>RunStateManager</code>、<code>ExecutionContext</code>、线程池隔离（<code>TaskExecutor</code>）。</li>
+<li>差异只在“消息编排与协议映射”层：Assistant 用 <code>MessageExecutor</code>→ Assistants SSE；Responses 用 <code>ResponseMessageExecutor</code>→ Responses SSE。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心组件抽象与泛化</strong></p>
+<ul>
+<li><code>ExecutionContext</code> 统一线程内状态与同步（队列、锁、条件变量、工具任务/结果、SSE 输出队列、模型能力、文件映射等）。</li>
+<li><code>RunExecutor</code> 统一调度骨架（模板方法式骨架）：启动消息执行器与工具执行器 → 进入计划/执行循环 → 统一收尾。</li>
+<li><code>ToolExecutor</code>/<code>ToolOutputChannel</code> 统一工具并发与输出串行化机制。</li>
+<li><code>RunStateManager</code> 统一 Run/Step 状态迁移与持久化。</li>
+</ul>
+</li>
+<li>
+<p><strong>设计模式</strong></p>
+<ul>
+<li><strong>Template Method</strong>：<code>RunExecutor.executeRun()</code> 定义通用执行骨架，仅在“选择消息执行器”处分流。</li>
+<li><strong>Adapter</strong>：<!-- -->
+<ul>
+<li><code>ResponseService.createResponse()</code> + <code>ResponseUtils.convertToRunRequest()</code> 将 <code>CreateResponseRequest</code> 适配为 <code>RunCreateRequest</code>（无 Assistant 场景）。</li>
+<li><code>ResponseMessageExecutor</code> 将 <code>ChatCompletionChunk</code>/工具输出适配为 Responses 的 <code>BaseStreamEvent</code> 序列。</li>
+</ul>
+</li>
+<li><strong>Strategy</strong>：<code>Planner</code> 决策执行步；<code>ToolHandler</code> 多工具实现；<code>ToolChoice</code> 与“并行工具”开关来自元数据策略。</li>
+<li><strong>Observer/Producer-Consumer</strong>：<code>ExecutionContext.senderQueue</code> 串联 Run 主循环、LLM 流、工具流与 SSE 发送线程。</li>
+<li><strong>Bulkhead（隔离栅）</strong>：<code>TaskExecutor</code> 多线程池隔离 Runner/Executor/Caller，避免相互干扰（见 <code>api/run-executor-design.md</code>）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="共享组件  的设计">共享组件的设计<a href="#共享组件的设计" class="hash-link" aria-label="Direct link to 共享组件的设计" title="Direct link to 共享组件的设计" translate="no">​</a></h2>
+<ul>
+<li>
+<p><strong>Thread 管理器的双模式支持（Store/Non-Store）</strong></p>
+<ul>
+<li>控制面：<code>ResponseController.createResponses()</code> 对 <code>store=false</code> 激活 <code>RepoContext</code> 非持久模式；<code>ResponseIdMappingRepo</code> 等 Repo 感知并走内存态。</li>
+<li>数据面：<code>ResponseService.confirmThreadAndRun()</code> 支持三路：显式 <code>conversation</code>、基于 <code>previous_response_id</code>、或新建 <code>thread</code>（<code>ThreadService.createThread()</code>）。</li>
+<li>分支复用：如果 <code>previous_response_id</code> 已被使用，<code>checkAndStore()</code> 走写锁并调用 <code>ThreadService.forkThreadBeforeTargetRun()</code> 在目标 run 的 assistant 消息“之前”分叉，且可将该 run 的工具调用消息对（tool_call/tool_result）一并织入，保证对话延续性与顺序性。</li>
+</ul>
+</li>
+<li>
+<p><strong>Message 处理 pipeline 的复用</strong></p>
+<ul>
+<li>上游一致：<code>ChatService.chat(context)</code> 将模型流式增量与工具调用增量都投递到 <code>ExecutionContext.senderQueue</code>。</li>
+<li>中游分流：Assistant 用 <code>MessageExecutor</code>，Responses 用 <code>ResponseMessageExecutor</code>。两者都调用 <code>RunStateManager.finishMessageCreation()</code>、<code>startToolCalls()</code>、<code>finishToolCall()</code> 等，共享消息/步骤的最终一致性路径。</li>
+<li>底层一致：<code>MessageService</code> 承担消息读写；<code>RunService</code> 生成 <code>message_creation</code>/<code>tool_calls</code> 步骤并维护工具相关元数据。</li>
+</ul>
+</li>
+<li>
+<p><strong>Run 执行引擎的适配层</strong></p>
+<ul>
+<li><code>RunExecutor.startResponseRun()</code> 在通用 <code>ExecutionContext</code> 上打标 <code>context.setResponse(response)</code>，从而在 <code>executeRun()</code> 中选择 <code>ResponseMessageExecutor.start(...)</code>。</li>
+<li><code>RunExecutor.buildExecutionContext()</code> 完全复用 Assistant 路径：装载 Run/Step/Tools/Files/ModelFeatures，并发布首包（<code>Run</code>/<code>Thread</code> 或 <code>ResumeMessage</code>）。</li>
+</ul>
+</li>
+<li>
+<p><strong>工具系统的统一调用接口</strong></p>
+<ul>
+<li><code>ToolExecutor.start(...)</code> 注册服务端可执行工具（<code>ToolFetcher.getToolHandler()</code>），统一把 LLM 的 <code>ChatToolCall</code> 转 <code>ToolCall</code> 并并发执行。</li>
+<li>输出串行化：<code>ToolOutputChannel</code> 基于 <code>ExecutionContext.currentOutputToolCallId</code> 将多工具并行执行的产物按“一个工具一个时间窗口”的方式串行发布；Responses 路径中，<code>ResponseMessageExecutor</code> 再把这些输出映射为 <code>OutputItemAdded/Done</code>、<code>FunctionCallArgumentsDelta/Done</code> 等事件并维持全局 <code>sequenceNumber/outputIndex/contentIndex</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="差异化处理策略">差异化处理策略<a href="#差异化处理策略" class="hash-link" aria-label="Direct link to 差异化处理策略" title="Direct link to 差异化处理策略" translate="no">​</a></h2>
+<ul>
+<li>
+<p><strong>previous_response_id 专属语义</strong></p>
+<ul>
+<li>解析与继承：<code>ResponseService.confirmThreadAndRun()</code> 通过 <code>ResponseIdMappingRepo.findByResponseId()</code> 找到上一轮 run，继承其 <code>tools</code>（作为“继承工具”打标），并确定 <code>threadId/previousRunId</code>。</li>
+<li>顺序与原子性：<code>checkFirstMessage(...)</code> 会在首条用户输入前补入必要的“上一轮消息边界”（例如未提交的工具调用或上一条 assistant 文本），并用 <code>MessageUtils.checkPre()</code> 校验 <code>user/assistant/tool</code> 邻接合法性，避免对话断裂。</li>
+<li>并发与幂等：<code>checkAndStore(...)</code> 以 <code>previous_response_id</code> 为写锁键，若该 previous 已被使用则自动分叉新 thread（见上文“分支复用”）。</li>
+</ul>
+</li>
+<li>
+<p><strong>无 Assistant 模式（按请求即时配置）</strong></p>
+<ul>
+<li>适配：<code>ResponseUtils.convertToRunRequest()</code> 将 <code>CreateResponseRequest</code> 转为 <code>RunCreateRequest</code>，不依赖 <code>assistant_id</code>，模型/指令/工具/裁剪/推理等均来自请求；<code>MetaConstants.RESPONSE_ID/STORE/PARALLEL_TOOL_CALLS/BACKGROUND</code> 等写入 <code>run.metadata</code> 控制后续行为。</li>
+<li>落地：<code>RunService.doCreateRun()</code> 检测 <code>RESPONSE_ID</code> 即走“无 Assistant”分支，仍复用统一的 Run/Step/Tool 创建逻辑，保证与 Assistant 路径一致的稳定性与可观测性。</li>
+</ul>
+</li>
+<li>
+<p><strong>不同响应协议的处理</strong></p>
+<ul>
+<li>Assistant：<code>MessageExecutor</code> 输出 OpenAI Assistants 系列事件（<code>THREAD_MESSAGE_DELTA</code> 等），在 <code>[LLM_DONE]/[TOOL_DONE]</code> 时统一收尾。</li>
+<li>Responses：<code>ResponseMessageExecutor</code> 输出 <code>ResponseCreated/InProgress/Completed/Failed/Incomplete</code> 及细粒度内容/工具事件：<!-- -->
+<ul>
+<li>文本：<code>OutputItemAdded</code> → <code>OutputTextDelta</code> → <code>OutputTextDone</code> → <code>OutputItemDone</code>。</li>
+<li>推理：<code>ReasoningSummaryPartAdded</code> → <code>ReasoningSummaryTextDelta/Done</code>。</li>
+<li>函数调用：<code>OutputItemAdded(FunctionToolCall)</code> → <code>FunctionCallArgumentsDelta/Done</code>。</li>
+<li>工具输出：从 <code>ToolOutputChannel</code> 接收 <code>ToolStreamEvent</code>，据 <code>currentOutputToolCallId</code> 生成 <code>itemId</code> 并与 <code>outputIndex</code> 对齐，完成后 <code>context.finishToolCallOutput()</code> 释放下一个工具的输出权。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>轻量级上下文（Non-Store）</strong></p>
+<ul>
+<li>开关：<code>ResponseController.createResponses()</code> 对 <code>store=false</code> 激活 <code>RepoContext</code>，对应 Repo（如 <code>ResponseIdMappingRepo</code>）走内存实现；<code>ExecutionContext.isStore()</code> 也基于 <code>run.metadata.store</code> 控制消息是否落库。</li>
+<li>体验：在不持久化的场景下，仍可完整获得 Responses 流式事件与最终聚合结果（<code>context.blockingGetResult(...)</code>）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="时序与协作responses-路径">时序与协作（Responses 路径）<a href="#时序与协作responses-路径" class="hash-link" aria-label="Direct link to 时序与协作（Responses 路径）" title="Direct link to 时序与协作（Responses 路径）" translate="no">​</a></h2>
+<!-- -->
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="关键代码索引">关键代码索引<a href="#关键代码索引" class="hash-link" aria-label="Direct link to 关键代码索引" title="Direct link to 关键代码索引" translate="no">​</a></h2>
+<ul>
+<li><strong>控制层</strong>
+<ul>
+<li><code>api/src/main/java/com/ke/assistant/controller/ResponseController.java</code></li>
+</ul>
+</li>
+<li><strong>业务编排</strong>
+<ul>
+<li><code>api/src/main/java/com/ke/assistant/service/ResponseService.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/service/RunService.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/service/ThreadService.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/db/repo/ResponseIdMappingRepo.java</code></li>
+</ul>
+</li>
+<li><strong>执行与消息</strong>
+<ul>
+<li><code>api/src/main/java/com/ke/assistant/core/run/RunExecutor.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/core/run/ExecutionContext.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/core/run/ResponseMessageExecutor.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/core/run/MessageExecutor.java</code>（Assistant）</li>
+</ul>
+</li>
+<li><strong>工具体系</strong>
+<ul>
+<li><code>api/src/main/java/com/ke/assistant/core/tools/ToolExecutor.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/core/tools/ToolOutputChannel.java</code></li>
+<li><code>api/src/main/java/com/ke/assistant/core/tools/ToolHandler.java</code> 与各 <code>handlers/*</code></li>
+</ul>
+</li>
+<li><strong>协议与适配</strong>
+<ul>
+<li><code>api/src/main/java/com/ke/assistant/util/ResponseUtils.java</code></li>
+<li><code>api/run-executor-design.md</code>、<code>api/thread-concurrent-run-ordering.md</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="小结">小结<a href="#小结" class="hash-link" aria-label="Direct link to 小结" title="Direct link to 小结" translate="no">​</a></h2>
+<p>Responses API 以“适配层 + 协议映射”的最小改造复用 Assistant 执行栈：</p>
+<ul>
+<li>Run/Tool/State/Context 保持完全一致，继承其稳定性与并发能力；</li>
+<li>通过 <code>ResponseMessageExecutor</code> 与 <code>ResponseUtils</code> 实现协议与输入的定制化；</li>
+<li>借助 <code>previous_response_id</code> 的分支机制与 Store/Non-Store 双模式，既能延续复杂对话，也能满足轻量与隐私需求。</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/en/docs/bella-assistants/dev/thread-concurrent"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">突破OpenAI限制：Thread并发的实现</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/en/docs/bella-assistants/dev/dialog-branching-multipath-execution"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">对话树：response的多路径执行</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#架构复用的设计理念" class="table-of-contents__link toc-highlight">架构复用的设计理念</a></li><li><a href="#共享组件的设计" class="table-of-contents__link toc-highlight">共享组件的设计</a></li><li><a href="#差异化处理策略" class="table-of-contents__link toc-highlight">差异化处理策略</a></li><li><a href="#时序与协作responses-路径" class="table-of-contents__link toc-highlight">时序与协作（Responses 路径）</a></li><li><a href="#关键代码索引" class="table-of-contents__link toc-highlight">关键代码索引</a></li><li><a href="#小结" class="table-of-contents__link toc-highlight">小结</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Document</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/en/docs/intro">Introduction</a></li><li class="footer__item"><a class="footer__link-item" href="/en/api-viewer">API Docs</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/LianjiaTech/bella-openapi/issues" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub Issues<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">more</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/LianjiaTech/bella-openapi" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright 2025 LianjiaTech. Built on Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
