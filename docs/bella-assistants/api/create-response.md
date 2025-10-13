@@ -438,14 +438,13 @@ MCP (Model Context Protocol) 是一个开放协议，允许AI模型通过标准�
 
 流式事件：
 ```json
-// 开始获取
 {
   "type": "mcp_list_tools",
   "event": "in_progress",
   "server_label": "context7"
 }
-
-// 获取完成
+```
+```json
 {
   "type": "mcp_list_tools",
   "event": "completed",
@@ -485,7 +484,6 @@ MCP (Model Context Protocol) 是一个开放协议，允许AI模型通过标准�
 
 流式事件序列：
 ```json
-// 准备调用
 {
   "type": "mcp_call",
   "event": "in_progress",
@@ -493,23 +491,24 @@ MCP (Model Context Protocol) 是一个开放协议，允许AI模型通过标准�
   "server_label": "context7",
   "name": "resolve-library-id"
 }
-
-// 参数传递
+```
+```json
 {
   "type": "mcp_call",
   "event": "arguments_delta",
   "id": "call_mcp_001",
   "delta": "{\"libraryName\": "
 }
-
+```
+```json
 {
   "type": "mcp_call",
   "event": "arguments_done",
   "id": "call_mcp_001",
   "arguments": "{\"libraryName\": \"bella-openapi\"}"
 }
-
-// 调用完成
+```
+```json
 {
   "type": "mcp_call",
   "event": "completed",
