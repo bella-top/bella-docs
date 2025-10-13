@@ -41,7 +41,7 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
   "store": true,
   "reasoning": {
     "effort": "medium",
-    "summary": "auto" 
+    "summary": "auto"
   },
   "stream": true
 }
@@ -312,6 +312,319 @@ Response API支持多种输入模态的组合使用：
 }
 ```
 
+#### MCP工具（Model Context Protocol）
+
+MCP (Model Context Protocol) 是一个开放协议，允许AI模型通过标准化接口与外部工具和数据源交互。Response API支持动态连接MCP服务器，自动发现和调用服务器提供的工具。
+
+##### 基础MCP配置
+```json
+{
+  "model": "gpt-5-nano",
+  "input": [{
+    "type": "message",
+    "role": "user",
+    "content": "使用Context7查询React文档"
+  }],
+  "tools": [{
+    "type": "mcp",
+    "server_label": "context7",
+    "server_url": "https://mcp.context7.com/mcp",
+    "server_description": "Context7 documentation search service"
+  }],
+  "stream": true
+}
+```
+
+**核心字段说明**：
+- `type`: 固定为 `"mcp"`
+- `server_label`: MCP服务器的唯一标识符（必需）
+- `server_url`: MCP服务器的HTTP端点URL（与`connector_id`二选一）
+- `connector_id`: 预定义的连接器ID（与`server_url`二选一）
+- `server_description`: 服务器描述，帮助模型理解服务器用途
+- `authorization`: OAuth令牌（可选，格式：`"Bearer token123"`）
+- `headers`: 自定义HTTP请求头（可选）
+
+##### 带认证的MCP服务器
+```json
+{
+  "model": "gpt-5-nano",
+  "input": "查询私有仓库的代码文档",
+  "tools": [{
+    "type": "mcp",
+    "server_label": "github_private",
+    "server_url": "https://api.github.com/mcp",
+    "authorization": "Bearer ghp_xxxxxxxxxxxx",
+    "headers": {
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
+    "server_description": "GitHub private repository access"
+  }]
+}
+```
+
+##### 工具过滤和访问控制
+
+**允许特定工具**
+```json
+{
+  "tools": [{
+    "type": "mcp",
+    "server_label": "db_server",
+    "server_url": "https://db.example.com/mcp",
+    "server_description": "Database query service",
+    "allowed_tools": ["query_users", "query_orders"]
+  }]
+}
+```
+
+##### 工具审批机制
+
+**所有工具都需要审批**
+```json
+{
+  "tools": [{
+    "type": "mcp",
+    "server_label": "admin_tools",
+    "server_url": "https://admin.example.com/mcp",
+    "require_approval": "always"
+  }]
+}
+```
+
+**特定工具需要审批**
+```json
+{
+  "tools": [{
+    "type": "mcp",
+    "server_label": "system_tools",
+    "server_url": "https://system.example.com/mcp",
+    "require_approval": {
+      "always": {
+        "tool_names": ["delete_file", "restart_service"]
+      }
+    }
+  }]
+}
+```
+
+**审批请求流式事件**
+```json
+{
+  "type": "mcp_approval_request",
+  "id": "mcp_approve_req_123",
+  "server_label": "system_tools",
+  "name": "delete_file",
+  "arguments": "{\"path\": \"/data/temp.txt\"}"
+}
+```
+
+**审批响应输入**
+```json
+{
+  "input": [{
+    "type": "mcp_approval_response",
+    "approval_request_id": "mcp_approve_req_123",
+    "approve": true,
+    "reason": "Temporary file deletion approved"
+  }]
+}
+```
+
+##### MCP工具调用流程
+
+**1. 工具列表获取**
+
+当模型首次访问MCP服务器时，会自动获取可用工具列表：
+
+流式事件：
+```json
+// 开始获取
+{
+  "type": "mcp_list_tools",
+  "event": "in_progress",
+  "server_label": "context7"
+}
+
+// 获取完成
+{
+  "type": "mcp_list_tools",
+  "event": "completed",
+  "server_label": "context7",
+  "tools": [
+    {
+      "name": "resolve-library-id",
+      "description": "Resolve library name to Context7 ID",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "libraryName": {"type": "string"}
+        },
+        "required": ["libraryName"]
+      }
+    },
+    {
+      "name": "get-library-docs",
+      "description": "Fetch library documentation",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "context7CompatibleLibraryID": {"type": "string"},
+          "topic": {"type": "string"},
+          "tokens": {"type": "number"}
+        },
+        "required": ["context7CompatibleLibraryID"]
+      }
+    }
+  ]
+}
+```
+
+**2. 工具调用执行**
+
+模型自动调用MCP服务器上的工具：
+
+流式事件序列：
+```json
+// 准备调用
+{
+  "type": "mcp_call",
+  "event": "in_progress",
+  "id": "call_mcp_001",
+  "server_label": "context7",
+  "name": "resolve-library-id"
+}
+
+// 参数传递
+{
+  "type": "mcp_call",
+  "event": "arguments_delta",
+  "id": "call_mcp_001",
+  "delta": "{\"libraryName\": "
+}
+
+{
+  "type": "mcp_call",
+  "event": "arguments_done",
+  "id": "call_mcp_001",
+  "arguments": "{\"libraryName\": \"bella-openapi\"}"
+}
+
+// 调用完成
+{
+  "type": "mcp_call",
+  "event": "completed",
+  "id": "call_mcp_001",
+  "server_label": "context7",
+  "name": "resolve-library-id",
+  "arguments": "{\"libraryName\": \"bella-openapi\"}",
+  "output": "[{\"id\": \"/ke/bella-openapi\", \"name\": \"bella-openapi\", \"description\": \"...\"}]"
+}
+```
+
+**3. 对话中引用MCP调用历史**
+```json
+{
+  "model": "gpt-5-nano",
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": "查询React hooks文档"
+    },
+    {
+      "type": "mcp_call",
+      "id": "call_001",
+      "server_label": "context7",
+      "name": "resolve-library-id",
+      "arguments": "{\"libraryName\": \"react\"}",
+      "output": "[{\"id\": \"/facebook/react\"}]"
+    },
+    {
+      "type": "mcp_call",
+      "id": "call_002",
+      "server_label": "context7",
+      "name": "get-library-docs",
+      "arguments": "{\"context7CompatibleLibraryID\": \"/facebook/react\", \"topic\": \"hooks\"}",
+      "output": "# React Hooks\n\nHooks are functions that..."
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "content": "useState和useEffect的区别是什么？"
+    }
+  ],
+  "tools": [{
+    "type": "mcp",
+    "server_label": "context7",
+    "server_url": "https://mcp.context7.com/mcp"
+  }]
+}
+```
+
+##### 实际应用示例
+
+**文档查询助手**
+```json
+{
+  "model": "gpt-5-nano",
+  "input": "如何在Next.js中使用服务端组件？",
+  "tools": [{
+    "type": "mcp",
+    "server_label": "context7",
+    "server_url": "https://mcp.context7.com/mcp",
+    "server_description": "Technical documentation search"
+  }],
+  "stream": true
+}
+```
+
+**数据库查询工具**
+```json
+{
+  "model": "gpt-5",
+  "input": "查询销售额最高的前10个商品",
+  "tools": [{
+    "type": "mcp",
+    "server_label": "analytics_db",
+    "connector_id": "postgres_readonly",
+    "server_description": "Analytics database (read-only)",
+    "allowed_tools": {
+      "read_only": true
+    }
+  }]
+}
+```
+
+**文件系统操作（需审批）**
+```json
+{
+  "model": "gpt-5-nano",
+  "input": "清理/tmp目录下的过期日志文件",
+  "tools": [{
+    "type": "mcp",
+    "server_label": "filesystem",
+    "server_url": "https://fs.internal.com/mcp",
+    "authorization": "Bearer internal_token",
+    "require_approval": {
+      "always": {
+        "tool_names": ["delete_file", "delete_directory"]
+      }
+    }
+  }]
+}
+```
+
+##### MCP最佳实践
+
+1. **服务器标识**：使用清晰的`server_label`，便于在日志和审计中追踪
+2. **安全认证**：敏感服务器必须配置`authorization`或`headers`进行身份验证
+3. **工具白名单**：使用`allowed_tools`限制模型只能访问必要的工具
+4. **审批机制**：对危险操作（删除、修改、执行）启用`require_approval`
+5. **错误处理**：MCP调用失败会在流式响应中包含详细错误信息
+6. **并行调用**：多个MCP服务器工具可自动并行执行，提升效率
+7. **描述准确**：`server_description`应准确描述服务器能力，帮助模型正确选择工具
+
+
 ### 5. 自定义工具（Custom Tools）
 
 #### 文本格式工具
@@ -424,8 +737,8 @@ Response API支持多种输入模态的组合使用：
 
 ```json
 {
-  "stream": true,      
-  "background": false 
+  "stream": true,
+  "background": false
 }
 ```
 
@@ -441,7 +754,7 @@ Response API支持多种输入模态的组合使用：
 
 ```json
 {
-  "store": false 
+  "store": false
 }
 ```
 
