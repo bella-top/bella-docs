@@ -74,7 +74,8 @@ const sidebars: SidebarsConfig = {
           items: [
             'bella-openapi/dev/login-spi',
             'bella-openapi/dev/model-console',
-            `bella-openapi/dev/endpoint-console`
+            `bella-openapi/dev/endpoint-console`,
+            `bella-openapi/dev/bella-service-introduction`
           ],
         }
       ],
