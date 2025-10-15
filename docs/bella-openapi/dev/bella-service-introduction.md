@@ -4,6 +4,11 @@
 
 `BellaService` 是 Bella OpenAPI 体系中为能力点服务提供的 Spring Boot 集成框架。它通过一个简单的注解为您的服务自动配置与 Bella OpenAPI 网关的集成能力，包括用户认证、请求追踪、上下文管理等核心功能。
 
+## 推荐使用BellaService的项目
+- 所有Bella体系下的服务
+- 依靠Bella能力点，对外提供平台能力的服务
+- 目前只支持Spring Boot服务
+
 ## 核心功能
 
 ### 1. 自动化配置
@@ -74,9 +79,20 @@ BellaService 自动配置了两个关键拦截器：
 </dependency>
 ```
 
+**注意**：
+- 其中依赖的bella-openai版本可能更新不及时，可以自行维护bella-openai的版本，使用最新的能力。通常都是兼容的，如果出现不兼容的情况，请向社区反馈。
+```xml
+<dependency>
+    <groupId>top.bella</groupId>
+    <artifactId>openai-service</artifactId>
+    <version>${bella-openai.version}</version>
+</dependency>
+```
+
 **获取最新版本号：**
 - 访问 Maven 中央仓库：https://repo1.maven.org/maven2/top/bella/openapi-spi/
 - 选择最新的版本目录即可获取当前可用的最新版本号
+- bella-openai的版本：https://repo1.maven.org/maven2/top/bella/openai-service/
 
 **版本兼容性：**
 - 推荐使用最新版本以获得最佳功能和安全更新
