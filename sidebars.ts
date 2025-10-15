@@ -12,7 +12,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'OpenAPI',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -84,7 +84,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'assistant&responses',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -99,6 +99,7 @@ const sidebars: SidebarsConfig = {
           items: [
             'bella-assistants/api/assistant-core-api',
             'bella-assistants/api/create-response',
+            'bella-assistants/api/response-api-sdk'
           ],
         },
         {
@@ -121,7 +122,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'RAG',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -146,7 +147,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Workflow',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -160,7 +161,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Domify',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -184,7 +185,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Knowledge',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -287,7 +288,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Claude Code With Bella',
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',

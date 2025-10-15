@@ -318,3 +318,154 @@
   background-color: #161b22 !important;
   border: 1px solid #30363d !important;
 }
+
+/* ==================== 侧边栏目录优化样式 ==================== */
+
+/* 一级分类增强样式 - 主要模块 */
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  font-size: 0.98rem !important;
+  font-weight: 600 !important;
+  color: var(--ifm-font-color-base) !important;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 0.65rem 0.75rem !important;
+  border-left: 2px solid rgba(46, 133, 85, 0.4);
+  margin: 0.6rem 0 0.4rem 0 !important;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+[data-theme='dark'] .theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  background: rgba(255, 255, 255, 0.03);
+  border-left-color: rgba(37, 194, 160, 0.5);
+}
+
+/* 一级分类悬停效果 */
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link:hover {
+  background: rgba(46, 133, 85, 0.08);
+  border-left-color: var(--ifm-color-primary);
+  transform: translateX(2px);
+}
+
+[data-theme='dark'] .theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link:hover {
+  background: rgba(37, 194, 160, 0.12);
+  border-left-color: var(--ifm-color-primary-light);
+}
+
+/* 一级分类之间的分隔线 */
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1 {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+[data-theme='dark'] .theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-1 {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 二级分类增强样式 */
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > .menu__link {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: var(--ifm-font-color-base) !important;
+  padding: 0.6rem 0.75rem !important;
+  margin: 0.4rem 0 0.3rem 0 !important;
+  opacity: 0.9;
+}
+
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > .menu__link:hover {
+  background-color: rgba(46, 133, 85, 0.08);
+  opacity: 1;
+}
+
+[data-theme='dark'] .theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > .menu__link:hover {
+  background-color: rgba(37, 194, 160, 0.12);
+}
+
+/* 三级及以下分类样式 */
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > .menu__link,
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-4 > .menu__list-item-collapsible > .menu__link {
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  opacity: 0.85;
+  padding: 0.5rem 0.75rem !important;
+  margin: 0.2rem 0 !important;
+}
+
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > .menu__link:hover,
+.theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-4 > .menu__list-item-collapsible > .menu__link:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme='dark'] .theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > .menu__link:hover,
+[data-theme='dark'] .theme-doc-sidebar-item-category.theme-doc-sidebar-item-category-level-4 > .menu__list-item-collapsible > .menu__link:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 层级缩进优化 */
+.menu__list .menu__list {
+  padding-left: 1rem !important;
+  margin-left: 0.5rem !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='dark'] .menu__list .menu__list {
+  border-left-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 普通文档链接样式 */
+.theme-doc-sidebar-item-link .menu__link {
+  font-size: 0.9rem !important;
+  padding: 0.45rem 0.75rem !important;
+  margin: 0.15rem 0 !important;
+  transition: all 0.15s ease;
+}
+
+.theme-doc-sidebar-item-link .menu__link:hover {
+  background-color: rgba(46, 133, 85, 0.06);
+  transform: translateX(2px);
+}
+
+[data-theme='dark'] .theme-doc-sidebar-item-link .menu__link:hover {
+  background-color: rgba(37, 194, 160, 0.1);
+}
+
+/* 当前选中的链接样式 */
+.menu__link--active {
+  background: linear-gradient(90deg, rgba(46, 133, 85, 0.15) 0%, rgba(46, 133, 85, 0.05) 100%) !important;
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600 !important;
+  border-left: 3px solid var(--ifm-color-primary);
+  padding-left: 0.65rem !important;
+}
+
+[data-theme='dark'] .menu__link--active {
+  background: linear-gradient(90deg, rgba(37, 194, 160, 0.2) 0%, rgba(37, 194, 160, 0.08) 100%) !important;
+  color: var(--ifm-color-primary-light) !important;
+  border-left-color: var(--ifm-color-primary-light);
+}
+
+/* 折叠箭头动画优化 */
+.menu__link--sublist-caret:after {
+  transition: transform 0.2s ease;
+}
+
+.menu__list-item-collapsible--collapsed .menu__link--sublist-caret:after {
+  transform: rotate(0deg);
+}
+
+/* 介绍（Introduction）特殊标识 */
+.menu__link[href*="/intro"] {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.menu__link[href*="/intro"]:hover {
+  opacity: 1;
+}
