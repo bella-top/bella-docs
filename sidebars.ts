@@ -99,7 +99,8 @@ const sidebars: SidebarsConfig = {
           items: [
             'bella-assistants/api/assistant-core-api',
             'bella-assistants/api/create-response',
-            'bella-assistants/api/response-api-sdk'
+            'bella-assistants/api/response-api-sdk',
+            'bella-assistants/api/codex-usage'
           ],
         },
         {

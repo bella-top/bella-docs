@@ -14,21 +14,24 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
 ## 为什么选择Response API?
 
 ### 完全覆盖chat-completion
-支持chat-completion的所有功能，非store模式可以理解为功能更丰富的chat-completion接口
+支持chat-completion的所有功能以及**全部模型**，非store模式可以理解为功能更丰富的chat-completion接口
 
 ### 使用便捷
 相比assistant api使用更方便，无需创建智能体
 
-### 丰富的多模态输入
+### 丰富的多模态输入/输出
 - 全模型支持File Input，以 `purpose`为`assistants`的方式，上传到`file-api`后，可以直接使用File Input，LLM将根据文件内容生成响应
 - 全模型支持Audio Input，支持直接以语音作为输入
 - 兼容chat-completion的图片识别能力，后续会扩展为全模型支持
+- 内置生图工具支持图像输出
+- 未来会扩展语音输出的能力（敬请期待）
 
 ### 强大的内置工具
 - 支持集成私有知识库，私有知识的上下文组织是使用LLM的痛点之一，response-api提供了file-search工具，结合`bella-knowledge`使用，添加私有知识极其简单
 - 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，更新LLM的知识库
 - 支持MCP工具，可以让LLM与应用服务进行交互，获得私有知识或者执行你的既定流程 
 - MCP工具支持审批执行，Client在实现与用户交互时更方便
+- 内置生图工具，可生成图片，`store`模式下上传到s3返回图片的url，`非store模式`下返回Base64String
 - 内置自主生成代码/工具/子Agent的工具来解决问题，完成复杂任务（敬请期待）
 
 ### 支持 `store`和`非store`双模式
@@ -60,6 +63,7 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
 ### 全面且严谨的协议规范
 - 协议的设计考虑了开发者搭建Agent需要的方方面面
 - 可扩展性强，此协议可伴随着未来AI能力的发展，不断扩展新功能
+- 对轻量级客户端友好，顺应AI时代应用层产品快速开发、快速落地的理念
 
 ## 核心端点
 
