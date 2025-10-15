@@ -30,14 +30,14 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
 - 支持集成私有知识库，私有知识的上下文组织是使用LLM的痛点之一，response-api提供了file-search工具，结合`bella-knowledge`使用，添加私有知识极其简单
 - 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，更新LLM的知识库
 - 支持MCP工具，可以让LLM与应用服务进行交互，获得私有知识或者执行你的既定流程 
-- MCP工具支持审批执行，Client在实现与用户交互时更方便
+- MCP工具支持服务调用时的审批操作，保障MCP服务调用的安全性，Client端在实现与用户交互时更方便
 - 内置生图工具，可生成图片，`store`模式下上传到s3返回图片的url，`非store模式`下返回Base64String
 - 内置自主生成代码/工具/子Agent的工具来解决问题，完成复杂任务（敬请期待）
 
 ### 支持 `store`和`非store`双模式
 
 #### `store`模式
-- `store`模式更可直接，使用response-api为客户端提供上下文管理的能力
+- `store`模式为默认模式，在此模式下，可使用response-api为客户端提供上下文管理的能力
 - `store`模式，进行请求只需要携带`previous_response_id`或`conversation`即可在请求LLM时保留对话上下文
 - `store`模式便于轻量级应用的快速搭建
 
