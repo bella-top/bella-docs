@@ -1,7 +1,7 @@
 # 使用codex
 
 ## 介绍
-codex是Openai推出的一个强大的code agent。支持chat-completion和response-api两种模式。其中response-api可以更好地适配深度思考和网络搜索工具。
+codex是Openai推出的一个强大的code agent。支持chat completions和responses api两种模式。其中responses api可以更好地适配深度思考和网络搜索工具。
 
 ## 特点
 - 对比Claude Code，其优势主要在GPT-5 high的强大。不过Bella Openapi同样支持GPT-5 high的`/v1/messages`协议，同样适配了GPT-5 high，欢迎尝试切换体验

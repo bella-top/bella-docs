@@ -94,15 +94,15 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'doc',
-          id: 'bella-assistants/why-response-api',
-          label: 'Why Response API?',
-          key: 'why-response-api',
+          id: 'bella-assistants/why-responses-api',
+          label: 'Why Responses API?',
+          key: 'why-responses-api',
         },
         {
           type: 'doc',
-          id: 'bella-assistants/when-to-use-response-api',
-          label: 'When to Use Response API?',
-          key: 'when-to-use-response-api',
+          id: 'bella-assistants/when-to-use-responses-api',
+          label: 'When to Use Responses API?',
+          key: 'when-to-use-responses-api',
         },
         {
           type: 'category',
@@ -110,8 +110,8 @@ const sidebars: SidebarsConfig = {
           key: 'assistant-usage-docs',
           items: [
             'bella-assistants/api/assistant-core-api',
-            'bella-assistants/api/create-response',
-            'bella-assistants/api/response-api-sdk',
+            'bella-assistants/api/create-responses',
+            'bella-assistants/api/responses-api-sdk',
             'bella-assistants/api/codex-usage'
           ],
         },

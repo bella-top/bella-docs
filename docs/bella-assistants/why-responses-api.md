@@ -1,9 +1,9 @@
-# 为什么选择Response API?
+# 为什么选择Responses API?
 
 ## 官方定义
 > Responses API 是一个用于构建功能强大的代理类应用程序的统一接口。它包含很多内置工具，如：网络搜索，文件搜索，计算机使用，代码解释器和远程MCP。且对文本和图像原生支持支持多模态。
 
-Bella Assistant服务对Openai的Response API做了全面地兼容和升级。比如内置工具的全模型支持以及多模态输入的全模型支持等等。并且整合了Bella体系下的各个能力服务，为Agent的搭建提供了强大的支持，让Agent的搭建变得更简单更高效。
+Bella Assistant服务对Openai的Responses API做了全面地兼容和升级。比如内置工具的全模型支持以及多模态输入的全模型支持等等。并且整合了Bella体系下的各个能力服务，为Agent的搭建提供了强大的支持，让Agent的搭建变得更简单更高效。
 
 ## 完全覆盖Chat Completions
 支持chat completions的所有功能以及**全部模型**，非store模式可以理解为功能更丰富的chat completions接口
@@ -14,12 +14,12 @@ Bella Assistant服务对Openai的Response API做了全面地兼容和升级。�
 ## 丰富的多模态输入/输出
 - 全模型支持File Input，以 `purpose`为`assistants`的方式，上传到`file-api`后，可以直接使用File Input，LLM将根据文件内容生成响应
 - 全模型支持Audio Input，支持直接以语音作为输入
-- 兼容chat-completions的图片识别能力，后续会扩展为全模型支持
+- 兼容chat completions的图片识别能力，后续会扩展为全模型支持
 - 内置生图工具支持图像输出
 - 未来会扩展语音输出的能力（敬请期待）
 
 ## 强大的内置工具
-- 支持集成私有知识库，私有知识的上下文组织是使用LLM的痛点之一，response-api提供了file-search工具，结合`bella-knowledge`使用，让LLM掌握你的私有知识更加简单
+- 支持集成私有知识库，私有知识的上下文组织是使用LLM的痛点之一，responses api提供了file-search工具，结合`bella-knowledge`使用，让LLM掌握你的私有知识更加简单
 - 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，让LLM的知识储备可以即时更新
 - 支持MCP工具，可以让LLM与应用服务进行交互，获取私有知识或者执行你的既定流程，为LLM提供与外部进行交互的窗口
 - MCP工具支持服务调用时的审批操作，保障MCP服务调用的安全性，Client端在实现与用户交互时更方便
@@ -36,8 +36,8 @@ Bella Assistant服务对Openai的Response API做了全面地兼容和升级。�
 ### `非store`模式
 - `非store`模式拥有更高的性能和安全性，在response-api的服务端完全不留痕
 - 适用于客户端自行管理上下文的场景
-- 使用chat-completions搭建的应用可以此模式快速迁移
-- 相当于chat-completions的扩展，可使用response-api的全部工具和多模态输入能力
+- 使用chat completions搭建的应用可以此模式快速迁移
+- 相当于chat completions的扩展，可使用responses api的全部工具和多模态输入能力
 
 ## 可重复使用的 `previous_response_id`
 - 同一`previous_response_id`支持并发使用/重复使用

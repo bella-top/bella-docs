@@ -1,4 +1,4 @@
-# Response API SDK使用说明
+# Responses API SDK使用说明
 
 bella-openai4j 库完整支持 OpenAI Response API，包括流式（SSE）和非流式两种模式。
 
@@ -446,7 +446,7 @@ CreateResponseRequest request = CreateResponseRequest.builder()
 
 ## 事件处理
 
-Response API 支持丰富的流式事件类型。
+Responses API 支持丰富的流式事件类型。
 
 ### 主要事件类型
 
@@ -684,7 +684,7 @@ try {
 
 ## 相关链接
 
-- [OpenAI Response API 官方文档](https://platform.openai.com/docs/api-reference/response)
+- [OpenAI Responses API 官方文档](https://platform.openai.com/docs/api-reference/response)
 - [bella-openai4j GitHub](https://github.com/LianjiaTech/bella-openai4j)
 - [更多示例](https://github.com/LianjiaTech/bella-openai4j/blob/main/example/src/main/java/example/ResponseApiExample.java)
 

@@ -1,4 +1,4 @@
-# Response API 完整使用文档
+# Responses API 完整使用文档
 
 ## 概述
 
@@ -11,11 +11,11 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
 
 > 文件输入以及file_search工具需要的file-id，以 `purpose`为`assistants`的方式，上传到`file-api`，见 [文件上传](../../bella-knowledge/api/files/upload.md)
 
-## 为什么选择Response API?
+## 为什么选择Responses API?
 
-[更好地理解Response API能为你做什么](../why-response-api.md)
+[更好地理解Responses API能为你做什么](../why-responses-api)
 
-[如何判断Response API是否适合你？](../when-to-use-response-api.md)
+[如何判断Responses API是否适合你？](../when-to-use-responses-api)
 
 ## 核心端点
 
@@ -82,7 +82,7 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
 
 ### 3. 多模态输入
 
-Response API支持多种输入模态的组合使用：
+Responses API支持多种输入模态的组合使用：
 - **文本**（input_text）
 - **图片**（input_image）
 - **音频**（input_audio）
@@ -987,11 +987,11 @@ API使用标准HTTP状态码：
 
 ## API vs Assistant API对比
 
-| 特性 | Response API | Assistant API |
-|-----|-------------|---------------|
-| 使用场景 | 轻量对话、无状态交互 | 复杂智能体、有状态工作流 |
-| 会话管理 | 灵活（可选持久化） | 强制Thread管理 |
-| 配置方式 | 每次请求配置 | 预定义Assistant |
-| 工具使用 | 即时定义 | 预配置+运行时覆盖 |
-| 学习曲线 | 简单直接 | 需要理解Thread概念 |
-| 性能 | 更轻量 | 额外管理开销 |
+| 特性 | Responses API | Assistant API |
+|-----|---------------|---------------|
+| 使用场景 | 轻量对话、无状态交互    | 复杂智能体、有状态工作流 |
+| 会话管理 | 灵活（可选持久化）     | 强制Thread管理 |
+| 配置方式 | 每次请求配置        | 预定义Assistant |
+| 工具使用 | 即时定义          | 预配置+运行时覆盖 |
+| 学习曲线 | 简单直接          | 需要理解Thread概念 |
+| 性能 | 更轻量           | 额外管理开销 |
