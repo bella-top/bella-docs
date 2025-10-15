@@ -2,10 +2,50 @@
 
 ## 概述
 
-Response API 是一个轻量、灵活的对话接口，支持多模态输入、工具调用、推理模式等高级特性。
+Response API 是一个轻量、灵活的对话接口，支持多模态输入、多种内置工具调用、推理模式等高级特性。
 > 完整的请求协议见：https://platform.openai.com/docs/api-reference/responses/create
+
 > 完整的响应协议见：https://platform.openai.com/docs/api-reference/responses/object
+
 > 全部流式事件见：https://platform.openai.com/docs/api-reference/responses-streaming
+
+> 文件输入以及file_search工具需要的file-id，以 `purpose`为`assistants`的方式，上传到`file-api`，见 [文件上传](../../bella-knowledge/api/files/upload.md)
+
+## 为什么选择Response API?
+
+### 完全覆盖chat-completion
+支持chat-completion的所有功能，非store模式可以理解为功能更丰富的chat-completion接口
+
+### 使用便捷
+相比assistant api使用更方便，无需创建智能体
+
+### 丰富的内置工具
+- 支持集成私有知识库，私有知识的上下文组织是使用LLM的痛点之一，response-api提供了文件输入和file-search工具，结合`bella-knowledge`使用，添加私有知识极其简单
+- 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，更新LLM的知识库
+- 支持MCP工具，可以让LLM与应用服务进行交互，获得私有知识或者执行你的既定流程 
+- MCP工具支持审批执行，Client在实现与用户交互时更方便
+
+### 支持 `store`和`非store`双模式
+
+#### `store`模式
+- `store`模式更可直接，使用response-api为客户端提供上下文管理的能力
+- `store`模式，进行请求只需要携带`previous_response_id`或`conversation`即可在请求LLM时保留对话上下文
+- `store`模式便于轻量级应用的快速搭建
+
+#### `非store`模式
+- `非store`模式拥有更高的性能和安全性，在response-api的服务端完全不留痕
+- 适用于客户端自行管理上下文的场景
+- 使用chat-completion搭建的应用可以此模式快速迁移
+- 相当于chat-completion的扩展，可使用response-api的全部工具和多模态输入能力
+
+### 更多高级特性
+- Audio Input，支持声音输入
+- 根据文件、网页生成的回答，提供信息来源
+- 支持Local Shell Tool，可以借此搭建应用，让LLM操作你的电脑
+- 支持Custom Tool，可以理解为Response Format的平替，支持regex和lark语法，更方便地实现参数的提取
+- 断开时，从断点处重连的机制（敬请期待）
+- 后台执行模式（敬请期待）
+- 生成代码/工具/子Agent，完成复杂任务（敬请期待）
 
 ## 核心端点
 
@@ -799,7 +839,7 @@ MCP (Model Context Protocol) 是一个开放协议，允许AI模型通过标准�
 {
   "id": "resp_xxx",
   "conversation": "thread_abc123",
-  "output": [...]
+  "output": []
 }
 ```
 
