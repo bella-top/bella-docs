@@ -13,57 +13,9 @@ Response API 是一个轻量、灵活的对话接口，支持多模态输入、�
 
 ## 为什么选择Response API?
 
-### 完全覆盖chat-completion
-支持chat-completion的所有功能以及**全部模型**，非store模式可以理解为功能更丰富的chat-completion接口
+[更好地理解Response API能为你做什么](../why-response-api.md)
 
-### 使用便捷
-相比assistant api使用更方便，无需创建智能体
-
-### 丰富的多模态输入/输出
-- 全模型支持File Input，以 `purpose`为`assistants`的方式，上传到`file-api`后，可以直接使用File Input，LLM将根据文件内容生成响应
-- 全模型支持Audio Input，支持直接以语音作为输入
-- 兼容chat-completion的图片识别能力，后续会扩展为全模型支持
-- 内置生图工具支持图像输出
-- 未来会扩展语音输出的能力（敬请期待）
-
-### 强大的内置工具
-- 支持集成私有知识库，私有知识的上下文组织是使用LLM的痛点之一，response-api提供了file-search工具，结合`bella-knowledge`使用，添加私有知识极其简单
-- 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，更新LLM的知识库
-- 支持MCP工具，可以让LLM与应用服务进行交互，获得私有知识或者执行你的既定流程 
-- MCP工具支持服务调用时的审批操作，保障MCP服务调用的安全性，Client端在实现与用户交互时更方便
-- 内置生图工具，可生成图片，`store`模式下上传到s3返回图片的url，`非store模式`下返回Base64String
-- 内置自主生成代码/工具/子Agent的工具来解决问题，完成复杂任务（敬请期待）
-
-### 支持 `store`和`非store`双模式
-
-#### `store`模式
-- `store`模式为默认模式，在此模式下，可使用response-api为客户端提供上下文管理的能力
-- `store`模式，进行请求只需要携带`previous_response_id`或`conversation`即可在请求LLM时保留对话上下文
-- `store`模式便于轻量级应用的快速搭建
-
-#### `非store`模式
-- `非store`模式拥有更高的性能和安全性，在response-api的服务端完全不留痕
-- 适用于客户端自行管理上下文的场景
-- 使用chat-completion搭建的应用可以此模式快速迁移
-- 相当于chat-completion的扩展，可使用response-api的全部工具和多模态输入能力
-
-### 可重复使用的 `previous_response_id`
-- 同一`previous_response_id`支持并发使用/重复使用
-- 如果某一次输入错误，可以使用上一次响应的`response_id`作为`previous_response_id`，防止污染上下文
-- 这意味着用户某一次回答不满意时，Client端可以基于此特性非常简单地实现删除某条消息的操作
-- 可以在同一对话中进行不同提示词的A/B Test等实验性操作，上下文互不干扰
-- 不同的用户也可以基于同一会话并发地进行请求，且上下文互不干扰，Client端可以基于此实现用户对某次会话的分享
-
-### 更多高级特性
-- 根据文件、网页生成的回答，提供信息的引用来源
-- 支持Local Shell Tool，可以借此搭建应用，让LLM操作你的电脑
-- 支持Custom Tool，可以理解为Response Format的平替，支持regex和lark语法，更方便地实现参数的提取
-- 后台执行模式（敬请期待）
-
-### 全面且严谨的协议规范
-- 协议的设计考虑了开发者搭建Agent需要的方方面面
-- 可扩展性强，此协议可伴随着未来AI能力的发展，不断扩展新功能
-- 对轻量级客户端友好，顺应AI时代应用层产品快速开发、快速落地的理念
+[如何判断Response API是否适合你？](../when-to-use-response-api.md)
 
 ## 核心端点
 
@@ -837,12 +789,6 @@ MCP (Model Context Protocol) 是一个开放协议，允许AI模型通过标准�
 - **合规审计**：需要保留完整的对话记录用于审计
 - **对话分析**：需要分析用户对话模式和行为
 
-**存储内容**：
-- Thread（对话线程）
-- Message（用户和助手的所有消息）
-- Run（执行记录）
-- RunStep（工具调用等详细步骤）
-
 **示例**：
 ```json
 {
@@ -911,20 +857,20 @@ if(Boolean.FALSE == request.getStore() &&
 
 ### Store模式对比
 
-| 特性 | Store模式（true） | 非Store模式（false） |
-|-----|------------------|-------------------|
-| **数据持久化** | ✅ 完整保存到数据库 | ❌ 不保存对话记录 |
-| **返回conversation** | ✅ 包含thread_id | ❌ 不返回 |
-| **续接对话** | ✅ 支持previous_response_id和conversation | ❌ 不支持，会报错 |
-| **历史查询** | ✅ 可通过API查询 | ⚠️ 仅保存response_id映射 |
-| **性能** | 较低（需要数据库写入） | 高（无数据库写入） |
-| **存储成本** | 高（保存所有消息） | 低（仅保存映射） |
-| **隐私保护** | 一般 | 优秀 |
-| **适用场景** | 多轮对话、会话管理 | 单次查询、隐私敏感 |
+| 特性 | Store模式（true） | 非Store模式（false）    |
+|-----|------------------|--------------------|
+| **数据持久化** | ✅ 完整保存到数据库 | ❌ 不保存对话记录          |
+| **返回conversation** | ✅ 包含thread_id | ❌ 不返回              |
+| **续接对话** | ✅ 支持previous_response_id和conversation | ❌ 不支持，会报错          |
+| **历史查询** | ✅ 可通过API查询 | ❌ 不支持              |
+| **性能** | 较低（需要数据库写入） | 高（无数据库写入）          |
+| **存储成本** | 高（保存所有消息） | 无                  |
+| **隐私保护** | 一般 | 优秀                 |
+| **适用场景** | 多轮对话、会话管理 | 单次对话、客户端维护上下文、隐私敏感 |
 
 ### 使用建议
 
-1. **默认使用Store模式**：如果只是想想使用response-api丰富的内置工具，用于chat-completion接口的迁移，可以使用`store: false`，性能更优。
+1. **默认使用Store模式**：如果只是想想使用response-api丰富的内置工具，用于chat-completions接口的迁移，可以使用`store: false`，性能更优。
 
 2. **客户端管理对话**：如果你在客户端（前端/移动端）自己管理对话历史，可以使用`store: false`：
    ```json
@@ -954,12 +900,6 @@ if(Boolean.FALSE == request.getStore() &&
    }
 ```
 
-### 技术细节
-
-在内部实现中：
-- **Store模式**：`run.saveMessage = true`，消息会通过MessageService保存到数据库
-- **非Store模式**：`run.saveMessage = false`，消息仅在执行期间存在于内存
-
 ## 错误处理
 
 API使用标准HTTP状态码：
@@ -986,7 +926,7 @@ API使用标准HTTP状态码：
 2. **使用流式响应**: 提升用户体验，特别是长响应
 3. **合理设置推理级别**: 简单任务用low，复杂推理用high
 4. **工具并行调用**: 提高效率，减少延迟
-5. **轻量级使用**: 如在client端实现对话管理，则使用`store: false`避免数据存储
+5. **更佳的性能**: 如在client端实现对话管理，则使用`store: false`避免数据存储的性能开销
 6. **续接对话**: 使用`previous_response_id`保持上下文
 
 ## 示例场景

@@ -93,6 +93,18 @@ const sidebars: SidebarsConfig = {
           key: 'assistant-intro',
         },
         {
+          type: 'doc',
+          id: 'bella-assistants/why-response-api',
+          label: 'Why Response API?',
+          key: 'why-response-api',
+        },
+        {
+          type: 'doc',
+          id: 'bella-assistants/when-to-use-response-api',
+          label: 'When to Use Response API?',
+          key: 'when-to-use-response-api',
+        },
+        {
           type: 'category',
           label: '使用文档 (Usage Documents)',
           key: 'assistant-usage-docs',
