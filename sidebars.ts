@@ -82,7 +82,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'assistant&responses',
+      label: 'assistants&responses',
       collapsible: true,
       collapsed: true,
       items: [
@@ -109,7 +109,7 @@ const sidebars: SidebarsConfig = {
           label: '使用文档 (Usage Documents)',
           key: 'assistant-usage-docs',
           items: [
-            'bella-assistants/api/assistant-core-api',
+            'bella-assistants/api/assistants-core-api',
             'bella-assistants/api/create-responses',
             'bella-assistants/api/responses-api-sdk',
             'bella-assistants/api/codex-usage'

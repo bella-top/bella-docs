@@ -3,13 +3,13 @@
 ## 官方定义
 > Responses API 是一个用于构建功能强大的代理类应用程序的统一接口。它包含很多内置工具，如：网络搜索，文件搜索，计算机使用，代码解释器和远程MCP。且对文本和图像原生支持支持多模态。
 
-Bella Assistant服务对Openai的Responses API做了全面地兼容和升级。比如内置工具的全模型支持以及多模态输入的全模型支持等等。并且整合了Bella体系下的各个能力服务，为Agent的搭建提供了强大的支持，让Agent的搭建变得更简单更高效。
+Bella Assistants服务对Openai的Responses API做了全面地兼容和升级。比如内置工具的全模型支持以及多模态输入的全模型支持等等。并且整合了Bella体系下的各个能力服务，为Agent的搭建提供了强大的支持，让Agent的搭建变得更简单更高效。
 
 ## 完全覆盖Chat Completions
 支持chat completions的所有功能以及**全部模型**，非store模式可以理解为功能更丰富的chat completions接口
 
 ## 使用便捷
-相比assistant api使用更方便，无需创建智能体
+相比assistants api使用更方便，无需创建智能体
 
 ## 丰富的多模态输入/输出
 - 全模型支持File Input，以 `purpose`为`assistants`的方式，上传到`file-api`后，可以直接使用File Input，LLM将根据文件内容生成响应

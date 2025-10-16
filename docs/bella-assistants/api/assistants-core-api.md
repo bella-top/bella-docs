@@ -1,6 +1,6 @@
-# Assistant API 核心接口
+# Assistants API 核心接口
 
-Assistant API 遵循 OpenAI Assistant API 规范，提供完整的智能体创建和执行能力。
+Assistants API 遵循 OpenAI Assistants API 规范，提供完整的智能体创建和执行能力。
 > 每个接口的详细参数，参考：https://platform.openai.com/docs/api-reference/assistants
 
 ## 核心执行接口
@@ -49,7 +49,7 @@ Assistant API 遵循 OpenAI Assistant API 规范，提供完整的智能体创�
 
 ## 依赖接口详解
 
-### **Assistant管理**
+### **Assistants管理**
 - **创建**: `POST /v1/assistants`
   - 定义智能体名称、模型、系统提示、工具配置
   - 支持内置工具：weather、web_search、image_generation、chart、rag等
