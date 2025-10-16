@@ -62,7 +62,7 @@
 
 ## 可持续发展的考量——考虑未来的发展
 
-Responses API所实现的内置工具，是成了Bella服务体系下的各个AI能力点。
+Responses API所实现的内置工具集成了Bella服务体系下的各个AI能力点。
 
 在实现一个复杂的Agent系统时，当然可以使用function call实现自己的自定义工具，而不使用Responses API的内置工具。
 

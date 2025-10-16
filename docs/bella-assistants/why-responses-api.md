@@ -1,18 +1,18 @@
 # 为什么选择Responses API?
 
 ## 官方定义
-> Responses API 是一个用于构建功能强大的代理类应用程序的统一接口。它包含很多内置工具，如：网络搜索，文件搜索，计算机使用，代码解释器和远程MCP。且对文本和图像原生支持支持多模态。
+> Responses API 是一个用于构建功能强大的Agent应用程序的统一接口。它包含很多内置工具，如：网络搜索，文件搜索，计算机使用，代码解释器和远程MCP。且支持文本和多模态输入。
 
 Bella Assistants服务对Openai的Responses API做了全面地兼容和升级。比如内置工具的全模型支持以及多模态输入的全模型支持等等。并且整合了Bella体系下的各个能力服务，为Agent的搭建提供了强大的支持，让Agent的搭建变得更简单更高效。
 
 ## 完全覆盖Chat Completions
-支持chat completions的所有功能以及**全部模型**，非store模式可以理解为功能更丰富的chat completions接口
+支持chat completions的所有功能以及**全部模型**，Responses API虽然本质是一个通用智能体服务，默认模式下会在服务端存储过程数据，但是也提供了[不在服务端进行存储的轻量级模式](#非store模式)，可平替Chat Completions接口，可以将其理解为功能更丰富的Chat Completions接口
 
 ## 使用便捷
-相比assistants api使用更方便，无需创建智能体
+相比assistants api，协议更简洁，使用更方便、更灵活、更轻量级，无需管理智能体
 
 ## 丰富的多模态输入/输出
-- 全模型支持File Input，以 `purpose`为`assistants`的方式，上传到`file-api`后，可以直接使用File Input，LLM将根据文件内容生成响应
+- 全模型支持File Input，[以特定方式上传到`file-api`](../bella-knowledge/api/files/upload.md)后，可以直接使用File Input，LLM将根据文件内容生成响应
 - 全模型支持Audio Input，支持直接以语音作为输入
 - 兼容chat completions的图片识别能力，后续会扩展为全模型支持
 - 内置生图工具支持图像输出
@@ -23,7 +23,7 @@ Bella Assistants服务对Openai的Responses API做了全面地兼容和升级。
 - 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，让LLM的知识储备可以即时更新
 - 支持MCP工具，可以让LLM与应用服务进行交互，获取私有知识或者执行你的既定流程，为LLM提供与外部进行交互的窗口
 - MCP工具支持服务调用时的审批操作，保障MCP服务调用的安全性，Client端在实现与用户交互时更方便
-- 支持生图工具，可生成图片，`store`模式下上传到s3返回图片的url，`非store模式`下返回Base64String
+- 支持生图工具，可生成图片，并根据用户是否选择在服务端进行存储，返回图片url/Base64String
 - 支持自主生成代码/工具/子Agent，来解决用户的问题，完成复杂任务（敬请期待）
 
 ## 支持 `store`和`非store`双模式

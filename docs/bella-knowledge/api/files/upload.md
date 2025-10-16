@@ -4,7 +4,7 @@
 
 上传文件。文件大小限制为512MB。
 
-> 对于`purpose`为`assistants`的文件，file-api系统会为文件进行一些后处理逻辑，后处理是将文件作用于其他文件的关键，详情请参考 `文件后处理`章节
+> 对于`purpose`为`assistants`的文件，file-api系统会为文件进行一些后处理逻辑（比如文档解析），后处理是将文件作用于其他服务的关键（比如使用Bella-Rag、Bella-Responses等）
 
 ## 示例
 
@@ -43,4 +43,4 @@ Content-Type: `multipart/form-data`
 ## Returns
 已上传的File对象。
 
-对于`purpose`为`assistants`的文件，file-api系统会为文件进行一些后处理逻辑，后处理是将文件作用于其他文件的关键，详情请参考 `文件后处理`章节
+对于`purpose`为`assistants`的文件，file-api系统会为文件进行一些后处理逻辑（比如文档解析），后处理是将文件作用于其他服务的关键（比如使用Bella-Rag、Bella-Responses等）
