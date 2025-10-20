@@ -154,6 +154,7 @@
 > **📖 案例典范**：完整记录一次技术调研的全过程，展现Claude Code的深度分析能力
 
 **案例背景**：分析Claude Code Base Action实现机制，创建Node.js直接调用方案
+**说明**：Claude Code现已提供官方SDK，可直接以编程方式使用。此案例只供参考，展示claude code的使用过程
 
 **完整流程**：
 1. **需求理解与任务规划**：使用TodoWrite工具系统分解任务
