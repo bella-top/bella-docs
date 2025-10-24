@@ -23,21 +23,22 @@ Bella Assistants服务对Openai的Responses API做了全面地兼容和升级。
 - 支持网络搜索，原生支持web search工具，使用简单，可以减少模型幻觉，让LLM的知识储备可以即时更新
 - 支持MCP工具，可以让LLM与应用服务进行交互，获取私有知识或者执行你的既定流程，为LLM提供与外部进行交互的窗口
 - MCP工具支持服务调用时的审批操作，保障MCP服务调用的安全性，Client端在实现与用户交互时更方便
-- 支持生图工具，可生成图片，并根据用户是否选择在服务端进行存储，返回图片url/Base64String
+- 支持生图工具，可生成图片，并根据用户是否选择在服务端进行存储，返回图片url/Base64String、
+- 支持LocalShellTool，可以让模型生成Shell命令，在客户端的配合下执行，完成对电脑的操作
 - 支持自主生成代码/工具/子Agent，来解决用户的问题，完成复杂任务（敬请期待）
 
-## 支持 `store`和`非store`双模式
+### 支持 `有状态`和`无状态`双模式
 
-### `store`模式
-- `store`模式为默认模式，在此模式下，可使用response-api为客户端提供上下文管理的能力
-- `store`模式，进行请求只需要携带`previous_response_id`或`conversation`即可在请求LLM时保留对话上下文
-- `store`模式便于轻量级应用的快速搭建
+#### `有状态`模式
+- `有状态`模式为默认模式，在此模式下，可使用response-api为客户端提供上下文管理的能力
+- `有状态`模式，进行请求只需要携带`previous_response_id`或`conversation`即可在请求LLM时保留对话上下文
+- `有状态`模式便于轻量级应用的快速搭建
 
-### `非store`模式
-- `非store`模式拥有更高的性能和安全性，在response-api的服务端完全不留痕
+#### `无状态`模式
+- `无状态`模式拥有更高的性能和安全性，response-api的服务端完全不留痕
 - 适用于客户端自行管理上下文的场景
+- 相当于chat completions的水平扩展，可使用responses api的全部工具和多模态输入能力
 - 使用chat completions搭建的应用可以此模式快速迁移
-- 相当于chat completions的扩展，可使用responses api的全部工具和多模态输入能力
 
 ## 可重复使用的 `previous_response_id`
 - 同一`previous_response_id`支持并发使用/重复使用
