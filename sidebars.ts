@@ -118,7 +118,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: '开发者文档（Dev Documents）',
-          key: 'assistant-Dev-docs',
+          key: 'assistant-dev-docs',
           items: [
             'bella-assistants/dev/run-executor-design',
             'bella-assistants/dev/thread-concurrent',
@@ -127,6 +127,14 @@ const sidebars: SidebarsConfig = {
             'bella-assistants/dev/non-store-mode-architecture',
             'bella-assistants/dev/tool-plugin-architecture',
             'bella-assistants/dev/multimodal-input-architecture'
+          ],
+        },
+        {
+          type: 'category',
+          label: '分享（Share）',
+          key: 'assistant-share-docs',
+          items: [
+            'bella-assistants/share/share_v1'
           ],
         }
       ],

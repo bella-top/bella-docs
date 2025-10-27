@@ -1,4 +1,4 @@
-# Responses API：从 "模型调用" 到 “Agent As a Service”
+# 从"模型调用"到"Agent As a Service"
 
 ## AI平台能力的再定义
 
