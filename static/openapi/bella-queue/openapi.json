@@ -1,0 +1,1453 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bella-Queue API",
+    "version": "1.0"
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/queue/register": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "注册队列",
+        "operationId": "registerQueue",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterQueueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "注册成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "返回注册的队列名称",
+                  "example": "test-queue"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/put": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "提交任务",
+        "description": "将任务提交到指定队列进行处理，支持callback、blocking、streaming三种响应模式",
+        "operationId": "putTask",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutTaskRequest"
+              },
+              "examples": {
+                "callback_mode": {
+                  "summary": "Callback模式请求",
+                  "description": "异步处理，完成后回调指定URL",
+                  "value": {
+                    "queue": "test-queue",
+                    "endpoint": "/v1/chat/completions",
+                    "level": 1,
+                    "data": {
+                      "model": "deepseek-r1-20250401",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "你好"
+                        }
+                      ],
+                      "stream": false
+                    },
+                    "callback_url": "http://localhost:8081/test/callback"
+                  }
+                },
+                "blocking_mode": {
+                  "summary": "Blocking模式请求",
+                  "description": "同步等待任务完成并返回结果",
+                  "value": {
+                    "queue": "test-queue",
+                    "endpoint": "/v1/chat/completions",
+                    "level": 0,
+                    "data": {
+                      "model": "deepseek-r1-20250401",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "你好"
+                        }
+                      ],
+                      "stream": false
+                    },
+                    "response_mode": "blocking",
+                    "timeout": 300
+                  }
+                },
+                "streaming_mode": {
+                  "summary": "Streaming模式请求",
+                  "description": "返回Server-Sent Events流",
+                  "value": {
+                    "queue": "test-queue",
+                    "endpoint": "/v1/chat/completions",
+                    "level": 0,
+                    "data": {
+                      "model": "deepseek-r1-20250401",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "你好"
+                        }
+                      ],
+                      "stream": true
+                    },
+                    "response_mode": "streaming",
+                    "timeout": 300
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务提交成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/CallbackResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BlockingResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "callback_response": {
+                    "summary": "Callback模式响应",
+                    "description": "异步处理模式，立即返回任务ID",
+                    "value": {
+                      "code": 200,
+                      "timestamp": 1762856201269,
+                      "data": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+                    }
+                  },
+                  "blocking_response": {
+                    "summary": "Blocking模式响应",
+                    "description": "同步等待模式，直接返回Worker处理后的原始内容",
+                    "value": {
+                      "id": "chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                      "object": "chat.completion",
+                      "created": 1762857979,
+                      "model": "deepseek-r1-20250401",
+                      "choices": [
+                        {
+                          "index": 0,
+                          "message": {
+                            "role": "assistant",
+                            "content": "\n你好呀！👋 很高兴见到你～  \n我是你的AI助手，随时准备帮你解答问题、整理资料或陪你聊聊有趣的话题。有什么想聊的，或者需要帮忙的吗？比如：  \n- 生活小烦恼？ 📚  \n- 学习/工作上的疑问？ 💡  \n- 想探索某个知识领域？ 🌍  \n- 或者单纯想放松聊聊？ 😄  \n\n等你开口啦～ ✨",
+                            "tool_calls": [],
+                            "reasoning_content": "用户发来简单的问候"
+                          },
+                          "finish_reason": "stop"
+                        }
+                      ],
+                      "usage": {
+                        "prompt_tokens": 4,
+                        "total_tokens": 307,
+                        "completion_tokens": 303
+                      }
+                    }
+                  }
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponse"
+                },
+                "examples": {
+                  "streaming_response": {
+                    "summary": "Streaming模式响应",
+                    "description": "Server-Sent Events流式响应",
+                    "value": "data: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"你好\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: [DONE]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/take": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "获取任务",
+        "description": "Worker从指定队列拉取待处理任务",
+        "operationId": "takeTask",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TakeTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "拉取成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TakeTaskResponse"
+                },
+                "examples": {
+                  "offline_task_response": {
+                    "summary": "离线任务响应示例",
+                    "description": "level=1的离线任务，包含batch_id和trace_id",
+                    "value": {
+                      "test-queue:1": [
+                        {
+                          "ak": "xxx",
+                          "endpoint": "/v1/chat/completions",
+                          "queue": "test-queue",
+                          "level": 1,
+                          "data": {
+                            "model": "deepseek-r1-20250401",
+                            "messages": [
+                              {
+                                "role": "user",
+                                "content": "你好"
+                              }
+                            ],
+                            "stream": false
+                          },
+                          "status": "waiting",
+                          "task_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "batch_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "trace_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "start_time": 1762863595000,
+                          "running_time": 0,
+                          "expire_time": 1762949994000,
+                          "completed_time": 0,
+                          "callback_url": "",
+                          "response_mode": "batch"
+                        }
+                      ]
+                    }
+                  },
+                  "online_task_response": {
+                    "summary": "在线任务响应示例",
+                    "description": "level=0的在线任务，包含instance_id",
+                    "value": {
+                      "test-queue:0": [
+                        {
+                          "ak": "xxx",
+                          "endpoint": "/v1/chat/completions",
+                          "queue": "test-queue",
+                          "level": 0,
+                          "data": {
+                            "model": "deepseek-r1-20250401",
+                            "messages": [
+                              {
+                                "role": "user",
+                                "content": "你好"
+                              }
+                            ],
+                            "stream": false
+                          },
+                          "status": "waiting",
+                          "task_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "instance_id": "xx.xx.xx.xx:xxx",
+                          "start_time": 1762863595000,
+                          "running_time": 0,
+                          "expire_time": 1762949994000,
+                          "completed_time": 0,
+                          "callback_url": "",
+                          "response_mode": "blocking"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/{taskId}/complete": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "完成任务",
+        "description": "Worker标记任务为完成状态并提交处理结果",
+        "operationId": "completeTask",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "任务ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务完成成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "返回任务ID",
+                  "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/{taskId}/cancel": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "取消任务",
+        "description": "取消指定任务的执行",
+        "operationId": "cancelTask",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "任务ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "任务取消成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "返回取消的任务ID",
+                  "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/{fullQueueName}/stats": {
+      "get": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "获取队列统计",
+        "description": "获取指定队列的统计信息",
+        "operationId": "getQueueStats",
+        "parameters": [
+          {
+            "name": "fullQueueName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "完整的队列名称（queueName:level）"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "队列统计信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedQueueStatsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/eventbus": {
+      "get": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "获取EventBus配置",
+        "description": "获取Redis EventBus连接配置，用于实时任务通信",
+        "operationId": "getEventBusConfig",
+        "responses": {
+          "200": {
+            "description": "EventBus配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventBusConfigResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batches": {
+      "post": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "创建批处理任务",
+        "operationId": "createBatch",
+        "parameters": [
+          {
+            "name": "X-BELLA-QUEUE-NAME",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "指定处理批次的队列名称（可选，如果不指定则根据模型自动路由）"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "批量任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBatchResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "列出批处理任务",
+        "description": "获取批量任务列表",
+        "operationId": "listBatches",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "返回数量限制"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "查询开始位置"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "批量任务列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBatchesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batches/{batch_id}": {
+      "get": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "获取批处理任务详情",
+        "description": "获取指定批量任务的详细信息",
+        "operationId": "retrieveBatch",
+        "parameters": [
+          {
+            "name": "batch_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "批量任务ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "批量任务详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batches/{batch_id}/cancel": {
+      "post": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "取消批处理任务",
+        "description": "取消指定的批量任务",
+        "operationId": "cancelBatch",
+        "parameters": [
+          {
+            "name": "batch_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "批量任务ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "批量任务取消请求已接受",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelBatchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/console/{fullQueueName}/clear": {
+      "post": {
+        "tags": [
+          "Console API"
+        ],
+        "summary": "清空队列",
+        "description": "清空指定队列中的所有任务",
+        "operationId": "clearQueue",
+        "parameters": [
+          {
+            "name": "fullQueueName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要清空的队列完整名称"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "队列清空成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "返回清空的队列名称",
+                  "example": "test-queue:1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/console/queue/stats": {
+      "get": {
+        "tags": [
+          "Console API"
+        ],
+        "summary": "获取所有队列统计",
+        "description": "获取系统中所有队列的统计信息",
+        "operationId": "getAllQueueStats",
+        "responses": {
+          "200": {
+            "description": "所有队列统计信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DetailedQueueStatsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Bearer token认证"
+      }
+    },
+    "schemas": {
+      "RegisterQueueRequest": {
+        "type": "object",
+        "properties": {
+          "queue": {
+            "type": "string",
+            "description": "队列名称（只能包含字母、数字、下划线、分隔符，长度不超过64字符）",
+            "maxLength": 64,
+            "example": "test-queue"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点",
+            "example": "/v1/chat/completions"
+          }
+        },
+        "required": [
+          "queue",
+          "endpoint"
+        ]
+      },
+      "PutTaskRequest": {
+        "type": "object",
+        "properties": {
+          "queue": {
+            "type": "string",
+            "description": "队列名称",
+            "example": "test-queue"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点",
+            "example": "/v1/chat/completions"
+          },
+          "level": {
+            "type": "integer",
+            "description": "队列级别：0(在线队列)、1(离线队列)",
+            "enum": [
+              0,
+              1
+            ],
+            "example": 1
+          },
+          "data": {
+            "type": "object",
+            "description": "任务数据载荷，参考OpenAPI使用文档：https://doc.bella.top/docs/bella-openapi/core/chat-completions",
+            "example": {
+              "model": "deepseek-r1-20250401",
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "你好"
+                }
+              ],
+              "stream": false
+            }
+          },
+          "response_mode": {
+            "type": "string",
+            "enum": [
+              "blocking",
+              "streaming",
+              "callback"
+            ],
+            "description": "响应模式：blocking(阻塞)、streaming(流式)、callback(回调)，默认callback",
+            "example": "callback"
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "回调URL(callback模式时使用)",
+            "example": "http://localhost:8081/test/callback"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "任务超时时间(秒)，blocking/streaming模式默认300秒，callback模式默认24小时",
+            "example": 300
+          }
+        },
+        "required": [
+          "queue",
+          "endpoint",
+          "level",
+          "data"
+        ]
+      },
+      "TakeTaskRequest": {
+        "type": "object",
+        "properties": {
+          "queues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "要获取任务的队列名称列表(格式: \"queueName:level\")",
+            "example": [
+              "test-queue:1"
+            ]
+          },
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "fifo",
+              "round_robin",
+              "active_passive",
+              "sequential"
+            ],
+            "description": "队列策略: fifo、round_robin、active_passive、sequential，默认fifo",
+            "example": "active_passive"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点",
+            "example": "/v1/chat/completions"
+          },
+          "size": {
+            "type": "integer",
+            "description": "获取任务数",
+            "example": 1
+          }
+        },
+        "required": [
+          "queues",
+          "size"
+        ]
+      },
+      "CompleteTaskRequest": {
+        "type": "object",
+        "description": "任务完成请求数据",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "任务处理结果数据",
+            "example": {
+              "request_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "status_code": 200,
+              "body": {
+                "// Worker处理结果 - chat completion响应": "",
+                "id": "chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                "object": "chat.completion",
+                "created": 1762857979,
+                "model": "deepseek-r1-20250401",
+                "choices": [
+                  {
+                    "index": 0,
+                    "message": {
+                      "role": "assistant",
+                      "content": "你好呀！很高兴见到你，我是你的AI助手"
+                    },
+                    "finish_reason": "stop"
+                  }
+                ],
+                "usage": {
+                  "prompt_tokens": 4,
+                  "total_tokens": 307,
+                  "completion_tokens": 303
+                }
+              }
+            }
+          }
+        },
+        "required": ["data"]
+      },
+      "CreateBatchRequest": {
+        "type": "object",
+        "properties": {
+          "input_file_id": {
+            "type": "string",
+            "description": "输入文件ID，包含批处理请求，使用File API上传",
+            "example": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点",
+            "example": "/v1/chat/completions"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "完成窗口，格式：数字+单位(m/h/d)，默认\"24h\"",
+            "example": "24h"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "批处理元数据，自定义键值对",
+            "example": {
+              "description": "Customer support chat completions batch"
+            }
+          }
+        },
+        "required": [
+          "input_file_id",
+          "endpoint"
+        ]
+      },
+      "CallbackResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1762856201269
+          },
+          "data": {
+            "type": "string",
+            "description": "任务ID",
+            "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          }
+        }
+      },
+      "BlockingResponse": {
+        "type": "object",
+        "description": "返回Worker的处理结果",
+        "example": {
+          "id": "chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "object": "chat.completion",
+          "created": 1762857979,
+          "model": "deepseek-r1-20250401",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "你好呀！很高兴见到你，我是你的AI助手",
+                "tool_calls": [],
+                "reasoning_content": "用户发来简单的问候"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 307,
+            "completion_tokens": 303
+          }
+        }
+      },
+      "TakeTaskResponse": {
+        "type": "object",
+        "description": "获取任务响应，键为队列名称(如test-queue:1)，值为任务数组",
+        "example": {
+          "test-queue:1": [
+            {
+              "ak": "xxx",
+              "endpoint": "/v1/chat/completions",
+              "queue": "test-queue",
+              "level": 1,
+              "data": {
+                "model": "deepseek-r1-20250401",
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "你好"
+                  }
+                ],
+                "stream": false
+              },
+              "status": "waiting",
+              "task_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "batch_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "trace_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "start_time": 1762863595000,
+              "running_time": 0,
+              "expire_time": 1762949994000,
+              "completed_time": 0,
+              "callback_url": "",
+              "response_mode": "batch"
+            }
+          ]
+        },
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Task"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "description": "队列任务对象。根据level字段区分在线任务(level=0)和离线任务(level=1)：在线任务包含instance_id字段，离线任务包含batch_id和trace_id字段",
+        "properties": {
+          "ak": {
+            "type": "string",
+            "description": "访问密钥",
+            "example": "xxx"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点",
+            "example": "/v1/chat/completions"
+          },
+          "queue": {
+            "type": "string",
+            "description": "队列名称",
+            "example": "test-queue"
+          },
+          "level": {
+            "type": "integer",
+            "description": "队列级别：0(在线队列，包含instance_id)、1(离线队列，包含batch_id和trace_id)",
+            "enum": [0, 1],
+            "example": 1
+          },
+          "data": {
+            "type": "object",
+            "description": "任务数据载荷，参考OpenAPI使用文档：https://doc.bella.top/docs/bella-openapi/core/chat-completions",
+            "example": {
+              "model": "deepseek-r1-20250401",
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "你好"
+                }
+              ],
+              "stream": false
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "任务状态",
+            "example": "waiting"
+          },
+          "task_id": {
+            "type": "string",
+            "description": "任务ID",
+            "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "batch_id": {
+            "type": "string",
+            "description": "批量任务ID（仅离线任务level=1时存在）",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "trace_id": {
+            "type": "string", 
+            "description": "追踪ID（仅离线任务level=1时存在）",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "instance_id": {
+            "type": "string",
+            "description": "实例ID（仅在线任务level=0时存在）",
+            "example": "xx.xx.xx.xx:xxx"
+          },
+          "start_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "任务开始时间戳（毫秒）",
+            "example": 1762863595000
+          },
+          "running_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "任务执行时间（毫秒）",
+            "example": 0
+          },
+          "expire_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "任务过期时间戳（毫秒）",
+            "example": 1762949994000
+          },
+          "completed_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "任务完成时间戳（毫秒）",
+            "example": 0
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "回调URL（callback模式使用）",
+            "example": ""
+          },
+          "response_mode": {
+            "type": "string",
+            "enum": [
+              "batch",
+              "callback",
+              "blocking",
+              "streaming"
+            ],
+            "description": "响应模式",
+            "example": "batch"
+          }
+        }
+      },
+      "QueueStatsResponse": {
+        "type": "object",
+        "properties": {
+          "waiting": {
+            "type": "integer",
+            "description": "等待中的任务数"
+          },
+          "running": {
+            "type": "integer",
+            "description": "运行中的任务数"
+          },
+          "completed": {
+            "type": "integer",
+            "description": "已完成的任务数"
+          },
+          "failed": {
+            "type": "integer",
+            "description": "失败的任务数"
+          }
+        }
+      },
+      "EventBusConfigResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Redis连接URL",
+            "example": "redis://localhost:6379"
+          },
+          "topic": {
+            "type": "string",
+            "description": "事件主题前缀",
+            "example": "bella:eventbus:"
+          }
+        }
+      },
+      "CreateBatchResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "批量任务ID",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "object": {
+            "type": "string",
+            "example": "batch"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点"
+          },
+          "input_file_id": {
+            "type": "string",
+            "description": "输入文件ID"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "完成时间窗口"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间"
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "过期时间"
+          },
+          "request_counts": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "总任务数"
+              },
+              "completed": {
+                "type": "integer",
+                "description": "完成任务数"
+              },
+              "failed": {
+                "type": "integer",
+                "description": "失败任务数"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+          "object": "batch",
+          "endpoint": "/v1/chat/completions",
+          "input_file_id": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX",
+          "completion_window": "24h",
+          "created_at": 1762921219017,
+          "expired_at": 1763007619015,
+          "request_counts": {
+            "total": 121,
+            "completed": 0,
+            "failed": 0
+          }
+        }
+      },
+      "BatchResponse": {
+        "type": "object",
+        "example": {
+          "id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+          "object": "batch",
+          "endpoint": "/v1/chat/completions",
+          "status": "expired",
+          "input_file_id": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX",
+          "completion_window": "24h",
+          "output_file_id": "",
+          "error_file_id": "",
+          "created_at": 1762136757000,
+          "in_progress_at": 1762136757000,
+          "finalizing_at": 1762223427000,
+          "completed_at": 946656000000,
+          "failed_at": 946656000000,
+          "expired_at": 1762223157000,
+          "cancelling_at": 946656000000,
+          "cancelled_at": 946656000000,
+          "request_counts": {
+            "total": 121,
+            "completed": 8,
+            "failed": 0
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "批量任务ID",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "object": {
+            "type": "string",
+            "example": "batch"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "validating",
+              "failed",
+              "in_progress",
+              "finalizing",
+              "completed",
+              "expired",
+              "cancelling",
+              "cancelled"
+            ],
+            "description": "批量任务状态"
+          },
+          "input_file_id": {
+            "type": "string",
+            "description": "输入文件ID"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "完成时间窗口"
+          },
+          "output_file_id": {
+            "type": "string",
+            "description": "输出文件ID"
+          },
+          "error_file_id": {
+            "type": "string",
+            "description": "错误文件ID"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间"
+          },
+          "in_progress_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "开始处理时间"
+          },
+          "finalizing_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "完结开始时间"
+          },
+          "completed_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "完成时间"
+          },
+          "failed_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "失败时间"
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "过期时间"
+          },
+          "cancelling_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "取消中时间"
+          },
+          "cancelled_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "取消完成时间"
+          },
+          "request_counts": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "总任务数"
+              },
+              "completed": {
+                "type": "integer",
+                "description": "完成任务数"
+              },
+              "failed": {
+                "type": "integer",
+                "description": "失败任务数"
+              }
+            }
+          }
+        }
+      },
+      "ListBatchesResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "example": "list"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchResponse"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "是否有更多数据"
+          }
+        }
+      },
+      "DetailedQueueStatsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "主键id"
+          },
+          "queue": {
+            "type": "string",
+            "description": "队列名称"
+          },
+          "level": {
+            "type": "integer",
+            "description": "队列level"
+          },
+          "last_wrote_sharding_key": {
+            "type": "string",
+            "description": "写指针分片键"
+          },
+          "last_wrote_id": {
+            "type": "integer",
+            "description": "写指针分片键主键ID"
+          },
+          "last_scanned_sharding_key": {
+            "type": "string",
+            "description": "扫描指针分片键"
+          },
+          "last_scanned_id": {
+            "type": "integer",
+            "description": "扫描指针分片键主键ID"
+          },
+          "total_put_cnt": {
+            "type": "integer",
+            "description": "总入队任务数"
+          },
+          "total_loaded_cnt": {
+            "type": "integer",
+            "description": "总扫描任务数"
+          },
+          "total_completed_cnt": {
+            "type": "integer",
+            "description": "总完成任务数"
+          },
+          "cuid": {
+            "type": "integer",
+            "description": "创建人ID"
+          },
+          "muid": {
+            "type": "integer",
+            "description": "修改人ID"
+          },
+          "cu_name": {
+            "type": "string",
+            "description": "创建人名称"
+          },
+          "mu_name": {
+            "type": "string",
+            "description": "修改人名称"
+          },
+          "ctime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "mtime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "修改时间"
+          }
+        },
+        "example": {
+          "id": 2,
+          "queue": "test-queue",
+          "level": 1,
+          "last_wrote_sharding_key": "2-1-20251031183551",
+          "last_wrote_id": 124,
+          "last_scanned_sharding_key": "2-1-20251031183551",
+          "last_scanned_id": 124,
+          "total_put_cnt": 124,
+          "total_loaded_cnt": 124,
+          "total_completed_cnt": 7,
+          "cuid": 10001,
+          "muid": 10001,
+          "cu_name": "xxx",
+          "mu_name": "xxx",
+          "ctime": "2025-10-31T18:35:52",
+          "mtime": "2025-11-11T12:12:14"
+        }
+      },
+      "StreamingResponse": {
+        "type": "string",
+        "description": "Server-Sent Events流式响应数据",
+        "example": "data: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"你好\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: [DONE]"
+      },
+      "CancelBatchResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "批量任务ID",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "object": {
+            "type": "string",
+            "example": "batch"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "处理任务的能力点",
+            "example": "/v1/chat/completions"
+          },
+          "input_file_id": {
+            "type": "string",
+            "description": "输入文件ID",
+            "example": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "完成时间窗口",
+            "example": "24h"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间",
+            "example": 1762928558649
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "过期时间",
+            "example": 1763014958648
+          },
+          "request_counts": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "总任务数"
+              },
+              "completed": {
+                "type": "integer",
+                "description": "完成任务数"
+              },
+              "failed": {
+                "type": "integer",
+                "description": "失败任务数"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+          "object": "batch",
+          "endpoint": "/v1/chat/completions",
+          "input_file_id": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX",
+          "completion_window": "24h",
+          "created_at": 1762928558649,
+          "expired_at": 1763014958648,
+          "request_counts": {
+            "total": 121,
+            "completed": 0,
+            "failed": 0
+          }
+        }
+      }
+    }
+  }
+}

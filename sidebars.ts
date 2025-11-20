@@ -180,6 +180,59 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Queue',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'bella-queue/intro',
+          label: '介绍（Introduction）',
+          key: 'queue-intro',
+        },
+          {
+              type: 'category',
+              label: '使用文档 (Usage Documents)',
+              key: 'queue-usage-docs',
+              items: [
+                'bella-queue/api/worker',
+                  {
+                      type: 'category',
+                      label: 'Queue API',
+                      items: [
+                          'bella-queue/api/queue/register',
+                          'bella-queue/api/queue/put',
+                          'bella-queue/api/queue/take',
+                          'bella-queue/api/queue/complete',
+                          'bella-queue/api/queue/cancel',
+                          'bella-queue/api/queue/stats',
+                          'bella-queue/api/queue/eventbus'
+                      ],
+                  },
+                  {
+                      type: 'category',
+                      label: 'Batch API',
+                      items: [
+                           'bella-queue/api/batch/create',
+                           'bella-queue/api/batch/cancel',
+                           'bella-queue/api/batch/retrieve',
+                           'bella-queue/api/batch/list',
+                      ],
+                  },
+                  {
+                      type: 'category',
+                      label: 'Console API',
+                      items: [
+                          'bella-queue/api/console/clear',
+                          'bella-queue/api/console/queue-stats'
+                      ],
+                  },
+              ],
+          },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Domify',
       collapsible: true,
       collapsed: true,
