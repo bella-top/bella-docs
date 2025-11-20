@@ -115,20 +115,29 @@
           "endpoints": ["AI Endpoint", "authorization", "billing"]
         },
         {
-          "project": "bella-job-queue",
+          "project": "bella-queue",
           "endpoints": ["batch"]
         }
       ]
     },
     {
-      "id": "bella-job-queue",
-      "name": "Bella-job-queue",
+      "id": "bella-queue",
+      "name": "Bella-queue",
       "description": "集中式队列系统，让各类基础能力轻松支持批处理模式，大幅提升处理效率与资源利用率。",
       "en_description": "A centralized queue system that enables various basic capabilities to easily support batch processing mode, significantly improving processing efficiency and resource utilization.",
       "type": "endpoint",
-      "status": "upcoming",
-      "github": "https://github.com/LianjiaTech/bella-job-queue",
-      "documentationLink": "/docs/bella-job-queue/intro"
+      "status": "released",
+      "github": "https://github.com/LianjiaTech/bella-queue",
+      "apiDocPath": "bella-queue",
+      "documentationLink": "/docs/bella-queue/intro",
+      "deepwiki": "https://wiki.bella.top/LianjiaTech/bella-queue?type=github&language=zh",
+      "en_deepwiki": "https://wiki.bella.top/LianjiaTech/bella-queue?type=github&language=en",
+      "dependencies": [
+        {
+          "project": "bella-openapi",
+          "endpoints": ["AI Endpoint", "authorization"]
+        }
+      ]
     },
     {
       "id": "bella-realtime",
