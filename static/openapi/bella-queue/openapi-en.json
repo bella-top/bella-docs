@@ -1,0 +1,1452 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bella-Queue API",
+    "version": "1.0"
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/queue/register": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Register Queue",
+        "operationId": "registerQueue",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterQueueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Registration successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Returns the registered queue name",
+                  "example": "test-queue"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/put": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Submit Task",
+        "description": "Submit task to specified queue for processing, supports callback, blocking, and streaming response modes",
+        "operationId": "putTask",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutTaskRequest"
+              },
+              "examples": {
+                "callback_mode": {
+                  "summary": "Callback mode request",
+                  "description": "Asynchronous processing, callback to specified URL upon completion",
+                  "value": {
+                    "queue": "test-queue",
+                    "endpoint": "/v1/chat/completions",
+                    "level": 1,
+                    "data": {
+                      "model": "deepseek-r1-20250401",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "Hello"
+                        }
+                      ],
+                      "stream": false
+                    },
+                    "callback_url": "http://localhost:8081/test/callback"
+                  }
+                },
+                "blocking_mode": {
+                  "summary": "Blocking mode request",
+                  "description": "Synchronously wait for task completion and return result",
+                  "value": {
+                    "queue": "test-queue",
+                    "endpoint": "/v1/chat/completions",
+                    "level": 0,
+                    "data": {
+                      "model": "deepseek-r1-20250401",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "Hello"
+                        }
+                      ],
+                      "stream": false
+                    },
+                    "response_mode": "blocking",
+                    "timeout": 300
+                  }
+                },
+                "streaming_mode": {
+                  "summary": "Streaming mode request",
+                  "description": "Returns Server-Sent Events stream",
+                  "value": {
+                    "queue": "test-queue",
+                    "endpoint": "/v1/chat/completions",
+                    "level": 0,
+                    "data": {
+                      "model": "deepseek-r1-20250401",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "Hello"
+                        }
+                      ],
+                      "stream": true
+                    },
+                    "response_mode": "streaming",
+                    "timeout": 300
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/CallbackResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BlockingResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "callback_response": {
+                    "summary": "Callback mode response",
+                    "description": "Asynchronous processing mode, immediately returns task ID",
+                    "value": {
+                      "code": 200,
+                      "timestamp": 1762856201269,
+                      "data": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+                    }
+                  },
+                  "blocking_response": {
+                    "summary": "Blocking mode response",
+                    "description": "Synchronous wait mode, directly returns Worker's raw processing result",
+                    "value": {
+                      "id": "chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                      "object": "chat.completion",
+                      "created": 1762857979,
+                      "model": "deepseek-r1-20250401",
+                      "choices": [
+                        {
+                          "index": 0,
+                          "message": {
+                            "role": "assistant",
+                            "content": "Hello! I'm glad to meet you~ I'm your AI assistant, ready to help you answer questions, organize materials, or chat about interesting topics. Is there anything you'd like to chat about or need help with?",
+                            "tool_calls": [],
+                            "reasoning_content": "User sent a simple greeting"
+                          },
+                          "finish_reason": "stop"
+                        }
+                      ],
+                      "usage": {
+                        "prompt_tokens": 4,
+                        "total_tokens": 307,
+                        "completion_tokens": 303
+                      }
+                    }
+                  }
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponse"
+                },
+                "examples": {
+                  "streaming_response": {
+                    "summary": "Streaming mode response",
+                    "description": "Server-Sent Events streaming response",
+                    "value": "data: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Hello\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: [DONE]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/take": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Get Tasks",
+        "description": "Worker pulls pending tasks from specified queues",
+        "operationId": "takeTask",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TakeTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pull successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TakeTaskResponse"
+                },
+                "examples": {
+                  "offline_task_response": {
+                    "summary": "Offline task response example",
+                    "description": "level=1 offline task, contains batch_id and trace_id",
+                    "value": {
+                      "test-queue:1": [
+                        {
+                          "ak": "xxx",
+                          "endpoint": "/v1/chat/completions",
+                          "queue": "test-queue",
+                          "level": 1,
+                          "data": {
+                            "model": "deepseek-r1-20250401",
+                            "messages": [
+                              {
+                                "role": "user",
+                                "content": "Hello"
+                              }
+                            ],
+                            "stream": false
+                          },
+                          "status": "waiting",
+                          "task_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "batch_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "trace_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "start_time": 1762863595000,
+                          "running_time": 0,
+                          "expire_time": 1762949994000,
+                          "completed_time": 0,
+                          "callback_url": "",
+                          "response_mode": "batch"
+                        }
+                      ]
+                    }
+                  },
+                  "online_task_response": {
+                    "summary": "Online task response example",
+                    "description": "level=0 online task, contains instance_id",
+                    "value": {
+                      "test-queue:0": [
+                        {
+                          "ak": "xxx",
+                          "endpoint": "/v1/chat/completions",
+                          "queue": "test-queue",
+                          "level": 0,
+                          "data": {
+                            "model": "deepseek-r1-20250401",
+                            "messages": [
+                              {
+                                "role": "user",
+                                "content": "Hello"
+                              }
+                            ],
+                            "stream": false
+                          },
+                          "status": "waiting",
+                          "task_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+                          "instance_id": "xx.xx.xx.xx:xxx",
+                          "start_time": 1762863595000,
+                          "running_time": 0,
+                          "expire_time": 1762949994000,
+                          "completed_time": 0,
+                          "callback_url": "",
+                          "response_mode": "blocking"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/{taskId}/complete": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Complete Task",
+        "description": "Worker marks task as complete and submits processing result",
+        "operationId": "completeTask",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Returns task ID",
+                  "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/{taskId}/cancel": {
+      "post": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Cancel Task",
+        "description": "Cancel execution of specified task",
+        "operationId": "cancelTask",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task cancelled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Returns cancelled task ID",
+                  "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/{fullQueueName}/stats": {
+      "get": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Get Queue Statistics",
+        "description": "Get statistics of specified queue",
+        "operationId": "getQueueStats",
+        "parameters": [
+          {
+            "name": "fullQueueName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Full queue name (queueName:level)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Queue statistics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedQueueStatsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/queue/eventbus": {
+      "get": {
+        "tags": [
+          "Queue API"
+        ],
+        "summary": "Get EventBus Configuration",
+        "description": "Get Redis EventBus connection configuration for real-time task communication",
+        "operationId": "getEventBusConfig",
+        "responses": {
+          "200": {
+            "description": "EventBus configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventBusConfigResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batches": {
+      "post": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "Create Batch Job",
+        "operationId": "createBatch",
+        "parameters": [
+          {
+            "name": "X-BELLA-QUEUE-NAME",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specify queue name for batch processing (optional, auto-route based on model if not specified)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch job created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBatchResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "List Batch Jobs",
+        "description": "Get list of batch jobs",
+        "operationId": "listBatches",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Return count limit"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Query start position"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch job list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBatchesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batches/{batch_id}": {
+      "get": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "Get Batch Job Details",
+        "description": "Get detailed information of specified batch job",
+        "operationId": "retrieveBatch",
+        "parameters": [
+          {
+            "name": "batch_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Batch job ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch job details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batches/{batch_id}/cancel": {
+      "post": {
+        "tags": [
+          "Batch API"
+        ],
+        "summary": "Cancel Batch Job",
+        "description": "Cancel specified batch job",
+        "operationId": "cancelBatch",
+        "parameters": [
+          {
+            "name": "batch_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Batch job ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Batch job cancellation request accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelBatchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/console/{fullQueueName}/clear": {
+      "post": {
+        "tags": [
+          "Console API"
+        ],
+        "summary": "Clear Queue",
+        "description": "Clear all tasks in specified queue",
+        "operationId": "clearQueue",
+        "parameters": [
+          {
+            "name": "fullQueueName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Full queue name to clear"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Queue cleared successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Returns cleared queue name",
+                  "example": "test-queue:1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/console/queue/stats": {
+      "get": {
+        "tags": [
+          "Console API"
+        ],
+        "summary": "Get All Queue Statistics",
+        "description": "Get statistics of all queues in the system",
+        "operationId": "getAllQueueStats",
+        "responses": {
+          "200": {
+            "description": "All queue statistics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DetailedQueueStatsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "RegisterQueueRequest": {
+        "type": "object",
+        "properties": {
+          "queue": {
+            "type": "string",
+            "description": "Queue name (can only contain letters, numbers, underscores, separators, max 64 characters)",
+            "maxLength": 64,
+            "example": "test-queue"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point",
+            "example": "/v1/chat/completions"
+          }
+        },
+        "required": [
+          "queue",
+          "endpoint"
+        ]
+      },
+      "PutTaskRequest": {
+        "type": "object",
+        "properties": {
+          "queue": {
+            "type": "string",
+            "description": "Queue name",
+            "example": "test-queue"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point",
+            "example": "/v1/chat/completions"
+          },
+          "level": {
+            "type": "integer",
+            "description": "Queue level: 0(online queue), 1(offline queue)",
+            "enum": [
+              0,
+              1
+            ],
+            "example": 1
+          },
+          "data": {
+            "type": "object",
+            "description": "Task data payload, refer to OpenAPI usage documentation: https://doc.bella.top/docs/bella-openapi/core/chat-completions",
+            "example": {
+              "model": "deepseek-r1-20250401",
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Hello"
+                }
+              ],
+              "stream": false
+            }
+          },
+          "response_mode": {
+            "type": "string",
+            "enum": [
+              "blocking",
+              "streaming",
+              "callback"
+            ],
+            "description": "Response mode: blocking, streaming, callback, default callback",
+            "example": "callback"
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "Callback URL (used in callback mode)",
+            "example": "http://localhost:8081/test/callback"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "Task timeout (seconds), blocking/streaming mode default 300s, callback mode default 24h",
+            "example": 300
+          }
+        },
+        "required": [
+          "queue",
+          "endpoint",
+          "level",
+          "data"
+        ]
+      },
+      "TakeTaskRequest": {
+        "type": "object",
+        "properties": {
+          "queues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Queue list for task retrieval (format: \"queueName:level\")",
+            "example": [
+              "test-queue:1"
+            ]
+          },
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "fifo",
+              "round_robin",
+              "active_passive",
+              "sequential"
+            ],
+            "description": "Queue strategy: fifo, round_robin, active_passive, sequential, default fifo",
+            "example": "active_passive"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point",
+            "example": "/v1/chat/completions"
+          },
+          "size": {
+            "type": "integer",
+            "description": "Number of tasks to retrieve",
+            "example": 1
+          }
+        },
+        "required": [
+          "queues",
+          "size"
+        ]
+      },
+      "CompleteTaskRequest": {
+        "type": "object",
+        "description": "Task completion request data",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Task processing result data",
+            "example": {
+              "request_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "status_code": 200,
+              "body": {
+                "// Worker processing result - chat completion response": "",
+                "id": "chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                "object": "chat.completion",
+                "created": 1762857979,
+                "model": "deepseek-r1-20250401",
+                "choices": [
+                  {
+                    "index": 0,
+                    "message": {
+                      "role": "assistant",
+                      "content": "Hello! I'm glad to meet you, I'm your AI assistant"
+                    },
+                    "finish_reason": "stop"
+                  }
+                ],
+                "usage": {
+                  "prompt_tokens": 4,
+                  "total_tokens": 307,
+                  "completion_tokens": 303
+                }
+              }
+            }
+          }
+        },
+        "required": ["data"]
+      },
+      "CreateBatchRequest": {
+        "type": "object",
+        "properties": {
+          "input_file_id": {
+            "type": "string",
+            "description": "Input file ID containing batch requests, uploaded using File API",
+            "example": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point",
+            "example": "/v1/chat/completions"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "Completion window, format: number+unit(m/h/d), default \"24h\"",
+            "example": "24h"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Batch metadata, custom key-value pairs",
+            "example": {
+              "description": "Customer support chat completions batch"
+            }
+          }
+        },
+        "required": [
+          "input_file_id",
+          "endpoint"
+        ]
+      },
+      "CallbackResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1762856201269
+          },
+          "data": {
+            "type": "string",
+            "description": "Task ID",
+            "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          }
+        }
+      },
+      "BlockingResponse": {
+        "type": "object",
+        "description": "Returns Worker's processing result",
+        "example": {
+          "id": "chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "object": "chat.completion",
+          "created": 1762857979,
+          "model": "deepseek-r1-20250401",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "Hello! I'm glad to meet you, I'm your AI assistant",
+                "tool_calls": [],
+                "reasoning_content": "User sent a simple greeting"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 307,
+            "completion_tokens": 303
+          }
+        }
+      },
+      "TakeTaskResponse": {
+        "type": "object",
+        "description": "Task retrieval response, key is queue name (e.g. test-queue:1), value is task array",
+        "example": {
+          "test-queue:1": [
+            {
+              "ak": "xxx",
+              "endpoint": "/v1/chat/completions",
+              "queue": "test-queue",
+              "level": 1,
+              "data": {
+                "model": "deepseek-r1-20250401",
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "Hello"
+                  }
+                ],
+                "stream": false
+              },
+              "status": "waiting",
+              "task_id": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "batch_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "trace_id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+              "start_time": 1762863595000,
+              "running_time": 0,
+              "expire_time": 1762949994000,
+              "completed_time": 0,
+              "callback_url": "",
+              "response_mode": "batch"
+            }
+          ]
+        },
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Task"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "description": "Queue task object. Differentiated by level field between online tasks (level=0) and offline tasks (level=1): online tasks contain instance_id field, offline tasks contain batch_id and trace_id fields",
+        "properties": {
+          "ak": {
+            "type": "string",
+            "description": "Access key",
+            "example": "xxx"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point",
+            "example": "/v1/chat/completions"
+          },
+          "queue": {
+            "type": "string",
+            "description": "Queue name",
+            "example": "test-queue"
+          },
+          "level": {
+            "type": "integer",
+            "description": "Queue level: 0(online queue, contains instance_id), 1(offline queue, contains batch_id and trace_id)",
+            "enum": [0, 1],
+            "example": 1
+          },
+          "data": {
+            "type": "object",
+            "description": "Task data payload, refer to OpenAPI usage documentation: https://doc.bella.top/docs/bella-openapi/core/chat-completions",
+            "example": {
+              "model": "deepseek-r1-20250401",
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Hello"
+                }
+              ],
+              "stream": false
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Task status",
+            "example": "waiting"
+          },
+          "task_id": {
+            "type": "string",
+            "description": "Task ID",
+            "example": "TASK-X-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "batch_id": {
+            "type": "string",
+            "description": "Batch task ID (only exists for offline tasks level=1)",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "trace_id": {
+            "type": "string", 
+            "description": "Trace ID (only exists for offline tasks level=1)",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "instance_id": {
+            "type": "string",
+            "description": "Instance ID (only exists for online tasks level=0)",
+            "example": "xx.xx.xx.xx:xxx"
+          },
+          "start_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Task start timestamp (milliseconds)",
+            "example": 1762863595000
+          },
+          "running_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Task execution time (milliseconds)",
+            "example": 0
+          },
+          "expire_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Task expiration timestamp (milliseconds)",
+            "example": 1762949994000
+          },
+          "completed_time": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Task completion timestamp (milliseconds)",
+            "example": 0
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "Callback URL (used in callback mode)",
+            "example": ""
+          },
+          "response_mode": {
+            "type": "string",
+            "enum": [
+              "batch",
+              "callback",
+              "blocking",
+              "streaming"
+            ],
+            "description": "Response mode",
+            "example": "batch"
+          }
+        }
+      },
+      "QueueStatsResponse": {
+        "type": "object",
+        "properties": {
+          "waiting": {
+            "type": "integer",
+            "description": "Number of waiting tasks"
+          },
+          "running": {
+            "type": "integer",
+            "description": "Number of running tasks"
+          },
+          "completed": {
+            "type": "integer",
+            "description": "Number of completed tasks"
+          },
+          "failed": {
+            "type": "integer",
+            "description": "Number of failed tasks"
+          }
+        }
+      },
+      "EventBusConfigResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Redis connection URL",
+            "example": "redis://localhost:6379"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Event topic prefix",
+            "example": "bella:eventbus:"
+          }
+        }
+      },
+      "CreateBatchResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Batch task ID",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "object": {
+            "type": "string",
+            "example": "batch"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point"
+          },
+          "input_file_id": {
+            "type": "string",
+            "description": "Input file ID"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "Completion time window"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Creation time"
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Expiration time"
+          },
+          "request_counts": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "Total tasks"
+              },
+              "completed": {
+                "type": "integer",
+                "description": "Completed tasks"
+              },
+              "failed": {
+                "type": "integer",
+                "description": "Failed tasks"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+          "object": "batch",
+          "endpoint": "/v1/chat/completions",
+          "input_file_id": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX",
+          "completion_window": "24h",
+          "created_at": 1762921219017,
+          "expired_at": 1763007619015,
+          "request_counts": {
+            "total": 121,
+            "completed": 0,
+            "failed": 0
+          }
+        }
+      },
+      "BatchResponse": {
+        "type": "object",
+        "example": {
+          "id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+          "object": "batch",
+          "endpoint": "/v1/chat/completions",
+          "status": "expired",
+          "input_file_id": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX",
+          "completion_window": "24h",
+          "output_file_id": "",
+          "error_file_id": "",
+          "created_at": 1762136757000,
+          "in_progress_at": 1762136757000,
+          "finalizing_at": 1762223427000,
+          "completed_at": 946656000000,
+          "failed_at": 946656000000,
+          "expired_at": 1762223157000,
+          "cancelling_at": 946656000000,
+          "cancelled_at": 946656000000,
+          "request_counts": {
+            "total": 121,
+            "completed": 8,
+            "failed": 0
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Batch task ID",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "object": {
+            "type": "string",
+            "example": "batch"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "validating",
+              "failed",
+              "in_progress",
+              "finalizing",
+              "completed",
+              "expired",
+              "cancelling",
+              "cancelled"
+            ],
+            "description": "Batch task status"
+          },
+          "input_file_id": {
+            "type": "string",
+            "description": "Input file ID"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "Completion time window"
+          },
+          "output_file_id": {
+            "type": "string",
+            "description": "Output file ID"
+          },
+          "error_file_id": {
+            "type": "string",
+            "description": "Error file ID"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Creation time"
+          },
+          "in_progress_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Start processing time"
+          },
+          "finalizing_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Finalization start time"
+          },
+          "completed_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Completion time"
+          },
+          "failed_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Failure time"
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Expiration time"
+          },
+          "cancelling_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Cancellation in progress time"
+          },
+          "cancelled_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Cancellation completion time"
+          },
+          "request_counts": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "Total tasks"
+              },
+              "completed": {
+                "type": "integer",
+                "description": "Completed tasks"
+              },
+              "failed": {
+                "type": "integer",
+                "description": "Failed tasks"
+              }
+            }
+          }
+        }
+      },
+      "ListBatchesResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "example": "list"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchResponse"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "Has more data"
+          }
+        }
+      },
+      "DetailedQueueStatsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Primary key id"
+          },
+          "queue": {
+            "type": "string",
+            "description": "Queue name"
+          },
+          "level": {
+            "type": "integer",
+            "description": "Queue level"
+          },
+          "last_wrote_sharding_key": {
+            "type": "string",
+            "description": "Write pointer sharding key"
+          },
+          "last_wrote_id": {
+            "type": "integer",
+            "description": "Write pointer sharding key primary ID"
+          },
+          "last_scanned_sharding_key": {
+            "type": "string",
+            "description": "Scan pointer sharding key"
+          },
+          "last_scanned_id": {
+            "type": "integer",
+            "description": "Scan pointer sharding key primary ID"
+          },
+          "total_put_cnt": {
+            "type": "integer",
+            "description": "Total enqueued tasks"
+          },
+          "total_loaded_cnt": {
+            "type": "integer",
+            "description": "Total scanned tasks"
+          },
+          "total_completed_cnt": {
+            "type": "integer",
+            "description": "Total completed tasks"
+          },
+          "cuid": {
+            "type": "integer",
+            "description": "Creator ID"
+          },
+          "muid": {
+            "type": "integer",
+            "description": "Modifier ID"
+          },
+          "cu_name": {
+            "type": "string",
+            "description": "Creator name"
+          },
+          "mu_name": {
+            "type": "string",
+            "description": "Modifier name"
+          },
+          "ctime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Creation time"
+          },
+          "mtime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Modification time"
+          }
+        },
+        "example": {
+          "id": 2,
+          "queue": "test-queue",
+          "level": 1,
+          "last_wrote_sharding_key": "2-1-20251031183551",
+          "last_wrote_id": 124,
+          "last_scanned_sharding_key": "2-1-20251031183551",
+          "last_scanned_id": 124,
+          "total_put_cnt": 124,
+          "total_loaded_cnt": 124,
+          "total_completed_cnt": 7,
+          "cuid": 10001,
+          "muid": 10001,
+          "cu_name": "xxx",
+          "mu_name": "xxx",
+          "ctime": "2025-10-31T18:35:52",
+          "mtime": "2025-11-11T12:12:14"
+        }
+      },
+      "StreamingResponse": {
+        "type": "string",
+        "description": "Server-Sent Events streaming response data",
+        "example": "data: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"object\":\"chat.completion.chunk\",\"created\":1762858384,\"model\":\"deepseek-r1-20250401\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Hello\"},\"logprobs\":null,\"finish_reason\":null}]}\n\ndata: [DONE]"
+      },
+      "CancelBatchResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Batch task ID",
+            "example": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX"
+          },
+          "object": {
+            "type": "string",
+            "example": "batch"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Task processing capability point",
+            "example": "/v1/chat/completions"
+          },
+          "input_file_id": {
+            "type": "string",
+            "description": "Input file ID",
+            "example": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX"
+          },
+          "completion_window": {
+            "type": "string",
+            "description": "Completion time window",
+            "example": "24h"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Creation time",
+            "example": 1762928558649
+          },
+          "expired_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Expiration time",
+            "example": 1763014958648
+          },
+          "request_counts": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "Total tasks"
+              },
+              "completed": {
+                "type": "integer",
+                "description": "Completed tasks"
+              },
+              "failed": {
+                "type": "integer",
+                "description": "Failed tasks"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "BATCH-X-X-XXXXXXXXXXXX-XXXX-XXXXXX",
+          "object": "batch",
+          "endpoint": "/v1/chat/completions",
+          "input_file_id": "file-XXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXX",
+          "completion_window": "24h",
+          "created_at": 1762928558649,
+          "expired_at": 1763014958648,
+          "request_counts": {
+            "total": 121,
+            "completed": 0,
+            "failed": 0
+          }
+        }
+      }
+    }
+  }
+}

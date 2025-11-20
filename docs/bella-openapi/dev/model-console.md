@@ -437,7 +437,7 @@ GET /v1/meta/protocol/list?entityType=model&entityCode=gpt-4-turbo
 - `splitReasoningFromContent` - 是否从内容中分离推理过程
 - `functionCallSimulate` - 是否强制支持函数调用（对不支持的模型进行模拟）
 - `extraHeaders` - 额外的HTTP请求头配置
-- `queueName` - 队列配置，配置后请求会通过bella-job-queue服务代理
+- `queueName` - 队列配置，配置后请求会通过bella-queue服务代理
 
 #### OpenAI协议特定属性 (OpenAIProperty)
 - `auth.type` - 认证类型：BEARER（默认）、BASIC、CUSTOM等

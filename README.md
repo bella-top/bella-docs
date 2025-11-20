@@ -22,7 +22,7 @@ Bella是贝壳找房内部的一站式智能接入、智能体创建及发布平
 ### Bella-workflow - 超越想象的工作流引擎 <a href="https://github.com/LianjiaTech/bella-workflow"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 类似DIFY但拥有诸多差异化能力，如回调模式、Groovy脚本支持、批处理能力、第三方数据源注册等，同时性能更为卓越。
 
-### Bella-job-queue - 高效批处理解决方案 <a href="https://github.com/LianjiaTech/bella-job-queue"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
+### Bella-queue - 高效批处理解决方案 <a href="https://github.com/LianjiaTech/bella-queue"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>
 集中式队列系统，让各类基础能力轻松支持批处理模式，大幅提升处理效率与资源利用率。
 
 ### Bella-realtime - 极致实时语音交互 <a href="https://github.com/LianjiaTech/bella-realtime"><img style="width: 24px; height: auto; vertical-align: middle;" src="./static/img/github/github-mark.svg" alt="GitHub" /></a>

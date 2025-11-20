@@ -19,7 +19,7 @@ Leveraging Bella-knowledge data sources, it provides unified retrieval question-
 ### Bella-workflow - Workflow Engine Beyond Imagination
 Similar to DIFY but with many differentiated capabilities, such as callback mode, Groovy script support, batch processing capabilities, third-party data source registration, while delivering superior performance.
 
-### Bella-job-queue - Efficient Batch Processing Solution
+### [Bella-queue - Efficient Batch Processing Solution](./bella-queue/intro.md)
 A centralized queue system that enables various basic capabilities to easily support batch processing mode, significantly improving processing efficiency and resource utilization.
 
 ### Bella-realtime - Ultimate Real-time Voice Interaction

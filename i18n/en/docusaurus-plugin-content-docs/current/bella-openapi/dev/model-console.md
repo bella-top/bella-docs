@@ -437,7 +437,7 @@ GET /v1/meta/protocol/list?entityType=model&entityCode=gpt-4-turbo
 - `splitReasoningFromContent` - Whether to separate reasoning process from content
 - `functionCallSimulate` - Whether to force support for function calls (simulate for models that don't support it)
 - `extraHeaders` - Additional HTTP request header configuration
-- `queueName` - Queue configuration, requests will be proxied through the bella-job-queue service when configured
+- `queueName` - Queue configuration, requests will be proxied through the bella-queue service when configured
 
 #### OpenAI Protocol Specific Properties (OpenAIProperty)
 - `auth.type` - Authentication type: BEARER (default), BASIC, CUSTOM, etc.
