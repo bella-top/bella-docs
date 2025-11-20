@@ -130,6 +130,8 @@
       "github": "https://github.com/LianjiaTech/bella-queue",
       "apiDocPath": "bella-queue",
       "documentationLink": "/docs/bella-queue/intro",
+      "deepwiki": "https://wiki.bella.top/LianjiaTech/bella-queue?type=github&language=zh",
+      "en_deepwiki": "https://wiki.bella.top/LianjiaTech/bella-queue?type=github&language=en",
       "dependencies": [
         {
           "project": "bella-openapi",
