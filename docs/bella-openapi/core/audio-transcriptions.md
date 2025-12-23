@@ -91,13 +91,13 @@ POST /v1/audio/transcriptions/file/result
 
 ```json
 {
-  "task_id": "transcription-task-123456"
+  "task_id": ["transcription-task-123456", "transcription-task-789012"]
 }
 ```
 
 | 参数 | 类型 | 必填 | 描述 |
 | --- | --- | --- | --- |
-| task_id | string | 是 | 转录任务ID，由提交转录任务接口返回 |
+| task_id | array | 是 | 转录任务ID数组，支持批量查询多个任务结果 |
 
 ## 响应
 
@@ -119,7 +119,42 @@ POST /v1/audio/transcriptions/file/result
 
 ### 转录结果响应
 
-查询转录结果或回调数据的完整格式：
+#### 查询结果响应格式
+
+查询转录结果时返回的数据格式：
+
+```json
+{
+  "data": [
+    {
+      "task": "transcription",
+      "task_id": "transcription-task-123456",
+      "error": null,
+      "language": "zh",
+      "duration": 120.5,
+      "text": "这是转录得到的完整文本内容。包含所有识别出的语音内容。",
+      "words": [...],
+      "segments": [...],
+      "speaker_embeddings": "base64编码的说话人特征向量",
+      "num_speakers": "2"
+    },
+    {
+      "task": "transcription",
+      "task_id": "transcription-task-789012",
+      "error": null,
+      "language": "en",
+      "duration": 85.3,
+      "text": "Another transcription result...",
+      "words": [...],
+      "segments": [...]
+    }
+  ]
+}
+```
+
+#### 回调数据格式
+
+回调时推送的单个任务结果格式：
 
 ```json
 {
@@ -184,7 +219,13 @@ POST /v1/audio/transcriptions/file/result
 }
 ```
 
-#### 响应参数
+#### 查询响应参数
+
+| 参数 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| data | array | 是 | 转录结果数组，包含所有查询的任务结果 |
+
+#### 结果对象参数（data数组中的每个元素）
 
 | 参数 | 类型 | 必填 | 描述 |
 | --- | --- | --- | --- |
@@ -330,7 +371,7 @@ curl -X POST "https://api.example.com/v1/audio/transcriptions/file/result" \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "task_id": "transcription-task-123456"
+    "task_id": ["transcription-task-123456", "transcription-task-789012"]
   }'
 ```
 
@@ -346,24 +387,27 @@ headers = {
 }
 
 data = {
-    "task_id": "transcription-task-123456"
+    "task_id": ["transcription-task-123456", "transcription-task-789012"]
 }
 
 response = requests.post(url, headers=headers, json=data)
 result = response.json()
-print(result)
 
-# 检查是否有错误
-if result.get("error"):
-    print("转录失败:", result["error"])
-elif result.get("file_id"):
-    print("内容超长，file_id:", result["file_id"])
-    # 需要通过 file API 获取完整的转录结果
-    # full_result = get_file_content(result["file_id"])
-else:
-    print("转录文本:", result.get("text", ""))
-    print("语言:", result.get("language", ""))
-    print("时长:", result.get("duration", 0), "秒")
+# 遍历所有查询结果
+for item in result.get("data", []):
+    task_id = item.get("task_id")
+    
+    # 检查是否有错误
+    if item.get("error"):
+        print(f"任务 {task_id} 转录失败:", item["error"])
+    elif item.get("file_id"):
+        print(f"任务 {task_id} 内容超长，file_id:", item["file_id"])
+        # 需要通过 file API 获取完整的转录结果
+        # full_result = get_file_content(item["file_id"])
+    else:
+        print(f"任务 {task_id} 转录文本:", item.get("text", ""))
+        print(f"语言:", item.get("language", ""))
+        print(f"时长:", item.get("duration", 0), "秒")
 ```
 
 #### 查询结果响应示例
@@ -371,30 +415,65 @@ else:
 **正常响应**（内容不超长）：
 ```json
 {
-  "task": "transcription",
-  "task_id": "transcription-task-123456",
-  "error": null,
-  "language": "zh",
-  "duration": 30.5,
-  "text": "转录的文本内容...",
-  "segments": [...]
+  "data": [
+    {
+      "task": "transcription",
+      "task_id": "transcription-task-123456",
+      "error": null,
+      "language": "zh",
+      "duration": 30.5,
+      "text": "转录的文本内容...",
+      "segments": [...]
+    },
+    {
+      "task": "transcription",
+      "task_id": "transcription-task-789012",
+      "error": null,
+      "language": "en",
+      "duration": 45.2,
+      "text": "Transcribed text content...",
+      "segments": [...]
+    }
+  ]
 }
 ```
 
 **内容超长响应**（返回file_id）：
 ```json
 {
-  "task": "transcription",
-  "task_id": "transcription-task-123456",
-  "error": null,
-  "language": "zh",
-  "duration": 7200.0,
-  "file_id": "file-abc123def456",
-  "segments": []
+  "data": [
+    {
+      "file_id": "file-abc123def456"
+    }
+  ]
 }
 ```
 
-**注意**：当查询结果返回 `file_id` 时，表示转录内容超长，需要通过 file API 来获取完整的转录结果。此时 `text`、`words`、`segments` 等字段可能为空或不包含完整数据。
+**包含失败任务的响应**：
+```json
+{
+  "data": [
+    {
+      "task": "transcription",
+      "task_id": "transcription-task-123456",
+      "error": null,
+      "language": "zh",
+      "duration": 30.5,
+      "text": "转录的文本内容...",
+      "segments": [...]
+    },
+    {
+      "task": "transcription",
+      "task_id": "transcription-task-789012",
+      "error": "音频文件格式不支持",
+      "duration": 0,
+      "segments": []
+    }
+  ]
+}
+```
+
+**注意**：当查询结果只返回 `file_id` 时，表示转录内容超长，需要通过 file API 来获取完整的转录结果。
 
 ### 回调数据示例
 
